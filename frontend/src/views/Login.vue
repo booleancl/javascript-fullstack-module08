@@ -4,8 +4,8 @@
       <v-card-title class="pb-0">
         <h1 class="mx-auto mb-5">Ingreso</h1>
       </v-card-title>
-       <v-alert v-if="isFormValidSubmitted && !isFormValid" type="error">
-          <p>{{ formStatusMessage }}</p>
+       <v-alert v-if="isFormRejected" type="error">
+          <p>Usuario o contraseña inválidos. Ingresa los datos correctos.</p>
         </v-alert>
       <v-form ref="form">
           <v-text-field
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       isFormValid: false,
-      isFormValidSubmitted: false,
+      isFormRejected: false,
       formStatusMessage: "",
       email: "",
       emailRules: [
@@ -71,6 +71,7 @@ export default {
           this.$router.push({ name: 'Products' })
         })
         .catch((response)=>{
+          this.isFormRejected = true
           console.log(response.message);
         })
       }
