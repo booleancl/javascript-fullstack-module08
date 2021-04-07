@@ -68,7 +68,7 @@ describe("Login.vue", () => {
     fireEvent.update(email, "coltrane@boolean.cl");
     fireEvent.update(password, "jazz&sax");
     await fireEvent.click(getByText("Ingresar"));
-    await Vue.nextTick()
+    await Vue.nextTick();
 
     expect(getByRole("alert").textContent).toEqual(
       "Usuario o contraseña inválidos. Ingresa los datos correctos."

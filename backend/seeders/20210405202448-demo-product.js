@@ -2,7 +2,7 @@ const products = require('../../fixtures/products.json')
 const tableName = 'Products';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add seed commands here.
      *
@@ -12,7 +12,7 @@ module.exports = {
       await queryInterface.bulkInsert(tableName, products, {});
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *
