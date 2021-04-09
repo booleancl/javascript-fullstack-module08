@@ -1,0 +1,53 @@
+name: Node.js CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:14.15.0-alpine3.12
+    env:
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Build Frontend
+          run: |
+            cd ./frontend
+            npm install
+            npm run build -- --mode production
+            cd ..
+            mkdir -p public
+            cp -R ./frontend/dist/. public
+            ls -R -lha public
+        - name: Archive production artifacts
+          uses: actions/upload-artifact@v2
+          with:
+            name: frontend-public-artifact
+            path: public/
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      HEROKU_KEY: ${{ secrets.HEROKU_KEY }}
+      HEROKU_OWNER_EMAIL: ${{ secrets.HEROKU_OWNER_EMAIL }}
+      FIREBASE_BUCKET_NAME: ${{ secrets.FIREBASE_BUCKET_NAME }}
+      FIREBASE_SERVICE_ACCOUNT_OBJECT_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_OBJECT_TOKEN }}
+      DATABASE_URL:  ${{ secrets.DATABASE_URL }}
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Download a single artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: frontend-public-artifact
+            path: backend/src/public
+        - name: Run deploy script
+          run: |
+            ./ci/deploy.sh
+        - name: Run release script
+          run: |
+            ./ci/release.sh

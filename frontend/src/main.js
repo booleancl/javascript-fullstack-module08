@@ -8,6 +8,8 @@ import { Auth } from "@/firebase";
 
 Vue.config.productionTip = false
 
+// Configure BaseUrl
+axios.defaults.baseURL = process.env.VUE_APP_API_URL || "http://localhost:3000"
 // Add a request interceptor
 axios.interceptors.request.use(
   async (config) => {

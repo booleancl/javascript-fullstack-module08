@@ -23,7 +23,7 @@ export default new Vuex.Store({
     },
     async getProducts({commit}){
       try {
-        const response = await axios.get('http://localhost:3000/api/products')
+        const response = await axios.get('/api/products')
         commit('SET_PRODUCTS', response.data)
       } catch (error) {
         console.log(error);

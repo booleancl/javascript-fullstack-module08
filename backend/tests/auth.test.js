@@ -1,4 +1,4 @@
-const App = require('../app');
+const App = require('../src/app');
 const supertest = require('supertest');
 const admin = require('firebase-admin');
 

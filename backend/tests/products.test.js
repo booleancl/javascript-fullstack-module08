@@ -1,5 +1,5 @@
-const App = require("../app");
-const Models = require('../models');
+const App = require("../src/app");
+const Models = require('../src/models');
 const supertest = require("supertest");
 const admin = require("firebase-admin");
 const products = require("../../fixtures/products.json")

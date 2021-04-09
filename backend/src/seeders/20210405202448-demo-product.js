@@ -1,4 +1,4 @@
-const products = require('../../fixtures/products.json')
+const products = require(`${process.cwd()}/../fixtures/products.json`)
 const tableName = 'Products';
 
 module.exports = {

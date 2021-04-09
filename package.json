@@ -1,18 +1,20 @@
 {
-  "name": "javascript-fullstack-project",
+  "name": "boolean-fullstack-js-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "husky": "husky",
     "frontend-test:unit": "cd frontend && npm run test:unit",
     "frontend-test:e2e": "cd frontend && npm run test:e2e",
     "frontend-lint": "cd frontend && npm run lint",
     "backend-lint": "cd backend && npm run lint",
     "backend-test": "cd backend && npm test",
-    "pre-commit": "npm-run-all frontend-lint frontend-test:unit backend-lint backend-test"
+    "pre-commit": "npm-run-all frontend-lint  backend-lint",
+    "pre-push": "npm-run-all frontend-test:unit backend-test"
   },
   "keywords": [],
-  "author": "",
+  "author": "Academia Boolean SpA",
   "license": "ISC",
   "dependencies": {
     "husky": "^6.0.0",

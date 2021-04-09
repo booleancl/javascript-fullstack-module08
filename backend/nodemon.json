@@ -1,6 +1,6 @@
 {
   "env": {
     "NODE_ENV": "development",
-    "GOOGLE_APPLICATION_CREDENTIALS": "/home/sbstn/codes/javascript-fullstack-project/backend/firebase-service-account.json"
+    "GOOGLE_APPLICATION_CREDENTIALS": "/home/sbstn/codes/javascript-fullstack-project/backend/src/firebase-service-account.json"
   }
 }
