@@ -1,4 +1,4 @@
-# Creando un proyecto Vue y agregar Vuetify
+# Creando un proyecto usando CLI y framework UI
   Comenzaremos creando un proyecto a través de la línea de comandas de Vue. Para ello la instalaremos de  utilizando el siguiente comando
 
 ```bash
@@ -21,32 +21,37 @@ Deberemos contestar una serie de preguntas. Veamos en detalle que responderemos 
 3) Elegiremos la versión 2 de Vue
 ![Imagen de paso 3 de instalación](images/01-vue-cli-install-03.png?raw=true)
 
-4) Seleccionar `NO` para no configurar History mode debido a que publicaremos esta aplicación de otra manera y no necesitamos la configuración para el servidor. Más detalles en [este link](https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode)
+4) Seleccionar `Y` para configurar History mode y posteriormente haremos la configuración requerida para el servidor en Express. Más detalles en [este link](https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode)
 ![Imagen de paso 4 de instalación](images/01-vue-cli-install-04.png?raw=true)
 
-5) Utilizaremos la configuración de Javascript estándar para la herramienta [ESLint](https://eslint.org/). Si quieres conocer más detalles sobre este estándar puedes visitar [este link](https://standardjs.com/)
+5) Utilizaremos la configuración de Javascript estándar para la herramienta [ESLint](https://eslint.org/). Si quieres conocer más detalles sobre este estándar puedes visitar [este link](https://standardjs.com/)  
 ![Imagen de paso 5 de instalación](images/01-vue-cli-install-05.png?raw=true)
 
-6) Utilizaremos [Jest](https://jestjs.io/) para crear pruebas de integración en el proyecto.
+6) Seleciona lint on save ![Lint on save](images/01-vue-cli-install-05-b.png?raw=true)
+
+7) Utilizaremos [Jest](https://jestjs.io/) para crear pruebas de integración en el proyecto.
 ![Imagen de paso 6 de instalación](images/01-vue-cli-install-06.png?raw=true)
 
-7) Utilizaremos [Cypress](https://www.cypress.io/) para crear pruebas e2e.
+8) Utilizaremos [Cypress](https://www.cypress.io/) para crear pruebas e2e.
 ![Imagen de paso 7 de instalación](images/01-vue-cli-install-07.png?raw=true)
 
-8) Seleccionaremos la opción que nos permite que las configuraciones de las herramientas de desarrollo como `ESLint` tenga su propio archivo de configuración
+9) Seleccionaremos la opción que nos permite que las configuraciones de las herramientas de desarrollo como `ESLint` tenga su propio archivo de configuración
 ![Imagen de paso 8 de instalación](images/01-vue-cli-install-08.png?raw=true)
 
-9) Finalmente seleccionaremos la opción `NO` porque de momento no necesitaremos compartir toda esta configuración que acabamos de crear.
+10) Finalmente damos enter para utilizar la opción por defecto (por convención es la opción en mayúsculas)
 ![Imagen de paso 9 de instalación](images/01-vue-cli-install-09.png?raw=true)
 
-Con esto comenzará la instalación y se generará todo el código inicial para que podamos comenzar con todo lo necesario para construir nuestra aplicación Frontend.
+Esto creará una carpeta con la estructura inicial y todo lo necesario para construir nuestra aplicación Frontend.
 
-Una vez terminada la instalación en primer lugar navegaremos al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/) utilizando el siguiente comando:
+Una vez terminada la instalación partimos navegando al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/) (durante el proceso de instalación  vue-cli hizo `git init` por nosotros)  utilizando el siguiente comando:
 
 ```bash
 vue add vuetify
 ```
-Nos preguntará si queremos seleccionar algun tipo de configuración. Seleccionaremos la opción predeterminada como muestra la siguiente imagen:
+
+Vuetify es una de las tantas (Buefy, Element, Bootstrap Vue) librería de componentes UI de alta productividad para Vue.
+
+Nos preguntará si queremos seleccionar algún tipo de configuración. Seleccionaremos la opción predeterminada como muestra la siguiente imagen:
 
 ![Imagen de paso 10 de instalación](images/01-vue-cli-install-10.png?raw=true)
 

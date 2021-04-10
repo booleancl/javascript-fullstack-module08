@@ -5,13 +5,14 @@
 
 ![example workflow](https://github.com/sbstn-jmnz/boolean-fullstack-js-app/actions/workflows/pipeline.yml/badge.svg)
 
-Vamos a construir la base de una plataforma de trueques a través del lenguaje Javacript. Para ello utilizaremos el framework VueJS para, a través de la metología BDD, construir una página de autenticación que nos permitirá acceder a un catálogo de productos.
-La autenticación será soportada por la plataforma Firebase y la página será publicada a través de Heroku utilizando su registro de Imagenes Docker en la cual montaremos un servidor que construiremos utlizando NodeJS y la librería Express.
+Vamos a construir la base de una plataforma de trueques utilizando Javascript. Seguiremos la metodología BDD para implementar una historia de usuario. Utilizaremos el framework VueJS para construir una vista de ingreso (*login*) que nos permitirá acceder a un catálogo de instrumentos musicales disponibles para trueques.
 
-Mano a la obra!
+La autenticación será soportada por la plataforma Firebase y la aplicación será publicada utilizando el registro de imágenes Docker en Heroku, en la cual montaremos un servidor que construiremos utilizando NodeJS y la librería Express.
 
-Indice:
-  - [Creando un proyecto Vue y agregar Vuetify](docs/01-vue-cli-install.md)
+Manos a la obra!
+
+Índice:
+  - [Creando un proyecto usando CLI y framework UI](docs/01-vue-cli-install.md)
   - [Escribiendo Pruebas E2E siguiendo la metodología BDD](docs/02-bdd-with-cypress.md)
   - [Reorganización del proyecto como monorepo y agregar Backend](docs/03-monorepo-backend.md)
   - [Autenticación de peticiones al Backend con firebase](docs/04-firebase-sdk-backend.md)
@@ -19,3 +20,7 @@ Indice:
   - [Pruebas de software para Backend y Frontend](docs/06-testing-frontend-backend.md)
   - [Configuración de mantenimiento de calidad con Husky](docs/07-development-workflow-husky.md)
   - [Salida a producción utilizando Postgres y Heroku](docs/08-deployment-postgres.md)
+
+
+Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
+
