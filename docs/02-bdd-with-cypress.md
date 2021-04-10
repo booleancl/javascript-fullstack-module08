@@ -1,7 +1,23 @@
 # Escribiendo Pruebas E2E siguiendo la metodología BDD
 
-Comenzaremos a desarrollar el proyecto a través por la metodología Behaviour Driven Design (de acá en adelante abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s).
-Lo primero que vamos a hacer es escribir una prueba de software y para ellos iremos a la 
+Comenzaremos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que quieren que el software haga utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
+
+Nuestra primera historia de usuario es la siguiente:
+```ruby
+Funcionalidad: login de la aplicación
+
+Escenario: login con credenciales inválidas
+
+Como un usuario no registrado
+Cuando ingreso a la aplicación 
+Y completo el campo username con 'info'
+Y el campo password con 'visitor' 
+Entonces debería permanecer en la misma página
+```
+
+Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramienta Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la api de Cypress.
+
+Para esto vamos a modificar la prueba e2e por defecto creada durante el proceso de creación. En concreto el archivo de llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
 
 ```
 <tu-proyecto>
@@ -18,17 +34,28 @@ Lo primero que vamos a hacer es escribir una prueba de software y para ellos ire
 
 ...
 ```
+<<<<<<< Updated upstream
 Vamos a crear renombrar el archivo test.js indicado en la figura anterior y lo llamaremos `login.js`.
+=======
+Renombramos el archivo test.js indicado en la figura anterior y lo llamaremos simplemente `login.js`.
+>>>>>>> Stashed changes
 Luego cambiaremos su contenido a lo indicado en el siguiente código:
 
 ```javascript
 describe('login test suite', () => {
   it('does not work with wrong credentials', () => {
     cy.visit('/')
+<<<<<<< Updated upstream
     
     cy.get('[data-cy="username"]').type('info')
     cy.get('[data-cy="password"]').type('visitor')
     cy.get('[data-cy="login-btn"]').click()
+=======
+
+    cy.get('[data-cy=username]').type('info')
+    cy.get('[data-cy=password]').type('visitor')
+    cy.get('[data-cy=login-btn]').click()
+>>>>>>> Stashed changes
 
     cy.location('pathname').should('equal', '/')
   })
@@ -37,7 +64,9 @@ describe('login test suite', () => {
 
 #### ¿Que significa este código?
 
-Según la metodología BDD nos dice que antes de escribir el código deseado primero debemos escribir una prueba de software que represente un comportamiento de negocio en forma de pasos secuenciales que serían los mismos que haría un usuario real de nuestra aplicación. Por supuesto que como aún no hemos escrito código, esta prueba de software comenzará fallando y será nuestro deber escribir el mínimo código necesario para pasar la prueba. Una vez la prueba de software esté pasando, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo lo llamamos `Ciclo Red - Green - Refactor`.
+El código anterior es la implementación de la historia de usuario utilizando la api de Cypres usando buenas prácticas para que nuestro diseño considere atributos específicos para las pruebas e2e y que sean independientes (no acopladas) a cambios en el diseño. Es por esto que se utilizan selectores por atributos que no tienen relación con el diseño de los campos. Esto hace nuestras pruebas resistente a los posibles cambios que podrían sufrir las las clases o ids.
+
+Por supuesto que como aún no hemos escrito código, esta prueba de software comenzará fallando y será nuestro deber escribir el mínimo código necesario para hacerla pasar. Una vez que la prueba de software esté pasando, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como `Red - Green - Refactor`.
 
 Para ver nuestra prueba fallando ejecutaremos el siguiente comando:
 
@@ -49,7 +78,7 @@ Veremos aparecer la siguiente ventana:
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-01.png)
 
-Al hacer click sobre `login.test.js` aparecerá finalmente la prueba de software fallando como muestra la siguiente imagen:
+Al hacer click sobre `login.js` aparecerá finalmente la prueba de software fallando como muestra la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress](images/02-bdd-with-cypress-02.png)
 
@@ -60,7 +89,11 @@ Si nos fijamos en el panel izquierdo hay 2 instrucciones:
     1 VISIT /
     2 GET   [data-cy=username]
   ```
+<<<<<<< Updated upstream
 La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intento encontrar en el HTML un elemento con el atributo `data-cy="username"`. Esto lo vemos traducido en el siguiente mensaje de error:
+=======
+La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intentó encontrar en el HTML un elemento con el atributo `data-cy=username`. Esto lo vemos traducido en el siguiente mensaje de error:
+>>>>>>> Stashed changes
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
@@ -70,7 +103,11 @@ Si vamos a revisar el contenido del código podremos encontrar las 2 líneas de 
 
 ```javascript
   cy.visit('/');
+<<<<<<< Updated upstream
   cy.get('[data-cy="username"').type('info');
+=======
+  cy.get('[data-cy=username]').type('info');
+>>>>>>> Stashed changes
 ```
 podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML para interactuar con ellos.
 
@@ -130,7 +167,7 @@ Finalmente al recargar las pruebas veremos como es que ahora se puso de color ve
 #### Refactorización
 
 Si bien nuestras pruebas están pasando, podemos ver que la interfaz de usuario no cumple el objetivo ya que los elementos están definidos sin estilos y además aún tenemos todo el código que agregó Vuetify en su instalación.
-Lo que haremos será cambiar todo el código de la página inicial para que ahora sea una página de Login utilizando Vuetify. Mantendremos corriendo el comando `npm run test:e2e` de manera que una vez hagamos todos los cambios, recarguemos las pruebas y nos aseguremos que las pruebas siguen pasando.
+Lo que haremos será cambiar todo el código de la página inicial para que ahora sea una página de Login utilizando Vuetify. Mantendremos corriendo el comando `npm run test:e2e` de manera que una vez hagamos todos los cambios, recarguemos y nos aseguremos que las pruebas siguen pasando.
 
 
 Lo primero será modificar el archivo `src/App.vue` y reemplazaremos todo su contenido por lo siguiente:
@@ -250,7 +287,7 @@ const router = new VueRouter({
 export default router
 ```
 
-Ahora podemos recargar nuestras pruebas y deberiamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando y escribiendo pruebas. El resultado en la siguiente imagen:
+Ahora podemos recargar nuestras pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando y escribiendo pruebas. El resultado en la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
