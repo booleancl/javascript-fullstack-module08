@@ -18,21 +18,21 @@ Lo primero que vamos a hacer es escribir una prueba de software y para ellos ire
 
 ...
 ```
-Vamos a crear renombrar el archivo test.js indicado en la figura anterior y lo llamaremos `login.test.js`.
+Vamos a crear renombrar el archivo test.js indicado en la figura anterior y lo llamaremos `login.js`.
 Luego cambiaremos su contenido a lo indicado en el siguiente código:
 
 ```javascript
-describe("login test suite", () => {
-  it("does not work with wrong credentials", () => {
-    cy.visit("/");
+describe('login test suite', () => {
+  it('does not work with wrong credentials', () => {
+    cy.visit('/')
     
-    cy.get("[data-cy=username]").type("info");
-    cy.get("[data-cy=password]").type("visitor");
-    cy.get("[data-cy=login-btn]").click();
+    cy.get('[data-cy="username"]').type('info')
+    cy.get('[data-cy="password"]').type('visitor')
+    cy.get('[data-cy="login-btn"]').click()
 
-    cy.location("pathname").should("equal", "/");
-  });
-});
+    cy.location('pathname').should('equal', '/')
+  })
+})
 ```
 
 #### ¿Que significa este código?
@@ -60,7 +60,7 @@ Si nos fijamos en el panel izquierdo hay 2 instrucciones:
     1 VISIT /
     2 GET   [data-cy=username]
   ```
-La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intento encontrar en el HTML un elemento con el atributo `data-cy=username`. Esto lo vemos traducido en el siguiente mensaje de error:
+La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intento encontrar en el HTML un elemento con el atributo `data-cy="username"`. Esto lo vemos traducido en el siguiente mensaje de error:
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
@@ -69,8 +69,8 @@ CypressError: Timed out retrying: Expected to find element: '[data-cy=username]'
 Si vamos a revisar el contenido del código podremos encontrar las 2 líneas de código que desencadenaron las acciones del panel izquierdo:
 
 ```javascript
-  cy.visit("/");
-  cy.get("[data-cy=username]").type("info");
+  cy.visit('/');
+  cy.get('[data-cy="username"').type('info');
 ```
 podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML para interactuar con ellos.
 
@@ -101,10 +101,10 @@ Ahora veremos un nuevo mensaje de error:
 
 
 ```
-CypressError: Timed out retrying: Expected to find element: '[data-cy=password]', but never found it.
+CypressError: Timed out retrying: Expected to find element: '[data-cy="password"]', but never found it.
 ```
 
-Si hacemos un análisis de lo que está escrito en la prueba de software podemos deducir que necesitaremos otro input esta vez con el atributo `[data-cy=password]` y luego un botón con el atributo `data-cy=login-btn`.
+Si hacemos un análisis de lo que está escrito en la prueba de software podemos deducir que necesitaremos otro input esta vez con el atributo `[data-cy="password"]` y luego un botón con el atributo `data-cy="login-btn"`.
 
 Al agregar esto en el archivo `views/App.vue` quedará así:
 
@@ -226,7 +226,8 @@ export default {
 
 y finalmente cambiamos el archivo `src/router/index.js` con lo siguiente:
 
-```html
+```javascript
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
@@ -242,6 +243,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
@@ -252,13 +254,339 @@ Ahora podemos recargar nuestras pruebas y deberiamos ver nuestras pruebas pasand
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
+Te preguntarás por qué utilizamos los atributo del tipo `data-cy=*` para que las pruebas pudieran encontrar los elementos en el HTML de nuestra aplicación.
+Puedes ver el siguiente artículo desde el Blog oficial de Cypress en [este enlace](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements)
+
+#### Integrando el servicio de autenticación de Firebase
+
+Utilizaremos la plataforma Firebase para proveernos de un servicio de autenticación basado en usuatio y contraseña.
+Dado el contexto de nuestra aplicación, lo que haremos será enviar invitaciones manualmente a quienes publicarán productos para trueques y darles un usuario y contraseña de acceso que manejaremos directamente desde la interfaz de Firebase.
+Si nos dirigimos a [https://console.firebase.google.com/](https://console.firebase.google.com/) y veremos una pantalla como la siguiente:
 
 
-https://docs.cypress.io/guides/references/best-practices#Selecting-Elements
+![Imagen que muestra la interfaz de firebase para crear un proyecto](images/02-bdd-with-cypress-06.png)
 
-La raíz es logín
-SDK de firebase
-Crear el usuario de pruebas
-Login plus ver la página de producto 
+Una vez creamos un proyecto apareceremos en el panel de control de Firebase y vamos a presionar el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:
+
+![Imagen que muestra la interfaz de firebase para registrar una aplicación](images/02-bdd-with-cypress-07.png)
+
+Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y luego aparecerá lo siguiente:
+
+![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
+
+Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que vamos a crear en el directorio `src`.
+Primero vamos a crear el directorio en `src/firebase` y al interior de ese directorio crearemos 2 archivos llamados `config.js` y `index.js`.
+
+```
+<tu-proyecto>
+...
+└─── public
+└─── src
+     ...
+    └─── firebase
+            config.js
+            index.js
+
+...
+```
+el contenido de ambos archivos será el siguiente
+
+**config.js**
+
+```javascript
+export default {
+  apiKey: ''
+  authDomain: ''
+  projectId: ''
+  storageBucket: ''
+  messagingSenderId: ''
+  appId: '',
+}
+
+```
+Los datos de este archivo los copiaremos de lo indicado en la imagen anterior.
+
+**index.js**
+
+```javascript
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import config from './config'
+
+const firebaseApp = firebase.initializeApp(config)
+
+const Auth = firebaseApp.auth()
+
+export { Auth }
+
+```
+
+Ahora debemos instalar `firebase` en el proyecto. Para ello ejecutamos el siguiente comando:
+
+```bash
+npm install --save firebase
+```
+
+Con esto nuestro proyecto quedará preparado para conectarnos a Firebase llegado el momento.
+
+Ahora volvemos a la interfaz de Firebase justo donde nos quedamos anteriormente y presionamos el botón `Ir a la consola`:
+
+![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-09.png)
+
+Finalmente habilitaremos la autenticación a través de correo electrónico/contraseña desde la consola de Firebase siguiendo estos pasos:
+
+Presionamos desde el panel de control la opción `Authentication` como muestra la siguiente imagen:
+
+![Imagen que muestra la interfaz de firebase para configurar la autenticación](images/02-bdd-with-cypress-10.png)
+
+Nos llevará a otra pantalla donde debemos presionar `Comenzar` y eso hará aparecer todas las opciones disponibles para la autenticación. Por defecto todos los tipos de autenticación vienen desactivamos por defecto. Para habilitar la autenticación con Correo electrónico/Contraseña presionamos el botón editar donde se indica:
+
+![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-11.png)
+
+Y finalmente habilitamos este servicio y presionamos "Guardar". Notar que mantenemos desactivada la opción `Vínculo del correo electrónico (acceso sin contraseña)
+
+![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-12.png)
+
+Ahora crearemos un usuario presionando el tab `Users` tal como se indica en la siguiente imagen:
+
+![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-13.png)
+
+Presionamos el Botón `Agregar usuario` y crearemos un usuario con el siguiente perfil:
+
+```
+Correo electrónico: test-e2e@boolean.cl
+Contraseña: booleanacademia
+
+```
+![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-14.png)
+
+Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda.
+
+#### Una nueva historia de usuario para realizar una autenticación exitosa
+
+Escribiremos una nueva prueba de software que consistirá en logearse con los datos registrador en Firebase y validar que la aplicación nos lleve a la página `/productos`.
+
+Vamos a editar el archivo `tests/e2e/specs/login.js` y reemplazar su contenido por lo siguiente:
+
+```javascript
+describe('login test suite', () => {
+  it('does not work with wrong credentials', () => {
+    cy.visit('/')
+    
+    cy.get('[data-cy="username"]').type('info')
+    cy.get('[data-cy="password"]').type('visitor')
+    cy.get('[data-cy="login-btn"]').click()
+
+    cy.location('pathname').should('equal', '/')
+  })
+
+  it('does work with valid credentials', () => {
+    cy.visit('/')
+
+    cy.get('[data-cy="username"]').type('test-e2e@boolean.cl')
+    cy.get('[data-cy="password"]').type('booleanacademia')
+    cy.get('[data-cy="login-btn"]').click()
+
+    cy.location('pathname').should('equal', '/productos')
+   })
+});
+```
+Ahora recargamos Cypress y veremos el siguiente error:
+
+![Imagen que muestra el error de Cypress cuando agregamos una nueva prueba](images/02-bdd-with-cypress-15.png)
+
+Ahora vamos a escribir el código más simple que sea capaz de dejar pasando esta prueba. Vamos al archivo `src/views/Login.vue` y agregamos el siguiente contenido al metodo `login()`
+
+```javascript
+  ...
+  methods: {
+    login () {
+      this.$router.push({ name: 'Products' })
+    }
+  }
+  ...
+```
+Luego vamos a crear un nuevo archivo en `src/views` llamado `Products.vue`
+
+```html
+<template>
+  <v-main>
+    <h1>Productos</h1>
+  </v-main>
+</template>
+
+<script>
+export default {
+
+}
+</script>
+
+```
+
+Y Finalmente vamos al archivo `src/router/index.js` y reemplazamos su contenido por el siguiente:
+
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Login from '../views/Login.vue'
+import Products from '../views/Products.vue'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/productos',
+    name: 'Products',
+    component: Products
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+})
+
+export default router
+
+```
+
+Al recargar vemos que la nueva prueba si está pasando pero estos cambios provocaron que se cayera la prueba anterior:
+
+![Imagen que muestra el error de Cypress cuando agregamos una nueva prueba](images/02-bdd-with-cypress-16.png)
+
+
+Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas del software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las pruebas pasando y no sólo la que acabamos de escribir.
+Pasaremos al siguiente paso del ciclo que sería refactorizar el código de modo que todas las pruebas queden pasando.
+
+
+Para solucionar esto aprovecharemos la `ref` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `ref` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate)
+Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en la sección `methods`
+
+```javascript
+  ...
+  methods: {
+    validate () {
+      return this.$refs.form.validate()
+    },
+    login () {
+      if (this.validate()) {
+        this.$router.push({ name: 'Products' })
+      }
+    }
+  }
+  ...
+```
+
+y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
+
+![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
+
+#### Página de productos
+
+Ahora escribiremos una prueba para la página de productos. Para esto crearemos un nuevo archivo en el directorio `tests/e2e/specs` y lo llamaremos `products.js`. Ahora agregaremos el siguiente contenido:
+
+
+```javascript
+describe('products test suite', () => {
+  it('shows a list of products',() => {
+    cy.visit('/')
+
+    cy.get('[data-cy="username"]').type('test-e2e@boolean.cl')
+    cy.get('[data-cy="password"]').type('booleanacademia')
+    cy.get('[data-cy="login-btn"]').click()
+
+    cy.fixture('products.json')
+      .then((products)=>{
+        cy.get('[data-cy="products"] li').should('have.length', products.length)
+      });
+  })
+})
+
+```
+
+Podemos notar que ya es tercera vez que escribimos las intrucciones para realizar una autenticación. Por suerte Cypress trae consigo la posibilidad de agrupar comandos comunes en funciones de manera que podemos centralizar las acciones más comunes que debemos hacer para escribir una prueba.
+Para lograr esto iremos al archivo `tests/e2e/support/commands.js` y descomentaremos la linea indicada en la siguiente imagen:
+
+![Imagen que muestra el comando de cypress a descomentar](images/02-bdd-with-cypress-18.png)
+
+y los reemplazaremos por lo siguiente:
+
+```javascript
+Cypress.Commands.add("login", (email, password) => {
+  cy.visit('/')
+
+  cy.get('[data-cy=username]').type(email)
+  cy.get('[data-cy=password]').type(password)
+  cy.get('[data-cy=login-btn]').click()  
+})
+```
+
+y luego iremos a editar los archivos en el directorio `tests/e2e/specs` y reemplazaremos cada uno con el código correspondiente:
+
+**login.js**
+
+```javascript
+describe('login test suite', () => {
+  it('does not work with wrong credentials', () => {
+    cy.login('info', 'visitor')
+
+    cy.location('pathname').should('equal', '/')
+  })
+
+  it('does work with valid credentials', () => {
+    cy.login('test-e2e@boolean.cl', 'booleanacademia')
+
+    cy.location('pathname').should('equal', '/productos')
+   })
+});
+```
+
+**products.js**
+
+```javascript
+describe('products test suite', () => {
+  it('shows a list of products',() => {
+    cy.login('test-e2e@boolean.cl', 'booleanacademia')
+
+    cy.fixture('products.json')
+      .then((products)=>{
+        cy.get('[data-cy="products"] li').should('have.length', products.length)
+      })
+  })
+})
+
+```
+
+Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos ahora también incluido el nuevo archivo. Ahora presionamos el botón que dice `Run all specs` que debería lucir como la siguiente imagen:
+
+![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-19.png)
+
+Y veremos el siguiente error:
+
+![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-20.png)
+
+#### ¿Qué son los Fixtures ?
+
+El error de la anterior prueba es porque aún no creamos el archivo `products.json`. Al revisar más en detalle podemos revisar que el siguiente código es el que causa el problema
+
+```javascript
+cy.fixture('products.json')
+  .then((products)=>{
+    cy.get('[data-cy="products"] li').should('have.length', products.length)
+  })
+
+```
+
+¿Para que agregamos este código?
+
+El fixture 
+
+Agregaremos un `fixture` indicando a través de la configuración de Cypress
+
 Agregar axios, base_url y Vuex con la petición (404)
 La prueba de la página de productos fallando 
