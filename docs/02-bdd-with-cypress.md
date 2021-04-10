@@ -521,7 +521,102 @@ Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en l
 
 y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
 
+
+Ahora debemos hacer una refatorización para hagamos una conexión real con el servicio de Firebase. Lo que haremos será modificar reemplazar por completo el archivo `src/views/Login.vue` por lo siguiente:
+
+
+
+```html
+  <template>
+  <v-main class="home">
+    <v-card width="400px" class="mx-auto my-auto">
+      <v-card-title class="pb-0">
+        <h1 class="mx-auto mb-5">Ingreso</h1>
+      </v-card-title>
+      <v-alert v-if="isFormRejected" type="error">
+        <p>Usuario o contraseña inválidos. Ingresa los datos correctos.</p>
+      </v-alert>
+      <v-form ref="form">
+        <v-text-field
+          v-model="email"
+          label="Correo"
+          prepend-icon="mdi-account-circle"
+          :rules="emailRules"
+          validate-on-blur
+          data-cy="username"
+        />
+        <v-text-field
+          v-model="password"
+          label="Contraseña"
+          :type="showPassword ? 'text' : 'password'"
+          :rules="passwordRules"
+          validate-on-blur
+          prepend-icon="mdi-lock"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="showPassword = !showPassword"
+          data-cy="password"
+        />
+      </v-form>
+      <v-divider />
+      <v-card-actions>
+        <v-btn to="/registro" color="success"> Registro </v-btn>
+        <v-spacer />
+        <v-btn color="info" data-cy="login-btn" @click="login"> Ingresar </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-main>
+</template>
+
+<script>
+
+export default {
+  data () {
+    return {
+      isFormValid: false,
+      isFormRejected: false,
+      formStatusMessage: '',
+      email: '',
+      emailRules: [
+        (v) => !!v || 'El correo es requerido',
+        (v) => /.+@.+\..+/.test(v) || 'El correo debe ser válido must be valid'
+      ],
+      password: '',
+      passwordRules: [(v) => !!v || 'La contraseña es requerida'],
+      showPassword: false
+    }
+  },
+  methods: {
+    validate () {
+      return this.$refs.form.validate()
+    },
+    login () {
+      if(this.validate()){
+        Auth.signInWithEmailAndPassword(this.email, this.password)
+        .then((response)=>{
+          this.$router.push({ name: 'Products' })
+        })
+        .catch((response)=>{
+          this.isFormRejected = true
+        })
+      }
+    }
+  }
+}
+</script>
+
+```
+
+Podemos notar como es que integramos el código para firebase que agregamos al comienzo de este capítulo. Ahora al recargar las pruebas estas deberían seguir funcionando.
+
 ![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
+
+
+```javascript
+
+import { Auth } from '@/firebase';
+
+```
+
 
 #### Página de productos
 
