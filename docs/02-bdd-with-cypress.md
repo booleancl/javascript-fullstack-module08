@@ -15,9 +15,9 @@ Y el campo password con 'visitor'
 Entonces debería permanecer en la misma página
 ```
 
-Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramienta Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la api de Cypress.
+Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la api de Cypress.
 
-Para esto vamos a modificar la prueba e2e por defecto creada durante el proceso de creación. En concreto el archivo de llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
+Para esto vamos a modificar la prueba e2e por defecto generada durante el proceso de creación. En concreto el archivo de llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
 
 ```
 <tu-proyecto>
@@ -34,28 +34,17 @@ Para esto vamos a modificar la prueba e2e por defecto creada durante el proceso 
 
 ...
 ```
-<<<<<<< Updated upstream
-Vamos a crear renombrar el archivo test.js indicado en la figura anterior y lo llamaremos `login.js`.
-=======
 Renombramos el archivo test.js indicado en la figura anterior y lo llamaremos simplemente `login.js`.
->>>>>>> Stashed changes
 Luego cambiaremos su contenido a lo indicado en el siguiente código:
 
 ```javascript
 describe('login test suite', () => {
   it('does not work with wrong credentials', () => {
     cy.visit('/')
-<<<<<<< Updated upstream
-    
-    cy.get('[data-cy="username"]').type('info')
-    cy.get('[data-cy="password"]').type('visitor')
-    cy.get('[data-cy="login-btn"]').click()
-=======
 
     cy.get('[data-cy=username]').type('info')
     cy.get('[data-cy=password]').type('visitor')
     cy.get('[data-cy=login-btn]').click()
->>>>>>> Stashed changes
 
     cy.location('pathname').should('equal', '/')
   })
@@ -64,7 +53,7 @@ describe('login test suite', () => {
 
 #### ¿Que significa este código?
 
-El código anterior es la implementación de la historia de usuario utilizando la api de Cypres usando buenas prácticas para que nuestro diseño considere atributos específicos para las pruebas e2e y que sean independientes (no acopladas) a cambios en el diseño. Es por esto que se utilizan selectores por atributos que no tienen relación con el diseño de los campos. Esto hace nuestras pruebas resistente a los posibles cambios que podrían sufrir las las clases o ids.
+Te preguntarás por qué utilizamos los atributo del tipo `data-cy=*` como selectores HTML en nuestra aplicación. Puedes ver el siguiente artículo desde el Blog oficial de Cypress en [este enlace](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements). En resumen se trata de que las pruebas e2e sean independientes (no acopladas) a cambios en el diseño, resistente a los posibles cambios que podrían sufrir las tradicionales clases o ids.
 
 Por supuesto que como aún no hemos escrito código, esta prueba de software comenzará fallando y será nuestro deber escribir el mínimo código necesario para hacerla pasar. Una vez que la prueba de software esté pasando, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como `Red - Green - Refactor`.
 
@@ -89,33 +78,25 @@ Si nos fijamos en el panel izquierdo hay 2 instrucciones:
     1 VISIT /
     2 GET   [data-cy=username]
   ```
-<<<<<<< Updated upstream
-La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intento encontrar en el HTML un elemento con el atributo `data-cy="username"`. Esto lo vemos traducido en el siguiente mensaje de error:
-=======
 La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intentó encontrar en el HTML un elemento con el atributo `data-cy=username`. Esto lo vemos traducido en el siguiente mensaje de error:
->>>>>>> Stashed changes
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
 ```
 
-Si vamos a revisar el contenido del código podremos encontrar las 2 líneas de código que desencadenaron las acciones del panel izquierdo:
+Si vamos a revisar el código podremos encontrar las 2 líneas que desencadenaron las acciones del panel izquierdo:
 
 ```javascript
-  cy.visit('/');
-<<<<<<< Updated upstream
-  cy.get('[data-cy="username"').type('info');
-=======
-  cy.get('[data-cy=username]').type('info');
->>>>>>> Stashed changes
+  cy.visit('/')
+  cy.get('[data-cy=username]').type('info')
 ```
-podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML para interactuar con ellos.
+podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML y luego interactuar con ellos.
 
-#### ¿Cómo hacemos para arreglar esto?
+#### ¿Cómo hacemos para pasar la prueba?
 
-Como mencionamos anteriormente la metodología nos dice que para que la prueba de software quede pasando debemos escribir el código mínimo que haga que pase. En este caso basta con que agreguemos cualquier elemento en el HTML que tenga el atributo `[data-cy=username]`. 
+Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el menor código posible. En este caso basta con que agreguemos cualquier etiqueta HTML que tenga el atributo `[data-cy=username]`. 
 
-Para esto nos vamos a dirigir al archivo `src/App.vue`. Agregaremos lo siguiente en la sección de HTML de la vista en la parte donde esta definido el elemento `<v-main>`
+Para esto nos vamos a dirigir al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
 
 ```html
 
@@ -128,17 +109,17 @@ Para esto nos vamos a dirigir al archivo `src/App.vue`. Agregaremos lo siguiente
   ...
 ```
 
-Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COMPILING`. Esperaremos que esto salga OK y luego vamos nuevamente a Cypress y presionamos el botón para recargar las pruebas indicado en al siguiente imagen
+Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COMPILING`. Esperaremos que esto salga OK y luego vamos nuevamente a Cypress y presionamos el botón para recargar las pruebas  como se ve en al siguiente imagen
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-03.png)
 
-Veremos como al lado derecho aparece el input que agregamos y que contendrá el valor `info`. Esto fue echo gracias al comando `.type` que ejecutamos sobre el elemento una vez Cypress lo detecta en el HTML.
+Veremos como al lado derecho aparece el input que agregamos y con valor `info`. Esto gracias al comando `.type` que ejecutamos sobre el elemento seleccionado.
 
 Ahora veremos un nuevo mensaje de error:
 
 
 ```
-CypressError: Timed out retrying: Expected to find element: '[data-cy="password"]', but never found it.
+CypressError: Timed out retrying: Expected to find element: '[data-cy=password]', but never found it.
 ```
 
 Si hacemos un análisis de lo que está escrito en la prueba de software podemos deducir que necesitaremos otro input esta vez con el atributo `[data-cy="password"]` y luego un botón con el atributo `data-cy="login-btn"`.
@@ -166,9 +147,8 @@ Finalmente al recargar las pruebas veremos como es que ahora se puso de color ve
 
 #### Refactorización
 
-Si bien nuestras pruebas están pasando, podemos ver que la interfaz de usuario no cumple el objetivo ya que los elementos están definidos sin estilos y además aún tenemos todo el código que agregó Vuetify en su instalación.
-Lo que haremos será cambiar todo el código de la página inicial para que ahora sea una página de Login utilizando Vuetify. Mantendremos corriendo el comando `npm run test:e2e` de manera que una vez hagamos todos los cambios, recarguemos y nos aseguremos que las pruebas siguen pasando.
-
+Si bien nuestras pruebas están pasando, podemos ver que la interfaz de usuario no cumple el objetivo ya que los elementos están definidos sin estilo y además aún tenemos todo el código que agregó Vuetify en su instalación.
+Lo que haremos será cambiar todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.
 
 Lo primero será modificar el archivo `src/App.vue` y reemplazaremos todo su contenido por lo siguiente:
 
@@ -191,7 +171,8 @@ export default {
 
 ```
 
-Luego iremos al directorio `views`. Acá eliminaremos el archivo `About.vue` y vamos a cambiar el nombre del archivo `Home.vue` por `Login.vue`. Una vez guardemos esto provocará un error en la terminal pero lo solucionaremos de inmediato.
+Luego iremos al directorio `views`. Acá eliminaremos el archivo `About.vue` y vamos a cambiar el nombre del archivo `Home.vue` por `Login.vue`. En cuanto guardemos esto veremos un error en la terminal pero lo solucionaremos de inmediato, cuando actualicemos el router.
+
 Ahora vamos al archivo `Login.vue` y reemplazaremos todo su contenido con lo siguiente:
 
 ```html
@@ -261,7 +242,7 @@ export default {
 
 ```
 
-y finalmente cambiamos el archivo `src/router/index.js` con lo siguiente:
+y ahora actualizamos el archivo `src/router/index.js` con lo siguiente:
 
 ```javascript
 
@@ -287,23 +268,23 @@ const router = new VueRouter({
 export default router
 ```
 
-Ahora podemos recargar nuestras pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando y escribiendo pruebas. El resultado en la siguiente imagen:
+Ahora podemos recargar nuestras pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
-Te preguntarás por qué utilizamos los atributo del tipo `data-cy=*` para que las pruebas pudieran encontrar los elementos en el HTML de nuestra aplicación.
-Puedes ver el siguiente artículo desde el Blog oficial de Cypress en [este enlace](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements)
 
 #### Integrando el servicio de autenticación de Firebase
 
-Utilizaremos la plataforma Firebase para proveernos de un servicio de autenticación basado en usuatio y contraseña.
 Dado el contexto de nuestra aplicación, lo que haremos será enviar invitaciones manualmente a quienes publicarán productos para trueques y darles un usuario y contraseña de acceso que manejaremos directamente desde la interfaz de Firebase.
-Si nos dirigimos a [https://console.firebase.google.com/](https://console.firebase.google.com/) y veremos una pantalla como la siguiente:
 
+Si ya tienes cuenta de Google, puedes autenticarte y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos una pantalla como la siguiente:
 
 ![Imagen que muestra la interfaz de firebase para crear un proyecto](images/02-bdd-with-cypress-06.png)
 
-Una vez creamos un proyecto apareceremos en el panel de control de Firebase y vamos a presionar el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:
+Una vez dentro del admin de Firebase creamos un proyecto. 
+Después de agregar el nombre nos pregunta si queremos incluir Analytics. Deshabilitar esta opción como en la siguiente imágen: ![Deshabilitar Analytics](images/02-bdd-with-cypress-06-b.png).  Después se puede activar si se requiere. 
+
+Cuando indique que el proyecto ha sido creado damos click en `continuar`. Posteriormente presionamos el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:
 
 ![Imagen que muestra la interfaz de firebase para registrar una aplicación](images/02-bdd-with-cypress-07.png)
 
@@ -312,7 +293,7 @@ Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y l
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
 
 Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que vamos a crear en el directorio `src`.
-Primero vamos a crear el directorio en `src/firebase` y al interior de ese directorio crearemos 2 archivos llamados `config.js` y `index.js`.
+Primero vamos a crear el directorio en `src/firebase` y al interior de ese directorio crearemos 2 archivos llamados `config.js` e `index.js`.
 
 ```
 <tu-proyecto>
@@ -326,10 +307,11 @@ Primero vamos a crear el directorio en `src/firebase` y al interior de ese direc
 
 ...
 ```
-el contenido de ambos archivos será el siguiente
+el contenido de ambos archivos será el siguiente:
 
 **config.js**
 
+Los datos de este archivo los copiaremos de lo indicado en la imagen anterior.
 ```javascript
 export default {
   apiKey: ''
@@ -341,7 +323,6 @@ export default {
 }
 
 ```
-Los datos de este archivo los copiaremos de lo indicado en la imagen anterior.
 
 **index.js**
 
@@ -358,15 +339,15 @@ export { Auth }
 
 ```
 
-Ahora debemos instalar `firebase` en el proyecto. Para ello ejecutamos el siguiente comando:
+Ahora debemos instalar `firebase` en el proyecto. Para ello ejecutamos el siguiente comando en una terminal aparte para mantener corriendo Cypress:
 
 ```bash
-npm install --save firebase
+npm install firebase
 ```
 
 Con esto nuestro proyecto quedará preparado para conectarnos a Firebase llegado el momento.
 
-Ahora volvemos a la interfaz de Firebase justo donde nos quedamos anteriormente y presionamos el botón `Ir a la consola`:
+Ahora volvemos a la interfaz de Firebase donde nos quedamos anteriormente y presionamos el botón `Ir a la consola`:
 
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-09.png)
 
@@ -376,7 +357,7 @@ Presionamos desde el panel de control la opción `Authentication` como muestra l
 
 ![Imagen que muestra la interfaz de firebase para configurar la autenticación](images/02-bdd-with-cypress-10.png)
 
-Nos llevará a otra pantalla donde debemos presionar `Comenzar` y eso hará aparecer todas las opciones disponibles para la autenticación. Por defecto todos los tipos de autenticación vienen desactivamos por defecto. Para habilitar la autenticación con Correo electrónico/Contraseña presionamos el botón editar donde se indica:
+Nos llevará a otra pantalla donde debemos presionar `Comenzar` y eso hará aparecer todas las opciones disponibles para la autenticación. Por defecto todos los tipos de autenticación vienen desactivados. Para habilitar la autenticación con correo electrónico/Contraseña  y presionamos el botón editar donde se indica:
 
 ![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-11.png)
 
@@ -398,8 +379,10 @@ Contraseña: booleanacademia
 ![Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña](images/02-bdd-with-cypress-14.png)
 
 Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda.
+Indicamos que este usuario, a pesar de estár en entorno productivo, será solamente para realizar pruebas. 
 
-#### Una nueva historia de usuario para realizar una autenticación exitosa
+
+#### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
 
 Escribiremos una nueva prueba de software que consistirá en logearse con los datos registrador en Firebase y validar que la aplicación nos lleve a la página `/productos`.
 
@@ -409,7 +392,7 @@ Vamos a editar el archivo `tests/e2e/specs/login.js` y reemplazar su contenido p
 describe('login test suite', () => {
   it('does not work with wrong credentials', () => {
     cy.visit('/')
-    
+
     cy.get('[data-cy="username"]').type('info')
     cy.get('[data-cy="password"]').type('visitor')
     cy.get('[data-cy="login-btn"]').click()
@@ -425,8 +408,9 @@ describe('login test suite', () => {
     cy.get('[data-cy="login-btn"]').click()
 
     cy.location('pathname').should('equal', '/productos')
-   })
-});
+  })
+})
+
 ```
 Ahora recargamos Cypress y veremos el siguiente error:
 
@@ -443,7 +427,7 @@ Ahora vamos a escribir el código más simple que sea capaz de dejar pasando est
   }
   ...
 ```
-Luego vamos a crear un nuevo archivo en `src/views` llamado `Products.vue`
+Luego vamos a crear un nuevo archivo en `src/views` llamado `Products.vue` con el siguiente contenido:
 
 ```html
 <template>
@@ -460,7 +444,7 @@ export default {
 
 ```
 
-Y Finalmente vamos al archivo `src/router/index.js` y reemplazamos su contenido por el siguiente:
+Luego vamos al archivo `src/router/index.js` y reemplazamos su contenido por el siguiente:
 
 ```javascript
 import Vue from 'vue'
@@ -497,9 +481,8 @@ Al recargar vemos que la nueva prueba si está pasando pero estos cambios provoc
 ![Imagen que muestra el error de Cypress cuando agregamos una nueva prueba](images/02-bdd-with-cypress-16.png)
 
 
-Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas del software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las pruebas pasando y no sólo la que acabamos de escribir.
+Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas de software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las otras pruebas pasando y no sólo la que acabamos de escribir.
 Pasaremos al siguiente paso del ciclo que sería refactorizar el código de modo que todas las pruebas queden pasando.
-
 
 Para solucionar esto aprovecharemos la `ref` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `ref` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate)
 Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en la sección `methods`
@@ -522,52 +505,13 @@ Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en l
 y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
 
 
-Ahora debemos hacer una refatorización para hagamos una conexión real con el servicio de Firebase. Lo que haremos será modificar reemplazar por completo el archivo `src/views/Login.vue` por lo siguiente:
+Ahora debemos hacer una refatorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección `<script>` del archivo `src/views/Login.vue` por lo siguiente:
 
 
 
-```html
-  <template>
-  <v-main class="home">
-    <v-card width="400px" class="mx-auto my-auto">
-      <v-card-title class="pb-0">
-        <h1 class="mx-auto mb-5">Ingreso</h1>
-      </v-card-title>
-      <v-alert v-if="isFormRejected" type="error">
-        <p>Usuario o contraseña inválidos. Ingresa los datos correctos.</p>
-      </v-alert>
-      <v-form ref="form">
-        <v-text-field
-          v-model="email"
-          label="Correo"
-          prepend-icon="mdi-account-circle"
-          :rules="emailRules"
-          validate-on-blur
-          data-cy="username"
-        />
-        <v-text-field
-          v-model="password"
-          label="Contraseña"
-          :type="showPassword ? 'text' : 'password'"
-          :rules="passwordRules"
-          validate-on-blur
-          prepend-icon="mdi-lock"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append="showPassword = !showPassword"
-          data-cy="password"
-        />
-      </v-form>
-      <v-divider />
-      <v-card-actions>
-        <v-btn to="/registro" color="success"> Registro </v-btn>
-        <v-spacer />
-        <v-btn color="info" data-cy="login-btn" @click="login"> Ingresar </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-main>
-</template>
-
+```javascript
 <script>
+import { Auth } from '@/firebase'
 
 export default {
   data () {
@@ -592,12 +536,12 @@ export default {
     login () {
       if(this.validate()){
         Auth.signInWithEmailAndPassword(this.email, this.password)
-        .then((response)=>{
-          this.$router.push({ name: 'Products' })
-        })
-        .catch((response)=>{
-          this.isFormRejected = true
-        })
+          .then(()=>{
+            this.$router.push({ name: 'Products' })
+          })
+          .catch(()=>{
+            this.isFormRejected = true
+          })
       }
     }
   }
@@ -606,16 +550,9 @@ export default {
 
 ```
 
-Podemos notar como es que integramos el código para firebase que agregamos al comienzo de este capítulo. Ahora al recargar las pruebas estas deberían seguir funcionando.
+Podemos notar como es que importamos el código de firebase que agregamos al comienzo de este capítulo. La función que efectúa la integración del logín es `signInWithEmailAndPassword` que puedes ver en la misma [documentación](https://firebase.google.com/docs/auth/web/password-auth#sign_in_a_user_with_an_email_address_and_password). Ahora al recargar las pruebas estas deberían seguir funcionando.
 
 ![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
-
-
-```javascript
-
-import { Auth } from '@/firebase';
-
-```
 
 
 #### Página de productos
@@ -641,7 +578,7 @@ describe('products test suite', () => {
 
 ```
 
-Podemos notar que ya es tercera vez que escribimos las intrucciones para realizar una autenticación. Por suerte Cypress trae consigo la posibilidad de agrupar comandos comunes en funciones de manera que podemos centralizar las acciones más comunes que debemos hacer para escribir una prueba.
+Podemos notar que ya es tercera vez que escribimos las instrucciones para realizar una autenticación. Por suerte Cypress trae consigo la posibilidad de agrupar comandos comunes en funciones de manera que podemos centralizar las acciones más comunes que debemos hacer para escribir una prueba.
 Para lograr esto iremos al archivo `tests/e2e/support/commands.js` y descomentaremos la linea indicada en la siguiente imagen:
 
 ![Imagen que muestra el comando de cypress a descomentar](images/02-bdd-with-cypress-18.png)
