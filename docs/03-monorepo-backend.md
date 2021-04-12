@@ -291,5 +291,29 @@ Una vez guardemos el archivo `backend/src/server.js` veremos que la terminal don
 
 Así que nuestro servidor ya está actualizado. Ahora simplemente presionamos en botón recargar en Cypress y veremos que nuestras pruebas nuevamente están pasando.
 
-![Imagen de Cypress con las pruebas pasando](images/03-monorepo-backend-05.png)
+![Imagen de Cypress con las pruebas pasando](images/03-monorepo-backend-06.png)
+
+Con esto ya tenemos nuestra plataforma funcionando. Pero aun nos quedan algunas cosas básicas por resolver. Una de ellas es la seguridad de nuestro servidor. Podemos corroborar que nuestro servidor no valida quien hace la petición hacia `/api/products` escribiendo `http://localhost:3000/api/products` en el navegador web podremos ver algo como la siguiente imagen:
+
+![Endpoint responde en el navegador sin autenticación](images/03-monorepo-backend-07.png)
+
+En el siguiente capítulo solucionaremos esto permitiendo que la autenticación a Firebase nos entregue un Token de autorización que validaremos en el Backend y así darle seguridad a nuestro servidor.
+
+Antes de ir al siguiente capítulo vamos a detener el código del servidor y de Cypress.
+En cualquier de las ventanas de la terminal nos saldremos del directorio y nos dirijimos a la raíz del proyecto (importante para que git agregue todo incluyendo frontend, backend, fixtures, etc) y ejecutamos lo siguiente:
+
+```bash
+git add .
+git commit -m "feature(products): se agrega Backend con un endpoint de productos para ser consumido desde el Frontend para completar la funcionalidad de listar productos y autenticarse en la aplicación"
+```
+
+<div style="display: flex; justify-content: space-between">
+    <a style="max-width:30vw; display: flex" href="./01-vue-cli-install.md">
+      <span style="margin-right:2vw">⬅</span>Escribiendo Pruebas E2E siguiendo la metodología BDD</a>
+    <a
+    style="max-width:30vw; display: flex"
+    href="./04-firebase-sdk-backend.md"> Autenticación de peticiones al Backend con firebase
+    <span style="margin-left:2vw">⮕</span>
+    </a>
+</div>
 
