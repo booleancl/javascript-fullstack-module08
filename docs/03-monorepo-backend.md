@@ -1,76 +1,73 @@
 # Reorganización del proyecto como un repositorio monolítico y agregar Backend
 
-En función de la metodología que estamos utilizando lo que haremos será centralizar en este mismo repositorio todo lo necesario para que nuestras pruebas de software pasen sin problema. En este caso nuestras pruebas end-to-end requieren que el frontend realice una petición exitosa hacia un backend que aún no existe. Este debe ser capaz de responder a una petición de tipo GET a una URL que exponga el endpoint `/api/products`.
+En función de la metodología que estamos utilizando (el mínimo código posible) lo que haremos será centralizar en este mismo repositorio todo lo necesario para que las pruebas pasen sin problema. En este caso las pruebas end-to-end requieren que desde el Frontend se realice una petición (request) hacia un backend que aún no existe. Este backend debe ser capaz de responder a una petición GET en la URL `/api/products`.
 
-En función de esta necesidad lo que haremos será reorganizar el repositorio siquiendo algunos lineamientos:
+Dado este panorama, lo que haremos será reorganizar el repositorio siguiendo algunos lineamientos:
 
-  - Dividiremos el repositorio en 2 dominios: Frontend y Backend donde cada dominio representará un objetivo dentro de la plataforma que expondremos cuando salgamos a producción. En este caso el Frontend será el sitio Web donde el usuario interactuará y el Backend quien provea la información a este sitio consultando los datos requeridos a una Base de datos.
-  - Vamos a crear un directorio en la raíz para centralizar todos los Fixtures que contendrán los datos de prueba que le serán útiles tanto al dominio de Backend como Frontend
-  - Cuando ambos dominios de negocio estén listos para salir a producción estableceremos procedimientos de calidad en el repositorio que validen la sintáxis de Frontend y Backend así como las pruebas de software que validen el comportamiento del proyecto antes que se hagan subidas al repositorio remoto de forma automatizada
+  - Dividiremos el repositorio en 2 dominios: Frontend y Backend. Cada dominio resolverá una parte del problema. En este caso el Frontend será la aplicación Web que interactúa con el usuario y el Backend entrega la información gestionando una Base de datos.
+  - Crearemos un directorio en la raíz para centralizar todos los Fixtures que le serán útiles tanto al dominio de Backend como Frontend.
+  - Cuando ambos dominios de negocio estén listos para salir a producción configuraremos procedimientos automáticos de calidad que validen la sintáxis  en todo el monorepo y que ejecuten las antes de que se suban cambios al repositorio remoto.
 
-Primero cancelaremos la ejecución de Cypress (cmd+C o ctrl+C) y luego
-implementaremos estos lineamientos dejando el repositorio como indica el siguiente esquema: 
+Cancelamos la ejecución de Cypress (cmd+C o ctrl+C) y movemos todos los archivos y carpetas hacia `/frontend`, excepto el archivo .gitignore que permanece en la raíz, dejando el repositorio como indica el siguiente esquema: 
+
 
 ```
 <tu-proyecto>
 └─── backend
 └─── frontend <-- acá movemos todo el código generado hasta el momento
+  └─── node_modules
+  └─── public
+  └─── src
+  └─── tests
       .browserslistrc
-      .env.production
+      .editorconfig
       .eslintrc.js
-      README.md
       babel.config.js
       cypress.json
       jest.config.js
-      node_modules
       package-lock.json
       package.json
-      public
-      src
-      tests
+      README.md
       vue.config.js
+.gitignore <-- Este archivo permanece en la raíz
 ```
 
-Ahora tomaremos la carpeta fixtures que se encuentra en `frontend/tests/e2e` y la moveremos hacia la raíz como se indica en el siguiente esquema:
-También aprovecharemos de crear un directorio `src` dentro de la carpeta `backend` que será donde escribiremos el código del servidor.
+Ahora tomaremos la carpeta fixtures que se encuentra en `frontend/tests/e2e` y la moveremos hacia la raíz. También aprovecharemos de crear un directorio `src` dentro de la carpeta `backend` que será donde escribiremos el código del servidor. Con todos los ajustes el proyecto debe quedar como en el siguiente esquema:
+
 
 ```
 <tu-proyecto>
+└─── fixtures
+     products.json
 └─── backend
-    └─── src <-- acá escribiremos el código del servidor
-└─── fixtures <-- movemos la carpeta fixtures a la raíz del proyecto
-      products.json
-└─── frontend
+  └─── src
+└─── frontend 
+  └─── node_modules
+  └─── public
+  └─── src
+  └─── tests
       .browserslistrc
-      .env.production
+      .editorconfig
       .eslintrc.js
-      README.md
       babel.config.js
       cypress.json
       jest.config.js
-      node_modules
       package-lock.json
       package.json
-      public
-      src
-      tests 
-      └─── e2e  <-- movemos la carpeta fixtures que habiamos creado anteriormente 
-          └─── plugins
-          └─── specs
-          └─── support
-          .eslinrc.js
+      README.md
       vue.config.js
+.gitignore
 ```
-La implementación de las validaciones automatizadas de linter y pruebas de software la dejaremos más adelante para cuando ya tengamos listos los proyectos de Frontend y Backend.
+La implementación de las validaciones automatizadas de linter y pruebas las dejaremos para más adelante, cuando ya tengamos listos los proyectos de Frontend y Backend.
 
-Comenzaremos a desarrollar el proyecto Backend así que lo primero que haremos será entrar al directorio `backend` desde la terminal y una vez ahí ejecutaremos lo siguiente:
+Continuamos con el Backend. Lo primero que haremos será entrar al directorio `backend` desde la terminal y ejecutaremos lo siguiente:
 
 ```bash
 npm init -f
-npm install express cors
-npm install --save-dev nodemon
+npm i express 
+npm i --save-dev nodemon
 ```
-Ahora crearemos un nuevo archivo en `backend/src` y crearemos un archivo llamado `server.js` con el siguiente contenido:
+Ahora creamos un nuevo archivo en `backend/src` llamado `server.js` con el siguiente contenido:
 
 **backend/src/server.js**
 ```javascript
@@ -91,19 +88,19 @@ app.listen(port, () => {
 })
 
 ```
-Una vez ejecutado esto deberiamos ver el directorio `backend` de la siguiente forma
+Una vez ejecutado esto deberíamos ver el directorio `backend` de la siguiente forma
 
 ```
-└─── backend
-    └─── node_modules
-    └─── src
-         server.js
-    package.json
-    package-lock.json
+└─ backend
+  └─ node_modules
+  └─ src
+     server.js
+  package-lock.json
+  package.json
 
 ```
 
-Modificaremos el `backend/package.json` y quedará de la siguiente forma:
+Modificamos el `backend/package.json` y quedará de la siguiente forma:
 
 ```json
 {
@@ -119,7 +116,6 @@ Modificaremos el `backend/package.json` y quedará de la siguiente forma:
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
@@ -128,7 +124,7 @@ Modificaremos el `backend/package.json` y quedará de la siguiente forma:
 }
 
 ```
-Con esto ya podremos levantar el servidor preocupandonos de estar dentro del directorio `backend` ejecutamos:
+Con esto ya podremos levantar el servidor preocupándonos de estar dentro del directorio `backend` ejecutamos:
 
 ```bash
 npm start
@@ -138,7 +134,7 @@ Veremos que nuestro servidor ya está corriendo como en la siguiente imagen:
 
 ![Imagen de servidor node con express corriendo en la terminal](images/03-monorepo-backend-01.png)
 
-Ahora abriremos otra ventana de la terminal y nos dirigiremos al directorio `frontend`. Una vez dentro ejecutamos nuevamente el comando para abrir Cypress y nuestra aplicación:
+Ahora abriremos otra ventana de la terminal y nos dirigimos al directorio `frontend`. Una vez dentro ejecutamos nuevamente el comando para abrir Cypress y nuestra aplicación:
 
 ```bash
 npm run test:e2e
@@ -151,23 +147,9 @@ Esto es debido a que en los pasos anteriores movimos la carpeta `fixtures` desde
 Para solucionar esto nos dirigimos al archivo `frontend/tests/e2e/plugins/index.js` y reemplazamos completamente su contenido:
 
 ```javascript
-/* eslint-disable arrow-body-style */
-// https://docs.cypress.io/guides/guides/plugins-guide.html
-
-// if you need a custom webpack configuration you can uncomment the following import
-// and then use the `file:preprocessor` event
-// as explained in the cypress docs
-// https://docs.cypress.io/api/plugins/preprocessors-api.html#Examples
-
-// /* eslint-disable import/no-extraneous-dependencies, global-require */
-// const webpack = require('@cypress/webpack-preprocessor')
 const path = require('path')
 
 module.exports = (on, config) => {
-  // on('file:preprocessor', webpack({
-  //  webpackOptions: require('@vue/cli-service/webpack.config'),
-  //  watchOptions: {}
-  // }))
   const fixturesFolder = path.join(path.resolve('.'), '../fixtures')
 
   return Object.assign({}, config, {
@@ -181,17 +163,16 @@ module.exports = (on, config) => {
 
 ```
 
-Debido a que hicimos una modificación en una propiedad necesaria para ejecutar `Cypress` tenemos que detener su ejecución y volver a realizarla.
+Debido a que hicimos una modificación en una configuración de arranque de `Cypress`, debemos reiniciar su ejecución.
 
-Una vez que este corriendo `Cypress` veremos que aún persiste un error debido a que seguimos viendo un `GET 404 /api/products`.
-En la siguiente imagen se muestra como tenemos 2 terminales corriendo y en la que muestra la salida de la interfaz de Cypress podemos identificar la llamada que está dando `error 404`:
+Una vez que este corriendo `Cypress` veremos que aún persiste un error y seguimos viendo un `GET 404 /api/products`.
+En la siguiente imagen se muestra como tenemos 2 terminales corriendo. En la de Frontend (de Cypress) identificamos la llamada que está dando `error 404`:
 
 ![Imagen de la salida de Cypress en la terminal](images/03-monorepo-backend-03.png)
 
+A pesar de que ya tenemos un servidor que responde al endpoint `/api/products` con el método GET, nuestra aplicación hace la solicitud a `http://localhost:8080` y nuestro servidor corre en la url `http://localhost:3000`.
 
-Esto es porque si bien ya tenemos un servidor que responde al endpoint `/api/products` nuestra aplicación pide la información a `http://localhost:8080` y nuestro servidor corre en la url `http://localhost:3000`.
-
-Para solucionar esto tendremos que una vez más detener la ejecución de Cypress ya que esta vez haremos una modificación en la configuración de `Vue`. Para ello iremos al archivo `frontend/vue.config.js` y reemplazaremos todo su contenido por lo siguiente:
+Para solucionar esto tendremos que una vez más detener la ejecución de Cypress, pero esta vez modificaremos la configuración de Vue (internamente configura webpack-dev-server). Para ello iremos al archivo `frontend/vue.config.js` y reemplazamos todo su contenido por lo siguiente:
 
 ```javascript
 module.exports = {
@@ -207,17 +188,17 @@ module.exports = {
   }
 }
 ```
-Esto permitirá que mientras estemos desarrollando la llamadas XHR al servidor sean redireccionadas hacia `localhost:3000`. Esto tiene sentido solo en el ambiente local de desarrollo ya que en nuestro caso particular en producción las llamadas desde el Frontend hacia el Backend serán bajo el mismo dominio.
+Esto permitirá que, mientras desarrollamos, las llamadas XHR al servidor sean redireccionadas hacia `localhost:3000`. Esto tiene sentido solo en el ambiente local de desarrollo ya que en producción las llamadas desde el Frontend hacia el Backend serán bajo el mismo dominio y puerto.
 
-Ahora volvemos a correr el comando `npm run test:e2e` estando en la terminal en el repositorio `frontend`, luego de ejecutar todas las pruebas veremos como siguen fallando pero que la respuesta de la llamada al servidor ahora dice `GET 200 /api/products` como se muestra en la siguiente imagen:
+Ahora volvemos a correr el comando `npm run test:e2e` dentro de la carpeta `frontend`. Veremos como siguen fallando pero la respuesta de la llamada al servidor ahora dice `GET 200 /api/products` como se muestra en la siguiente imagen:
 
 ![Imagen Cypress con un XHR con status 200](images/03-monorepo-backend-04.png)
 
-y veremos lo siguiente en la salida de la terminal del servidor:
+Y lo siguiente en la salida de la terminal del servidor:
 
 ![Imagen Nodemon con 2 llamadas con status 200](images/03-monorepo-backend-05.png)
 
-Podemos ver que se hicieron 2 llamadas al endpoint `/api/products`. esto es debido a que en la primera prueba de autenticación exitosa también se hace un llamado a la página de productos.
+Podemos ver que se hicieron 2 llamadas al endpoint `/api/products`. Esto es debido a que en la primera prueba de autenticación exitosa también se hace un llamado a la página de productos.
 
 Ahora iremos al archivo `backend/src/server.js` y lo reemplazaremos por lo siguiente:
 
@@ -281,7 +262,7 @@ app.listen(port, () => {
 
 ```
 
-Como verás al igual como lo hicimos en el cápitulo anterior con el Frontend, hemos copiado la lista del archivo `fixtures/products.json` para responder esa lista de productos.
+Como verás, al que en el cápitulo anterior en el Frontend, hemos copiado la lista del archivo `fixtures/products.json` para responder esa lista de productos.
 Una vez guardemos el archivo `backend/src/server.js` veremos que la terminal donde está corriendo el servidor dice 
 
 ```bash
@@ -293,26 +274,63 @@ Así que nuestro servidor ya está actualizado. Ahora simplemente presionamos en
 
 ![Imagen de Cypress con las pruebas pasando](images/03-monorepo-backend-06.png)
 
-Con esto ya tenemos nuestra plataforma funcionando. Pero aun nos quedan algunas cosas básicas por resolver. Una de ellas es la seguridad de nuestro servidor. Podemos corroborar que nuestro servidor no valida quien hace la petición hacia `/api/products` escribiendo `http://localhost:3000/api/products` en el navegador web podremos ver algo como la siguiente imagen:
+Con esto ya tenemos nuestra plataforma funcionando. Pero aun nos quedan algunas cosas básicas por resolver. Una de ellas es la seguridad de nuestro servidor. Podemos corroborar que nuestro servidor no valida quién hace la petición escribiendo `http://localhost:3000/api/products` en el navegador. Veremos que la información está expuesta sin ningún método de autenticación.
 
 ![Endpoint responde en el navegador sin autenticación](images/03-monorepo-backend-07.png)
 
 En el siguiente capítulo solucionaremos esto permitiendo que la autenticación a Firebase nos entregue un Token de autorización que validaremos en el Backend y así darle seguridad a nuestro servidor.
 
 Antes de ir al siguiente capítulo vamos a detener el código del servidor y de Cypress.
-En cualquier de las ventanas de la terminal nos saldremos del directorio y nos dirijimos a la raíz del proyecto (importante para que git agregue todo incluyendo frontend, backend, fixtures, etc) y ejecutamos lo siguiente:
+En cualquier de las ventanas de la terminal nos saldremos del directorio y vamos a la raíz del proyecto (importante para que git agregue todo incluyendo frontend, backend, fixtures, etc) y ejecutamos lo siguiente:
 
 ```bash
 git add .
 git commit -m "feature(products): se agrega Backend con un endpoint de productos para ser consumido desde el Frontend para completar la funcionalidad de listar productos y autenticarse en la aplicación"
 ```
+Aún cuando tenemos el endpoint descubierto, es importante notar que nuestras historias de usuario están corroboradas mediante pruebas y tenemos, en ambiente de desarrollo, la funcionalidad completa (feature). En adelante lo que sigue es aumentar la calidad de nuestra aplicación para hacerla más segura y flexible a los cambios.
+
+
+Recordemos nuestras historias de usuario: 
+
+```ruby
+Funcionalidad: login de la aplicación
+
+Escenario: login con credenciales inválidas
+
+Como un usuario no registrado
+Cuando ingreso a la aplicación 
+Y completo el campo username con 'info'
+Y el campo password con 'visitor' 
+Entonces debería permanecer en la misma página
+
+Escenario: login con credenciales válidas
+
+Como un usuario no registrado
+Cuando ingreso a la aplicación 
+Y completo el campo username con 'test-e2e@boolean.cl'
+Y el campo password con 'booleanacademia' 
+Entonces debería ver la página de productos
+
+```
+
+```ruby
+Funcionalidad: página de productos
+
+Escenario: listado simple
+
+Como un usuario que inició sesión en la aplicación
+Cuando ingreso a la página de productos
+Entonces debería ver una lista de productos
+
+```
+
 
 <div style="display: flex; justify-content: space-between">
     <a style="max-width:30vw; display: flex" href="./01-vue-cli-install.md">
       <span style="margin-right:2vw">⬅</span>Escribiendo Pruebas E2E siguiendo la metodología BDD</a>
     <a
     style="max-width:30vw; display: flex"
-    href="./04-firebase-sdk-backend.md"> Autenticación de peticiones al Backend con firebase
+    href="./04-firebase-sdk-backend.md"> Validar autenticación en el Backend
     <span style="margin-left:2vw">⮕</span>
     </a>
 </div>

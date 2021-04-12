@@ -523,8 +523,6 @@ y al recargar las pruebas podemos ver como ambas están pasando. Excelente traba
 
 Ahora debemos hacer una refatorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección `<script>` del archivo `src/views/Login.vue` por lo siguiente:
 
-
-
 ```javascript
 <script>
 import { Auth } from '@/firebase'
@@ -576,7 +574,7 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 
 ```ruby
 Funcionalidad: página de productos
-...
+
 Escenario: Listado simple
 
 Como un usuario que inició sesión en la aplicación
