@@ -14,7 +14,7 @@ Manos a la obra!
 Índice:
   - [Creando un proyecto usando CLI y framework UI](docs/01-vue-cli-install.md)
   - [Escribiendo Pruebas E2E siguiendo la metodología BDD](docs/02-bdd-with-cypress.md)
-  - [Reorganización del proyecto como monorepo y agregar Backend](docs/03-monorepo-backend.md)
+  - [Reorganización del proyecto como un repositorio monolítico y agregar Backend](docs/03-monorepo-backend.md)
   - [Autenticación de peticiones al Backend con firebase](docs/04-firebase-sdk-backend.md)
   - [Agregando base de datos utlizando Sequelize](docs/05-database-sequelize.md)
   - [Pruebas de software para Backend y Frontend](docs/06-testing-frontend-backend.md)

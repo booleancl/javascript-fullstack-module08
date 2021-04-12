@@ -964,6 +964,6 @@ Lo resolveremos en el siguiente capítulo.
 
 
 <div style="display: flex; justify-content: space-between">
-    <a href="./01-vue-cli-install.md">⬅ Ir al intro</a>
-    <a href="./03-monorepo-backend.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD ➡</a>
+    <a href="./01-vue-cli-install.md">⬅ Creando un proyecto usando CLI y framework UI</a>
+    <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend ➡</a>
 </div>

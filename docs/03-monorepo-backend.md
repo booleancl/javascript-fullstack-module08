@@ -1,4 +1,4 @@
-# Reorganización del proyecto como monorepo
+# Reorganización del proyecto como un repositorio monolítico y agregar Backend
 
 En función de la metodología que estamos utilizando lo que haremos será centralizar en este mismo repositorio todo lo necesario para que nuestras pruebas de software pasen sin problema. En este caso nuestra pruebas e2e requieren que el frontend realice una petición exitosa hacia un backend que aún no existe. Este debe ser capaz de responder a una petición de tipo GET a una URL que exponga el endpoint `/api/products`.
 En función de esta necesidad lo que haremos será reorganizar el repositorio siquiendo algunos lineamientos:
