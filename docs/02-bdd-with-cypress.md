@@ -624,7 +624,7 @@ describe('products test suite', () => {
 
     cy.fixture('products.json')
       .then((products)=>{
-        cy.get('[data-cy="products"] li').should('have.length', products.length)
+        cy.get('[data-cy="product-item"]').should('have.length', products.length)
       })
   })
 })
@@ -646,16 +646,324 @@ El error de la anterior prueba es porque aún no creamos el archivo `products.js
 ```javascript
 cy.fixture('products.json')
   .then((products)=>{
-    cy.get('[data-cy="products"] li').should('have.length', products.length)
+    cy.get('[data-cy="product-item"]').should('have.length', products.length)
   })
 
 ```
 
 ¿Para que agregamos este código?
 
-El fixture 
+Un `Fixture` es información que permite que las pruebas de software sean repetibles en el tiempo dotando de un estado fijo a estas. En nuestro caso asumiremos la existencia de un archivo `products.json` que contendrá esta información y asumiremos que somo capaces de mostrar en el proyecto la misma lista de información.
 
-Agregaremos un `fixture` indicando a través de la configuración de Cypress
+Si vamos al archivo `tests/e2e/plugins/index.js` veremos entre otras configuraciones una en particular que dice lo siguiente:
 
-Agregar axios, base_url y Vuex con la petición (404)
-La prueba de la página de productos fallando 
+```javascript
+  fixturesFolder: 'tests/e2e/fixtures',
+```
+En esta linea de código se define desde donde Cypress va a leer los archivos Fixture. Asi que lo que haremos será crear una carpeta llamada `fixtures ` en `tests/e2e` tal como lo indica la línea de código que estamos analizando. dentro de esta nueva carpeta agregaremos un archivo llamado `products.json` con el siguiente contenido:
+
+**products.json**
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Epiphone Explorer Gothic ",
+    "description": "Guitarra color negro",
+    "image": "https://images.unsplash.com/photo-1550985616-10810253b84d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=742&q=80",
+    "code": "0001"
+  },
+  {
+    "id": 2,
+    "name": "Cordoba Mini Bass",
+    "description": "Bajo pequeño tipo ukelele. Excelente sonido de bajo.",
+    "image": "https://images.unsplash.com/photo-1556449895-a33c9dba33dd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80",
+    "code": "0002"
+  },
+  {
+    "id": 3,
+    "name": "Distorsión Custom Badass 78",
+    "description": "Peda del guitarra de distorsión.",
+    "image": "https://images.unsplash.com/photo-1527865118650-b28bc059d09a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=668&q=80",
+    "code": "0003"
+  },
+  {
+    "id": 4,
+    "name": "Distorsión TMiranda Bass Drive BD-1",
+    "description": "Pedal del bajo de distorsión.",
+    "image": "https://images.unsplash.com/photo-1614963590047-0b8b9daa3eb7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80",
+    "code": "0004"
+  },
+  {
+    "id": 5,
+    "name": "Looper Hotone Wally",
+    "description": "Pedal de looper. Super portable.",
+    "image": "https://images.unsplash.com/photo-1595167151695-dfb4846e70f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80",
+    "code": "0005"
+  }
+]
+
+```
+
+Ahora deberiamos obtener un nuevo error en Cypress como indica la siguiente imagen:
+
+![Imagen que muestra error de cypress](images/02-bdd-with-cypress-20.png)
+
+Al igual que las veces anteriores escribiremos el código lo más simple posible para pasar esta prueba.
+
+Nos dirijimos al archivo `src/views/Products.vue` y agregaremos lo siguiente en la sección `<template>`:
+
+```html
+<template>
+  <v-main>
+    <h1>Productos</h1>
+
+    <section>
+      <img src="https://picsum.photos/id/10/200" data-cy="product-item">
+      <img src="https://picsum.photos/id/11/200" data-cy="product-item">
+      <img src="https://picsum.photos/id/12/200" data-cy="product-item">
+      <img src="https://picsum.photos/id/13/200" data-cy="product-item">
+      <img src="https://picsum.photos/id/14/200" data-cy="product-item">
+    </section>
+  </v-main>
+</template>
+```
+Ahora vamos a guardar y recargar Cypress y vemos que ahora todas la prueba ahora está pasando:
+
+![Imagen que muestra error de cypress](images/02-bdd-with-cypress-22.png)
+
+
+Para la refactorización nos basaremos en el ejemplo de Vuetify presentado en el siguiente [enlace](https://vuetifyjs.com/en/components/images/#grid).
+
+Ahora modificamos completo el archivo `src/views/Products.vue` con el siguiente contenido:
+
+```html
+<template>
+  <v-main>
+    <h1>Productos</h1>
+
+    <section data-cy="products">
+      <v-row>
+        <v-col
+          v-for="product in products"
+          :key="product.id"
+          cols="4"
+          data-cy="product-item"
+        >
+          <h3>{{ product.name }}</h3>
+          <v-img
+            :src="product.image"
+            lazy-src="https://via.placeholder.com/300"
+            aspect-ratio="1"
+            class="grey lighten-2"
+          >
+            <template v-slot:placeholder>
+              <v-row
+                class="fill-height ma-0"
+                align="center"
+                justify="center"
+              >
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+
+          <p>{{ product.description }}</p>
+        </v-col>
+      </v-row>
+    </section>
+  </v-main>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      products: [
+        {
+          id: 1,
+          name: 'Epiphone Explorer Gothic ',
+          description: 'Guitarra color negro',
+          image: 'https://images.unsplash.com/photo-1550985616-10810253b84d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=742&q=80',
+          code: '0001'
+        },
+        {
+          id: 2,
+          name: 'Cordoba Mini Bass',
+          description: 'Bajo pequeño tipo ukelele. Excelente sonido de bajo.',
+          image: 'https://images.unsplash.com/photo-1556449895-a33c9dba33dd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80',
+          code: '0002'
+        },
+        {
+          id: 3,
+          name: 'Distorsión Custom Badass 78',
+          description: 'Peda del guitarra de distorsión.',
+          image: 'https://images.unsplash.com/photo-1527865118650-b28bc059d09a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=668&q=80',
+          code: '0003'
+        },
+        {
+          id: 4,
+          name: 'Distorsión TMiranda Bass Drive BD-1',
+          description: 'Pedal del bajo de distorsión.',
+          image: 'https://images.unsplash.com/photo-1614963590047-0b8b9daa3eb7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80',
+          code: '0004'
+        },
+        {
+          id: 5,
+          name: 'Looper Hotone Wally',
+          description: 'Pedal de looper. Super portable.',
+          image: 'https://images.unsplash.com/photo-1595167151695-dfb4846e70f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80',
+          code: '0005'
+        }
+      ]
+    }
+  }
+}
+</script>
+
+```
+Podrás notar que lo que hicimos fue hacer una copia del contenido del archivo `products.json` que agregamos como fixture anteriormente. Esto nos será de utilidad ya que ahora nuestra página quedó dependiente del contrato JSON de este archivo y esta mostrando la imagenes y nombre del producto en función de esta lista.
+
+Y finalmente al recargar Cypress veremos que luego de hacer los cambios en el código nuestra prueba sigue pasando:
+
+![Imagen que muestra cypress con las pruebas pasando](images/02-bdd-with-cypress-23.png)
+
+
+#### Agregando Axios y haciendo una petición al Servidor
+
+Ya hemos modelado y escrito las pruebas necesarias para que nuestra aplicación cuente con la funcionalidad básica que permita mostrar una lista de productos luego de una autenticación. Pero la última funcionalidad que escribimos muestra una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON que modelamos utilizando Fixtures.
+
+Abriremos una nueva ventana de la terminal en el proyecto e instalaremos la librerías `Axios` utilizando el siguiente comando:
+
+```bash
+npm install axios
+```
+
+Si quieres conocer más sobre su documentación te recomendamos mirar [este enlace](https://github.com/axios/axios#axios-api).
+
+
+Ahora iremos al archivo `src/store` y reemplazaremos su contenido por lo siguiente:
+
+```javascript
+import Vue from 'vue'
+import Vuex from 'vuex'
+import axios from 'axios'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    products: []
+  },
+  mutations: {
+    SET_PRODUCTS (store, products) {
+      store.products = products
+    }
+  },
+  actions: {
+    async getProducts (actionContext) {
+      const { commit } = actionContext
+      const productsURL = '/api/products'
+
+      try {
+        const response = await axios.get(productsURL)
+        commit('SET_PRODUCTS', response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+  modules: {
+  }
+})
+
+```
+
+Con esto dejaremos lista una acción de `Vuex` que nos permitirá desde nuestro componente ejecutar la acción `getProducts` que agregará al estado de la aplicación los productos desde un servidor externo que deberá responder los productos basados en el contrato que consume nuestro componente `Products`.
+
+Ahora iremos al archivo `src/views/Login.vue` y editaremos la sección `<script>` de la siguiente manera:
+
+```html
+<script>
+import { mapActions, mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState([
+      'products'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getProducts'
+    ])
+  },
+  created () {
+    this.getProducts()
+  }
+}
+</script>
+
+```
+
+Al recargar Cypress vamos a notar que las pruebas están nuevamente fallando. 
+
+![Imagen que muestra error de cypress](images/02-bdd-with-cypress-24.png)
+
+
+Esto era de esperarse ya que ahora el valor de la lista guardado en la variable `products` toma el valor por defecto el cual si vamos al examinar en el archivo `src/store/index.js` podemos ver que es una lista vacia. Notar el siguiente código:
+
+**src/store/index.js**
+```javascript
+state: {
+  products: []
+},
+```
+y en nuestro componente
+
+```javascript
+computed: {
+  ...mapState([
+    'products'
+  ])
+},
+
+```
+esto quiere decir que nuestro componente está tomando el valor por defecto y eso hace fallar las pruebas.
+
+Ahora si miramos la imagen anterior podemos ver como hemos remarcado la petición al servidor que se hizo y que Cypress nos informa que ha recibido un error de tipo `404`
+
+
+```
+(XHR) GET 404 /api/products
+
+```
+
+Esto debido a que en nuestro componente realiza al inicializarse un llamado a la acción `getProducts` configurada en nuestro Store de Vuex. Esto lo podemos ver en el componente `src/views/Products.vue`
+
+```javascript
+methods: {
+  ...mapActions([
+    'getProducts'
+  ])
+},
+created () {
+  this.getProducts()
+}
+```
+
+Si quieres entender mejor los métodos como `created` que se ejecuta cuando el componente se inicializa en Vue puedes revisar el [siguiente enlace](https://v3.vuejs.org/api/options-lifecycle-hooks.html#created)
+
+Para conocer como el store de `Vuex` nos permite agregar acciones al componente para ejecutarlas cuando sea necesario puedes ver [este enlace](https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components)
+
+Ahora debemos lograr que esta prueba pase pero necesitaremos un servidor que responda a nuestra petición a la url `http://localhost:8080/api/products`. ¿Como lograremos esto?
+Lo resolveremos en el siguiente capítulo.
+
+
+<div style="display: flex; justify-content: space-between">
+    <a href="./01-vue-cli-install.md">⬅ Ir al intro</a>
+    <a href="./03-monorepo-backend.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD ➡</a>
+</div>

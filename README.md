@@ -1,7 +1,7 @@
 
 ![Logo de Boolean Academia](https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg)
 
-# Protecto de Integración Curso Javascript Full Stack: Plataforma de trueques
+# Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueques
 
 ![example workflow](https://github.com/sbstn-jmnz/boolean-fullstack-js-app/actions/workflows/pipeline.yml/badge.svg)
 
