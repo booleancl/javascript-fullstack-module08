@@ -964,6 +964,11 @@ Lo resolveremos en el siguiente capítulo.
 
 
 <div style="display: flex; justify-content: space-between">
-    <a href="./01-vue-cli-install.md">⬅ Creando un proyecto usando CLI y framework UI</a>
-    <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend ➡</a>
+    <a style="max-width:30vw; display: flex" href="./01-vue-cli-install.md">
+      <span style="margin-right:2vw">⬅</span>Creando un proyecto usando CLI y framework UI</a>
+    <a
+    style="max-width:30vw; display: flex"
+    href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend
+    <span style="margin-left:2vw">⮕</span>
+    </a>
 </div>

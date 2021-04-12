@@ -70,6 +70,12 @@ git commit -m "chore(vuetify): se agrega Vuetify al proyecto Frontend"
 Listo! ya estamos preparados para ir al siguiente paso de la construcción del proyecto .
 
 <div style="display: flex; justify-content: space-between">
-    <a href="../README.md">⬅ Ir al intro</a>
-    <a href="./02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD ➡</a>
+    <a style="max-width:30vw; display: flex" href="../README.md">
+      <span style="margin-right:2vw">⬅</span>Ir al intro</a>
+    <a
+    style="max-width:30vw; display: flex"
+    href="./02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
+    <span style="margin-left:2vw">⮕</span>
+    </a>
 </div>
+
