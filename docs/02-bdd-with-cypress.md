@@ -384,7 +384,23 @@ Indicamos que este usuario, a pesar de estár en entorno productivo, será solam
 
 #### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
 
-Escribiremos una nueva prueba de software que consistirá en logearse con los datos registrador en Firebase y validar que la aplicación nos lleve a la página `/productos`.
+Ahora trabajaremos el caso (escenario en historias de usuario) exitóso
+de la autenticación. La historia sería como sigue:
+
+```ruby
+Funcionalidad: login de la aplicación
+...
+Escenario: login con credenciales válidas
+
+Como un usuario no registrado
+Cuando ingreso a la aplicación 
+Y completo el campo username con 'test-e2e@boolean.cl'
+Y el campo password con 'booleanacademia' 
+Entonces debería ver la página de productos
+
+```
+
+Escribiremos una nueva prueba de software basada en la historia de usuario que consistirá en autenticarse en Firebase con los datos de prueba y validar que la aplicación nos lleve a la página `/productos`.
 
 Vamos a editar el archivo `tests/e2e/specs/login.js` y reemplazar su contenido por lo siguiente:
 
@@ -557,7 +573,19 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 
 #### Página de productos
 
-Ahora escribiremos una prueba para la página de productos. Para esto crearemos un nuevo archivo en el directorio `tests/e2e/specs` y lo llamaremos `products.js`. Ahora agregaremos el siguiente contenido:
+
+```ruby
+Funcionalidad: página de productos
+...
+Escenario: Listado simple
+
+Como un usuario que inició sesión en la aplicación
+Cuando ingreso a la página de productos
+Entonces debería ver una lista de productos
+
+```
+
+Ahora escribiremos una prueba basada en la historia. Para esto crearemos un nuevo archivo en el directorio `tests/e2e/specs` y lo llamaremos `products.js`. Ahora agregaremos el siguiente contenido:
 
 
 ```javascript
@@ -565,9 +593,9 @@ describe('products test suite', () => {
   it('shows a list of products',() => {
     cy.visit('/')
 
-    cy.get('[data-cy="username"]').type('test-e2e@boolean.cl')
-    cy.get('[data-cy="password"]').type('booleanacademia')
-    cy.get('[data-cy="login-btn"]').click()
+    cy.get('[data-cy=username]').type('test-e2e@boolean.cl')
+    cy.get('[data-cy=password]').type('booleanacademia')
+    cy.get('[data-cy=login-btn]').click()
 
     cy.fixture('products.json')
       .then((products)=>{
@@ -577,8 +605,9 @@ describe('products test suite', () => {
 })
 
 ```
+Si ejecutamos esta prueba veremos que falla por los fixtures, pero nos encargaremos de eso más adelante. 
 
-Podemos notar que ya es tercera vez que escribimos las instrucciones para realizar una autenticación. Por suerte Cypress trae consigo la posibilidad de agrupar comandos comunes en funciones de manera que podemos centralizar las acciones más comunes que debemos hacer para escribir una prueba.
+En esta prueba vemos que es la tercera vez que escribimos las instrucciones para realizar una autenticación. Por suerte Cypress permite agrupar comandos comunes en funciones que podemos centralizar y reutilizar.
 Para lograr esto iremos al archivo `tests/e2e/support/commands.js` y descomentaremos la linea indicada en la siguiente imagen:
 
 ![Imagen que muestra el comando de cypress a descomentar](images/02-bdd-with-cypress-18.png)
@@ -631,7 +660,7 @@ describe('products test suite', () => {
 
 ```
 
-Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos ahora también incluido el nuevo archivo. Ahora presionamos el botón que dice `Run all specs` que debería lucir como la siguiente imagen:
+Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos incluido el nuevo archivo. Ahora presionamos el botón que dice `Run all specs` que debería lucir como la siguiente imagen:
 
 ![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-19.png)
 
@@ -646,21 +675,21 @@ El error de la anterior prueba es porque aún no creamos el archivo `products.js
 ```javascript
 cy.fixture('products.json')
   .then((products)=>{
-    cy.get('[data-cy="product-item"]').should('have.length', products.length)
+    cy.get('[data-cy=product-item]').should('have.length', products.length)
   })
 
 ```
 
 ¿Para que agregamos este código?
 
-Un `Fixture` es información que permite que las pruebas de software sean repetibles en el tiempo dotando de un estado fijo a estas. En nuestro caso asumiremos la existencia de un archivo `products.json` que contendrá esta información y asumiremos que somo capaces de mostrar en el proyecto la misma lista de información.
+Un `Fixture` es información estática que permite que las pruebas de software sean repetibles en el tiempo. En otras palabras es un estado fijo que se le carga a las pruebas a través de los fixtures. En nuestro caso asumiremos la existencia de un archivo `products.json` que contendrá esta información. Este simple archivo estático cobra relevancia por que sirve de punto de encuentro entre las personas de negocio y los desarrolladores Backend y Frontend. 
 
 Si vamos al archivo `tests/e2e/plugins/index.js` veremos entre otras configuraciones una en particular que dice lo siguiente:
 
 ```javascript
   fixturesFolder: 'tests/e2e/fixtures',
 ```
-En esta linea de código se define desde donde Cypress va a leer los archivos Fixture. Asi que lo que haremos será crear una carpeta llamada `fixtures ` en `tests/e2e` tal como lo indica la línea de código que estamos analizando. dentro de esta nueva carpeta agregaremos un archivo llamado `products.json` con el siguiente contenido:
+En esta linea de código se define desde donde Cypress va a leer los archivos Fixture. Lo haremos será crear una carpeta llamada `fixtures ` en `tests/e2e` tal como lo indica la línea de código que estamos analizando. dentro de esta nueva carpeta agregaremos un archivo llamado `products.json` con el siguiente contenido:
 
 **products.json**
 
@@ -705,13 +734,13 @@ En esta linea de código se define desde donde Cypress va a leer los archivos Fi
 
 ```
 
-Ahora deberiamos obtener un nuevo error en Cypress como indica la siguiente imagen:
+Ahora deberíamos obtener un nuevo error en Cypress, ya que la prueba esperaba encontrar cinco (5) elementos con el atributo `data-cy=product-item`, pero encuentra cero (0) como indica la siguiente imagen:
 
 ![Imagen que muestra error de cypress](images/02-bdd-with-cypress-20.png)
 
 Al igual que las veces anteriores escribiremos el código lo más simple posible para pasar esta prueba.
 
-Nos dirijimos al archivo `src/views/Products.vue` y agregaremos lo siguiente en la sección `<template>`:
+Modificamos el archivo `src/views/Products.vue` y agregaremos lo siguiente en la sección `<template>`:
 
 ```html
 <template>
@@ -728,14 +757,14 @@ Nos dirijimos al archivo `src/views/Products.vue` y agregaremos lo siguiente en 
   </v-main>
 </template>
 ```
-Ahora vamos a guardar y recargar Cypress y vemos que ahora todas la prueba ahora está pasando:
+
+Guardamos, recargamos las pruebas en Cypress y vemos que todas la prueba está pasando:
 
 ![Imagen que muestra error de cypress](images/02-bdd-with-cypress-22.png)
 
-
 Para la refactorización nos basaremos en el ejemplo de Vuetify presentado en el siguiente [enlace](https://vuetifyjs.com/en/components/images/#grid).
 
-Ahora modificamos completo el archivo `src/views/Products.vue` con el siguiente contenido:
+Modificamos completo el archivo `src/views/Products.vue` con el siguiente contenido:
 
 ```html
 <template>
@@ -822,12 +851,13 @@ export default {
     }
   }
 }
+
 </script>
 
 ```
-Podrás notar que lo que hicimos fue hacer una copia del contenido del archivo `products.json` que agregamos como fixture anteriormente. Esto nos será de utilidad ya que ahora nuestra página quedó dependiente del contrato JSON de este archivo y esta mostrando la imagenes y nombre del producto en función de esta lista.
+Notarás que hicimos una copia del contenido del archivo `products.json` que agregamos como fixture anteriormente. Esto será de utilidad ya que ahora nuestra aplicación implementa "el contrato" JSON del archivo y esta mostrando los atributos en función de esta lista.
 
-Y finalmente al recargar Cypress veremos que luego de hacer los cambios en el código nuestra prueba sigue pasando:
+Al recargar Cypress veremos que luego de hacer los cambios en el código nuestra prueba sigue pasando:
 
 ![Imagen que muestra cypress con las pruebas pasando](images/02-bdd-with-cypress-23.png)
 
@@ -836,7 +866,7 @@ Y finalmente al recargar Cypress veremos que luego de hacer los cambios en el c�
 
 Ya hemos modelado y escrito las pruebas necesarias para que nuestra aplicación cuente con la funcionalidad básica que permita mostrar una lista de productos luego de una autenticación. Pero la última funcionalidad que escribimos muestra una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON que modelamos utilizando Fixtures.
 
-Abriremos una nueva ventana de la terminal en el proyecto e instalaremos la librerías `Axios` utilizando el siguiente comando:
+Sin dejar de correr Cypress, abriremos una nueva terminal en el proyecto e instalaremos la librerías `Axios` utilizando el siguiente comando:
 
 ```bash
 npm install axios
@@ -882,7 +912,7 @@ export default new Vuex.Store({
 
 ```
 
-Con esto dejaremos lista una acción de `Vuex` que nos permitirá desde nuestro componente ejecutar la acción `getProducts` que agregará al estado de la aplicación los productos desde un servidor externo que deberá responder los productos basados en el contrato que consume nuestro componente `Products`.
+Con esto dejaremos lista una acción de `Vuex` que nos permitirá desde nuestro componente ejecutar la acción `getProducts` que agregará al estado de la aplicación los productos desde un servidor externo. El servidor deberá responder los productos basados en el contrato que consume nuestro componente `Products`.
 
 Ahora iremos al archivo `src/views/Login.vue` y editaremos la sección `<script>` de la siguiente manera:
 
@@ -909,32 +939,18 @@ export default {
 
 ```
 
-Al recargar Cypress vamos a notar que las pruebas están nuevamente fallando. 
+Al recargar Cypress vamos a notar que las pruebas vuelven a fallar. 
 
 ![Imagen que muestra error de cypress](images/02-bdd-with-cypress-24.png)
 
 
-Esto era de esperarse ya que ahora el valor de la lista guardado en la variable `products` toma el valor por defecto el cual si vamos al examinar en el archivo `src/store/index.js` podemos ver que es una lista vacia. Notar el siguiente código:
+Esto quiere decir que nuestro componente está tomando el valor por defecto desde el `store` y eso hace fallar las pruebas.
 
-**src/store/index.js**
-```javascript
-state: {
-  products: []
-},
-```
-y en nuestro componente
+Si quieres entender mejor los métodos como `created` que se ejecuta cuando el componente se inicializa en Vue puedes revisar el [siguiente enlace](https://v3.vuejs.org/api/options-lifecycle-hooks.html#created)
 
-```javascript
-computed: {
-  ...mapState([
-    'products'
-  ])
-},
+Y si quieres conocer como el store de Vuex nos permite agregar acciones al componente para ejecutarlas cuando sea necesario puedes ver [este enlace](https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components)
 
-```
-esto quiere decir que nuestro componente está tomando el valor por defecto y eso hace fallar las pruebas.
-
-Ahora si miramos la imagen anterior podemos ver como hemos remarcado la petición al servidor que se hizo y que Cypress nos informa que ha recibido un error de tipo `404`
+Además en la imagen anterior vemos resaltado la petición al servidor que se hizo y que Cypress nos informa que ha recibido como respuesta un error de tipo `404`
 
 
 ```
@@ -942,7 +958,7 @@ Ahora si miramos la imagen anterior podemos ver como hemos remarcado la petició
 
 ```
 
-Esto debido a que en nuestro componente realiza al inicializarse un llamado a la acción `getProducts` configurada en nuestro Store de Vuex. Esto lo podemos ver en el componente `src/views/Products.vue`
+Esto es debido a que en nuestro componente realiza al inicializarse un llamado a la acción `getProducts` configurada en nuestro Store de Vuex. Esto lo podemos ver en el método `created()` del componente en `src/views/Products.vue`
 
 ```javascript
 methods: {
@@ -955,12 +971,7 @@ created () {
 }
 ```
 
-Si quieres entender mejor los métodos como `created` que se ejecuta cuando el componente se inicializa en Vue puedes revisar el [siguiente enlace](https://v3.vuejs.org/api/options-lifecycle-hooks.html#created)
-
-Para conocer como el store de `Vuex` nos permite agregar acciones al componente para ejecutarlas cuando sea necesario puedes ver [este enlace](https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components)
-
-Ahora debemos lograr que esta prueba pase pero necesitaremos un servidor que responda a nuestra petición a la url `http://localhost:8080/api/products`. ¿Como lograremos esto?
-Lo resolveremos en el siguiente capítulo.
+Para que esta prueba pase necesitaremos un servidor que responda la petición a la url `http://localhost:8080/api/products`. ¿Como lograremos esto? Lo resolveremos en el siguiente capítulo.
 
 
 <div style="display: flex; justify-content: space-between">
