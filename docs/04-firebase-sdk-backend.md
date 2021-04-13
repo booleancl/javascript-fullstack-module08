@@ -233,9 +233,18 @@ App server listening in mode development on port 3000
 
 Ahora al recargar las pruebas desde Cypress podemos ver que una vez más las pruebas están pasando.
 
+
 ![Imagen que muestra pruebas de Cypress pasando nuevamente](images/04-firebase-sdk-backend-05.png)
 
 Ahora las peticiones al endpoint `GET /api/products` serán seguras y solo válidas para usuarios que se hayan autenticado a través de Firebase.
+
+Ahora es un buen momento para un nuevo commit. Debemos detener el uno se los servidores y ir a la raíz del proyecto. Ahí las instrucciones serían las siguientes:
+
+```bash
+cd .. <-- para ir a la raíz del proyecto
+git add .
+git commit -m"refactor(backend-firebase): Se agregó firebase-admin al backend para validar que las solicitudes estén autenticadas en las rutas /api"
+```
 
 Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos. Utilizaremos los Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.
 
