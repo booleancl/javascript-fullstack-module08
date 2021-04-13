@@ -149,15 +149,16 @@ Con esto en su lugar, recargamos Cypress y la terminal de Express indicará el s
 
 ![Imagen que muestra error "no token provided" en Cypress](images/04-firebase-sdk-backend-02.png)
 
-Esto es debido a lo que sucede con el SDK de Firebase Admin cuando no hemos configurado la variable de entorno `GOOGLE_APPLICATION_CREDENTIALS`. Para entender más en detalle el porque de esto puedes revisar la siguiente sección de la documentación de firebase en [este enlace](https://firebase.google.com/docs/admin/setup?hl=es-419#initialize-sdk).
-Lo primero que haremos para poder configurar esta variable será descargar el archivo de cuenta de servicio de Firebase entrando a la siguiente url:
+Esto sucede cuando el SDK de firebase-admin no logra acceder la variable de entorno `GOOGLE_APPLICATION_CREDENTIALS`. Para entender más en detalle el porque de esto puedes revisar la siguiente sección de la documentación de Firebase en [este enlace](https://firebase.google.com/docs/admin/setup?hl=es-419#initialize-sdk).
+
+Para configurar esta variable será descargar el archivo de **cuenta de servicio** de Firebase entrando a la siguiente url:
 
 
 ```
   https://console.firebase.google.com/project/<nombre-de-tu-proyecto-firebase>/settings/serviceaccounts/adminsdk
 ```
 
-Si lo hacemos correctamente deberiamos ver algo como en la siguiente imagen:
+Si lo hacemos correctamente deberíamos ver algo como la siguiente imagen:
 
 ![Imagen que muestra la interfaz de Firebase para descargar un archivo de cuenta de servicio](images/04-firebase-sdk-backend-03.png)
 
@@ -167,9 +168,9 @@ Veremos un mensaje de advertencia que nos indicará que tengamos cuidado de mant
 
 ![Imagen que muestra advertencia de la creación del archivo de cuenta de servicio](images/04-firebase-sdk-backend-04.png)
 
-ahora al presionar el botón `Generate key`se decargará un archivo con extensión `.json`.
+Al presionar el botón `Generate key`se descargará un archivo con extensión `.json`.
 Vamos a renombrarlo con el nombre `firebase-service-account.json` y luego lo moveremos hacia la raíz del directorio `backend` en nuestro proyecto.
-Al hacer esto nuestro directorio debería verse como muestra el siguiente esquema:
+Al hacer esto nuestro directorio debería quedar como el siguiente esquema:
 
 ```
 └─ backend
@@ -182,19 +183,18 @@ Al hacer esto nuestro directorio debería verse como muestra el siguiente esquem
 
 ```
 
-De momento lo mantendremos solo como archivo local ya que es importante que este archivo no se suba al repositorio remoto. Al momento de subir a producción utilizaremos otro método para obtener este archivo para que sea parte del servidor una vez publicado.
+De momento lo mantendremos solo como archivo local ya que es importante que este archivo **no se suba** al repositorio remoto. Al momento de subir a producción (deploy) utilizaremos otro método para obtener este archivo para que sea parte del servidor una vez publicado.
 
 Vamos a realizar un paso muy importante. Vamos a la raíz del repositorio al archivo `.gitignore` y agregaremos la siguiente linea:
 
 ```
-backend/firebase-service-account.json
+firebase-service-account.json
 ```
 
-⚠️  **No olvides este paso ya que es un error de seguridad grave subir archivos de cuenta de servicio a un repositorio remoto**
+⚠️  **No olvides este paso ya que es un error de seguridad grave subir archivos de cuenta de servicio a un repositorio remoto**  Que no te pase lo que le ocurrió a [Scotiabank](https://www.scmagazine.com/home/security-news/data-breach/report-scotiabank-exposed-source-code-and-credentials-on-github-repositories/)
 
 Vamos a configurar nodemon para que agregue las variables de ambiente que necesitamos en nuestro ambiente de desarrollo y más adelante agregaremos a producción.
-Para esto vamos en primer lugar vamos a detener nuestro servidor en la pestaña de la terminal en la cuál estamos posicionados en `backend`.
-Aquí vamos a crear un archivo nuevo en la raíz llamado `nodemon.json`
+Para esto vamos a detener nuestro servidor de `backend` y creamos un archivo nuevo en la raíz llamado `nodemon.json`
 
 **backend/nodemon.json**
 
@@ -208,7 +208,7 @@ Aquí vamos a crear un archivo nuevo en la raíz llamado `nodemon.json`
 }
 ```
 
-ahora que ya tenemos este archivo podemos volver a ejecutar `npm start` y la ejecución de Nodemon tomará estas nuevas variables en la ejecución de Nodejs y estarán disponibles en el código a través de la variable `process.env`. Aprovechando esto vamos a modificar 2 cosas en nuestro archivo `backend/src/server.js`.
+Ahora que ya tenemos este archivo podemos volver a ejecutar `npm start` y la ejecución de Nodemon tomará estas nuevas variables y estarán disponibles en la aplicación a través de la variable `process.env`. Aprovechando esto vamos a modificar 2 cosas en nuestro archivo `backend/src/server.js`.
 
 ```javascript
 ...
@@ -237,7 +237,7 @@ Ahora al recargar las pruebas desde Cypress podemos ver que una vez más las pru
 
 Ahora las peticiones al endpoint `GET /api/products` serán seguras y solo válidas para usuarios que se hayan autenticado a través de Firebase.
 
-Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos que provea la información y utilizar Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.
+Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos. Utilizaremos los Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.
 
 <table>
   <tr>
