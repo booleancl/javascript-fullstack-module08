@@ -548,12 +548,12 @@ export default {
       return this.$refs.form.validate()
     },
     login () {
-      if(this.validate()){
+      if (this.validate()) {
         Auth.signInWithEmailAndPassword(this.email, this.password)
-          .then(()=>{
+          .then(() => {
             this.$router.push({ name: 'Products' })
           })
-          .catch(()=>{
+          .catch(() => {
             this.isFormRejected = true
           })
       }
@@ -971,13 +971,17 @@ created () {
 
 Para que esta prueba pase necesitaremos un servidor que responda la petición a la url `http://localhost:8080/api/products`. ¿Como lograremos esto? Lo resolveremos en el siguiente capítulo.
 
-
-<div style="display: flex; justify-content: space-between">
-    <a style="max-width:30vw; display: flex" href="./01-vue-cli-install.md">
-      <span style="margin-right:2vw">⬅</span>Creando un proyecto usando CLI y framework UI</a>
-    <a
-    style="max-width:30vw; display: flex"
-    href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend
-    <span style="margin-left:2vw">⮕</span>
-    </a>
-</div>
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./01-vue-cli-install.md">
+        <span>⬅</span>Creando un proyecto usando CLI y framework UI
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend
+        <span>⮕</span>
+      </a>
+    </th>
+  </tr>
+</table>

@@ -23,7 +23,7 @@ const port = 3000
 
 admin.initializeApp({credential: admin.credential.applicationDefault()})
 
-app.use('/api', (request,response) => {
+app.use('/api', (request, response, next) => {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
     return response.status(401).json({ message: "No token provided" })
@@ -97,9 +97,12 @@ app.listen(port, () => {
 
 
 ```
+
 Si quieres conocer el detalle de cómo integrar firebase al servidor, revisa la siguiente [documentación](https://firebase.google.com/docs/admin/setup#add-sdk)
 
-Con esto, al recargar las pruebas veremos que el error pasó de 500 a 401, es decir, el servidor está revisando que las solicitudes tengan la cabecera de autorización y cómo no hemos configurado eso en el Frontend la aplicación entrega el mensaje y códigos especificados en la primera sentencia `if`. TIP: En Cypress puedes acceder a las herramientas para desarrolladores al igual que en cualquier navegador moderno. Haciendo esto nuestras pruebas se ven como en la siguiente imagen:
+Con esto, al recargar las pruebas veremos que el error pasó de 500 a 401, es decir, el servidor está revisando que las solicitudes tengan la cabecera de autorización y cómo no hemos configurado eso en el Frontend la aplicación entrega el mensaje y códigos especificados en la primera sentencia `if` configurada en el Middleware configurado para todas las peticiones hacia los endpoint encabezados por la ruta `/api`. 
+
+Para revisar en Cypress como salieron las peticiones al servidor puedes acceder a las herramientas para desarrolladores al igual que en cualquier navegador moderno. Haciendo esto nuestras pruebas se ven como en la siguiente imagen:
 
 ![No token provided](images/04-firebase-sdk-backend-01.png)
 
@@ -144,24 +147,110 @@ export default new Vuex.Store({
 
 Con esto en su lugar, recargamos Cypress y la terminal de Express indicará el siguiente mensaje de error:
 
-![No token provided](images/04-firebase-sdk-backend-02.png)
+![Imagen que muestra error "no token provided" en Cypress](images/04-firebase-sdk-backend-02.png)
+
+Esto es debido a lo que sucede con el SDK de Firebase Admin cuando no hemos configurado la variable de entorno `GOOGLE_APPLICATION_CREDENTIALS`. Para entender más en detalle el porque de esto puedes revisar la siguiente sección de la documentación de firebase en [este enlace](https://firebase.google.com/docs/admin/setup?hl=es-419#initialize-sdk).
+Lo primero que haremos para poder configurar esta variable será descargar el archivo de cuenta de servicio de Firebase entrando a la siguiente url:
 
 
-  2 Descargar el `firebase-service-account.json` en la carpeta /backend con el nombre específico, agregarlo al gitignore
-  3 Configurar nodemon agregando dos variables de ambiente `NODE_ENV` y `GOOGLE_APPLICATION_CREDENTIALS`
+```
+  https://console.firebase.google.com/project/<nombre-de-tu-proyecto-firebase>/settings/serviceaccounts/adminsdk
+```
 
-  nodemon.json
+Si lo hacemos correctamente deberiamos ver algo como en la siguiente imagen:
 
-  ```json
-    {
-      "env": {
-        "NODE_ENV": "development",
-        "GOOGLE_APPLICATION_CREDENTIALS": "ruta-absoluta-de-tu-proyecto/backend/src/firebase-service-account.json",
-        "PORT": 3000
-      }
-    }
-  ```
+![Imagen que muestra la interfaz de Firebase para descargar un archivo de cuenta de servicio](images/04-firebase-sdk-backend-03.png)
 
-  Configurar las rutas con el middleware
-  Test vuelve a fallar (403)
-  Agregar los interceptores de axios para las cabeceras (200)
+Presionamos el botón `Generate new private key` para generar el archivo que vamos a utilizar para autenticarnos al SDK de Firebase Admin.
+
+Veremos un mensaje de advertencia que nos indicará que tengamos cuidado de mantener este archivo confidencial. 
+
+![Imagen que muestra advertencia de la creación del archivo de cuenta de servicio](images/04-firebase-sdk-backend-04.png)
+
+ahora al presionar el botón `Generate key`se decargará un archivo con extensión `.json`.
+Vamos a renombrarlo con el nombre `firebase-service-account.json` y luego lo moveremos hacia la raíz del directorio `backend` en nuestro proyecto.
+Al hacer esto nuestro directorio debería verse como muestra el siguiente esquema:
+
+```
+└─ backend
+  └─ node_modules
+  └─ src
+     server.js
+  firebase-service-account.json <-- acá movemos el archivo de cuenta de servicio 
+  package-lock.json
+  package.json
+
+```
+
+De momento lo mantendremos solo como archivo local ya que es importante que este archivo no se suba al repositorio remoto. Al momento de subir a producción utilizaremos otro método para obtener este archivo para que sea parte del servidor una vez publicado.
+
+Vamos a realizar un paso muy importante. Vamos a la raíz del repositorio al archivo `.gitignore` y agregaremos la siguiente linea:
+
+```
+backend/firebase-service-account.json
+```
+
+⚠️  **No olvides este paso ya que es un error de seguridad grave subir archivos de cuenta de servicio a un repositorio remoto**
+
+Vamos a configurar nodemon para que agregue las variables de ambiente que necesitamos en nuestro ambiente de desarrollo y más adelante agregaremos a producción.
+Para esto vamos en primer lugar vamos a detener nuestro servidor en la pestaña de la terminal en la cuál estamos posicionados en `backend`.
+Aquí vamos a crear un archivo nuevo en la raíz llamado `nodemon.json`
+
+**backend/nodemon.json**
+
+```json
+{
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": 3000,
+    "GOOGLE_APPLICATION_CREDENTIALS": "./firebase-service-account.json"
+  }
+}
+```
+
+ahora que ya tenemos este archivo podemos volver a ejecutar `npm start` y la ejecución de Nodemon tomará estas nuevas variables en la ejecución de Nodejs y estarán disponibles en el código a través de la variable `process.env`. Aprovechando esto vamos a modificar 2 cosas en nuestro archivo `backend/src/server.js`.
+
+```javascript
+...
+const port = process.env.PORT
+const environment = process.env.NODE_ENV
+
+...
+app.listen(port, () => {
+  console.log(`App server listening in mode ${environment} on port ${port}`);
+})
+
+```
+Cómo podrás notar quitamos el puerto `3000` para asignar el puerto provisto por el ambiente de ejecución. En este caso puntual haremos esto porque más adelante subiremos este servidor a HEROKU y en su arquitectura nos inyectará esta variable. Si quieres ver más detalles respecto de esto puedes ver [este enlace](https://devcenter.heroku.com/articles/dynos#common-runtime-networking)
+
+También modificamos el mensaje que aparece cuando nuestro servidor esta escuchando las peticiones al puerto especificado. Al guardar el archivo `backend/src/server.js` deberíamos ver un mensaje como el siguiente:
+
+```bash
+nodemon] restarting due to changes...
+[nodemon] starting `node src/server.js`
+App server listening in mode development on port 3000
+```
+
+Ahora al recargar las pruebas desde Cypress podemos ver que una vez más las pruebas están pasando.
+
+![Imagen que muestra pruebas de Cypress pasando nuevamente](images/04-firebase-sdk-backend-05.png)
+
+Ahora las peticiones al endpoint `GET /api/products` serán seguras y solo válidas para usuarios que se hayan autenticado a través de Firebase.
+
+Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos que provea la información y utilizar Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.
+
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./03-monorepo-backend.md">
+        <span>⬅</span>
+        Reorganización del proyecto como un repositorio monolítico y agregar Backend
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./05-database-sequelize.md">Agregando base de datos utlizando Sequelize
+        <span>⮕</span>
+      </a>
+    </th>
+  </tr>
+</table>

@@ -248,7 +248,7 @@ app.use('/api/products', (request, response) => {
     }
   ]
   
-  console.log(`GET with status code ${statusCode} in /api/products endpoint`);
+  console.log(`GET with status code ${statusCode} in /api/products endpoint`)
   
   
   return response
@@ -257,7 +257,7 @@ app.use('/api/products', (request, response) => {
 })
 
 app.listen(port, () => {
-  console.log(`App server listening on port ${port}`);
+  console.log(`App server listening on port ${port}`)
 })
 
 ```
@@ -290,7 +290,7 @@ git commit -m "feature(products): se agrega Backend con un endpoint de productos
 Aún cuando tenemos el endpoint descubierto, es importante notar que nuestras historias de usuario están corroboradas mediante pruebas y tenemos, en ambiente de desarrollo, la funcionalidad completa (feature). En adelante lo que sigue es aumentar la calidad de nuestra aplicación para hacerla más segura y flexible a los cambios.
 
 
-Recordemos nuestras historias de usuario: 
+Echemos un vistazo al resumen de nuestras historias de usuario que representan toda la funcionalidad que hemos desarrollado hasta el momento:
 
 ```ruby
 Funcionalidad: login de la aplicación
@@ -324,14 +324,17 @@ Entonces debería ver una lista de productos
 
 ```
 
-
-<div style="display: flex; justify-content: space-between">
-    <a style="max-width:30vw; display: flex" href="./01-vue-cli-install.md">
-      <span style="margin-right:2vw">⬅</span>Escribiendo Pruebas E2E siguiendo la metodología BDD</a>
-    <a
-    style="max-width:30vw; display: flex"
-    href="./04-firebase-sdk-backend.md"> Validar autenticación en el Backend
-    <span style="margin-left:2vw">⮕</span>
-    </a>
-</div>
-
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./01-vue-cli-install.md">
+        <span>⬅</span>Escribiendo Pruebas E2E siguiendo la metodología BDD
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./04-firebase-sdk-backend.md"> Validar autenticación en el Backend
+        <span>⮕</span>
+      </a>
+    </th>
+  </tr>
+</table>
