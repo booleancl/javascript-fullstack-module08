@@ -102,7 +102,7 @@ Para cargar los datos iniciales en el ambiente de desarrollo creamos un archivo 
 
 Esto tan solo crea un archivo dentro de la carpeta `/seeders` que con simple javascript permite ingresar datos a nuestras tablas. Reemplazaremos todo el contenido del archivo creado que debería ser `backend/src/migrations/[id-generado-por-sequelize]-load-products.js`
 
-```script
+```javascript
 const path = require('path')
 const fixturesFolder = path.join(path.resolve('.'), '../fixtures')
 const products = require(`${fixturesFolder}/products.json`)
