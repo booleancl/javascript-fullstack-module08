@@ -975,12 +975,12 @@ Para que esta prueba pase necesitaremos un servidor que responda la petición a 
   <tr>
     <th colspan="2">
       <a href="./01-vue-cli-install.md">
-        <span>⬅</span>Creando un proyecto usando CLI y framework UI
+        <span>⬅️ </span>Creando un proyecto usando CLI y framework UI
       </a>
     </th>
     <th colspan="2">
       <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend
-        <span>⮕</span>
+        <span>➡️ </span>
       </a>
     </th>
   </tr>

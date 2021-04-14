@@ -330,12 +330,12 @@ Entonces debería ver una lista de productos
   <tr>
     <th colspan="2">
       <a href="./01-vue-cli-install.md">
-        <span>⬅</span>Escribiendo Pruebas E2E siguiendo la metodología BDD
+        <span>⬅️ </span>Escribiendo Pruebas E2E siguiendo la metodología BDD
       </a>
     </th>
     <th colspan="2">
       <a href="./04-firebase-sdk-backend.md"> Validar autenticación en el Backend
-        <span>⮕</span>
+        <span>➡️ </span>
       </a>
     </th>
   </tr>

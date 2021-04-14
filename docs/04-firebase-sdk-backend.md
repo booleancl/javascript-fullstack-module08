@@ -252,13 +252,13 @@ Nuestro siguiente objetivo será dejar de enviar información estática desde el
   <tr>
     <th colspan="2">
       <a href="./03-monorepo-backend.md">
-        <span>⬅</span>
+        <span>⬅️ </span>
         Reorganización del proyecto como un repositorio monolítico y agregar Backend
       </a>
     </th>
     <th colspan="2">
       <a href="./05-database-sequelize.md">Agregando base de datos utlizando Sequelize
-        <span>⮕</span>
+        <span>➡️ </span>
       </a>
     </th>
   </tr>

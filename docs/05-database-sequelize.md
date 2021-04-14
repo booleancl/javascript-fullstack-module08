@@ -266,13 +266,13 @@ En el próximo cápitulo escribiremos pruebas de software de integración tanto 
   <tr>
     <th colspan="2">
       <a href="./04-firebase-sdk-backend.md">
-        <span>⬅</span>
+        <span>⬅️ </span>
         Validar autenticación en el Backend
       </a>
     </th>
     <th colspan="2">
       <a href="./06-testing-frontend-backend.md">Pruebas de software para Backend y Frontend
-        <span>⮕</span>
+        <span>➡️ </span>
       </a>
     </th>
   </tr>

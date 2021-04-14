@@ -74,12 +74,12 @@ Listo! ya estamos preparados para ir al siguiente paso de la construcción del p
   <tr>
     <th colspan="2">
       <a href="../README.md">
-        <span>⬅</span> Volver al Índice del curso
+        <span>⬅️ </span> Volver al Índice del curso
       </a>
     </th>
     <th colspan="2">
       <a href="./02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
-        <span>⮕</span>
+        <span>➡️ </span>
       </a>
     </th>
   </tr>
