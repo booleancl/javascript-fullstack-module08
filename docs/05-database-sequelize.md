@@ -251,6 +251,8 @@ Notaremos que ahora en la terminal la consulta a la base de datos aparece en la 
 
 ![Imagen que muestra la consulta a la base de datos en la terminal del servidor](images/05-database-sequelize-02.png)
 
+Esto es Sequelize en acción realizando consultas SQL a la base de datos por nosotros. En ambiente de desarrollo es deseable poder ver las consultas que se van ejecutando, pero por seguridad y confidencialidad no es algo permitido en el entorno de producción. Esto debemos tenerlo presente en el paso a producción.
+
 Ya es momento de un nuevo commit. Debemos detener Frontend y Backend. Volvemos a la raíz del proyecto y escribimos lo siguiente en la terminal:
 
 ```bash

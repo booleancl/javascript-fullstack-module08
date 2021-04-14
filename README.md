@@ -17,7 +17,7 @@ Manos a la obra!
   - [Reorganización del proyecto como un repositorio monolítico y agregar Backend](docs/03-monorepo-backend.md)
   - [Validar autenticación en el Backend](docs/04-firebase-sdk-backend.md)
   - [Agregando base de datos utlizando Sequelize](docs/05-database-sequelize.md)
-  - [Pruebas de software para Backend y Frontend](docs/06-testing-frontend-backend.md)
+  - [Refactorización guiada por pruebas de software Backend y Frontend](docs/06-testing-frontend-backend.md)
   - [Configuración de mantenimiento de calidad con Husky](docs/07-development-workflow-husky.md)
   - [Salida a producción utilizando Postgres y Heroku](docs/08-deployment-postgres.md)
 
