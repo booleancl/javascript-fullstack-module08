@@ -16,8 +16,9 @@ npm i firebase-admin
 En esta parte podemos encender el servidor con `npm start`. Al recargar Cypress veremos que todas pruebas vuelven a pasar, pero aún no verificamos nada en el servidor. Para esto reemplaza el contenido del archivo `backend/src/server.js` con lo siguiente:
 
 ```javascript
-const express = require("express")
+const express = require('express')
 const admin = require('firebase-admin')
+
 const app = express()
 const port = 3000
 
@@ -26,13 +27,13 @@ admin.initializeApp({credential: admin.credential.applicationDefault()})
 app.use('/api', (request, response, next) => {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
-    return response.status(401).json({ message: "No token provided" })
+    return response.status(401).json({ message: 'No token provided' })
   }
   
-  const [authorizationType, tokenValue] = headerToken.split(" ")
+  const [authorizationType, tokenValue] = headerToken.split(' ')
 
-  if (headerToken && authorizationType.toLowerCase() !== "bearer") {
-    return response.status(401).json({ message: "Invalid token" })
+  if (headerToken && authorizationType.toLowerCase() !== 'bearer') {
+    return response.status(401).json({ message: 'Invalid token' })
   }
   admin
     .auth()
@@ -40,7 +41,7 @@ app.use('/api', (request, response, next) => {
     .then(() => next())
     .catch((error) => {
       console.error(error.message)
-      response.status(403).json({ message: "Could not authorize" })
+      response.status(403).json({ message: 'Could not authorize' })
     })
 })
 
@@ -241,9 +242,8 @@ Ahora las peticiones al endpoint `GET /api/products` serán seguras y solo váli
 Ahora es un buen momento para un nuevo commit. Debemos detener el uno se los servidores y ir a la raíz del proyecto. Ahí las instrucciones serían las siguientes:
 
 ```bash
-cd .. <-- para ir a la raíz del proyecto
 git add .
-git commit -m"refactor(backend-firebase): Se agregó firebase-admin al backend para validar que las solicitudes estén autenticadas en las rutas /api"
+git commit -m "refactor(backend-firebase): Se agregó firebase-admin al backend para validar que las solicitudes estén autenticadas en las rutas /api"
 ```
 
 Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos. Utilizaremos los Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.

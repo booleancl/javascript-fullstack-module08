@@ -71,7 +71,8 @@ Ahora creamos un nuevo archivo en `backend/src` llamado `server.js` con el sigui
 
 **backend/src/server.js**
 ```javascript
-const express = require("express")
+const express = require('express')
+
 const app = express()
 const port = 3000
 
@@ -204,7 +205,8 @@ Ahora iremos al archivo `backend/src/server.js` y lo reemplazaremos por lo sigui
 
 **backend/src/server.js**
 ```javascript
-const express = require("express")
+const express = require('express')
+
 const app = express()
 const port = 3000
 

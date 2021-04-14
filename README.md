@@ -21,6 +21,4 @@ Manos a la obra!
   - [Configuración de mantenimiento de calidad con Husky](docs/07-development-workflow-husky.md)
   - [Salida a producción utilizando Postgres y Heroku](docs/08-deployment-postgres.md)
 
-
 Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
-
