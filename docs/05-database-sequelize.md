@@ -17,7 +17,7 @@ Para no tener que instalar el CLI de Sequelize en forma global, podemos exponer 
  ...
   "scripts": {
     "start": "nodemon src/server.js",
-    "sequelize": "sequelize",
+    "sequelize": "sequelize", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
 ...
@@ -59,8 +59,7 @@ package-lock.json
 package.json
 ```
 
-Ahora continuaremos el desarrollo modificando el dialecto en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más simple de mantener.
-Para esto modificarmeos el archivo `backend/src/config/config.json`
+Ahora continuaremos el desarrollo modificando el dialecto en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más simple de mantener. Para esto modificamos el archivo `backend/src/config/config.json`
 
 ```javascript
 "development": {
@@ -70,7 +69,7 @@ Para esto modificarmeos el archivo `backend/src/config/config.json`
     "dialect": "sqlite"
   },
 ```
-Ya estamos en condiciones de crear el primer modelo. En este caso crearemos el modelo `Producto` con los atributos acordados en los Fixtures. En la terminal del backend ejecutaremos el siguiente comando.
+Ya estamos en condiciones de crear el primer modelo. En este caso crearemos el modelo `Product` con los atributos acordados en los Fixtures. En la terminal del backend ejecutaremos el siguiente comando.
 
 ```javascript
 npm run sequelize model:generate -- --name Product --attributes name:string,description:string,code:string,image:string
@@ -78,7 +77,7 @@ npm run sequelize model:generate -- --name Product --attributes name:string,desc
 
 Como profundizamos en el curso, la estructura de la base de datos debe ser modificada utilizando scripts de migración.
 El comando anterior creó un script que agrega una tabla con el nombre del modelo más los atributos como columnas. Sequelize agrega por defecto el atributo id de típo numérico autoincremental y considera el caso de los atributos `created_at` y `updated_at`. El valor por defecto de estos dos atributos debemos establecerlo nosotros. 
-Modificaremos el archivo de migración en `backend/src/migrations/[id-generado-por-sequelize]-create-product.js` reemplazando el valor de ambos campos con lo que sigue:
+Modificaremos el archivo de migración en `backend/src/migrations/[timestamp-generado-por-sequelize]-create-product.js` reemplazando el valor de ambos campos con lo que sigue:
 
 ```javascript
     createdAt: {
@@ -96,11 +95,11 @@ Modificaremos el archivo de migración en `backend/src/migrations/[id-generado-p
 
 `npm run sequelize db:migrate`
 
-Para cargar los datos iniciales en el ambiente de desarrollo creamos un archivo para crear un Seed con el siguiente comando: 
+Para cargar los datos iniciales en el ambiente de desarrollo creamos un archivo conocido como Seed con el siguiente comando: 
 
 `npm run sequelize seed:generate -- --name load-products`
 
-Esto tan solo crea un archivo dentro de la carpeta `/seeders` que con simple javascript permite ingresar datos a nuestras tablas. Reemplazaremos todo el contenido del archivo creado que debería ser `backend/src/migrations/[id-generado-por-sequelize]-load-products.js`
+Esto tan solo crea un archivo dentro de la carpeta `/seeders` que con simple javascript permite ingresar datos a nuestras tablas. Reemplazaremos todo el contenido del archivo creado. El nombre del archivo es:  `backend/src/seeders/[timestamp-generado-por-sequelize]-load-products.js`
 
 ```javascript
 const path = require('path')
@@ -121,15 +120,13 @@ module.exports = {
 
 ```
 
-El último paso para terminar de configurar nuestro ambiente de desarrollo de Base de Datos.
-Al ejecutar el siguiente comando volcaremos todos los datos definidos en los archivos de la carpeta Seeders y así poblar nuestra Base de datos:
+Al ejecutar el siguiente comando estamos copiando los datos definidos en los fixtures a la base de datos de desarrollo.
 
 `npm run sequelize db:seed:all`
 
-Es importante notar que, a pesar de que es posible ingresar datos a la base de muchas formas, es mejor seguir esta forma ya que los fixtures representan una parte importante del modelo de datos y por consiguiente es el acuerdo común entre Backend, Frontend y el Dominio de Negocio de nuestra aplicación.
+Es importante notar, que a pesar de que es posible ingresar datos a la base de muchas formas, es mejor seguir esta, ya que los fixtures representan una parte importante del modelo de datos y representan el acuerdo común entre Backend, Frontend y el Dominio de Negocio de nuestra aplicación.
 
-Podemos notar que en la raíz del repositorio `backend` encontramos un archivo llamado `local.database.sqlite3`. 
-Si contamos con un visor de bases de datos sqlite, podemos cargar este archivo y ver gráficamente el resultado como en la siguiente imágen:
+Podemos notar que en la raíz del directorio `backend` se creó un archivo llamado `local.database.sqlite3`. Si contamos con un visor de bases de datos sqlite, podemos cargar este archivo y ver gráficamente el resultado como en la siguiente imágen:
 
 ![visor de bdd](images/05-database-sequelize-01.png)
   
@@ -168,9 +165,12 @@ pnpm-debug.log*
 *.sw?
 
 ```
+
+Con todo esto ya tenemos nuestro ambiente de Base de datos montado en el ambiente de desarrollo. Solo falta incorporar que la respuesta del servidor entregue los datos desde la BDD 
+
 #### Agregar modelos de base de datos como respuesta a la llamada al Servidor
 
-Ahora que ya tenemos todo nuestro ambiente de Base de datos montado en el ambiente de desarrollo, volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
+ Volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
   - Primero para el Backend ejecutamos `npm start`
   - Luego para el Frontend ejecutamos `npm run test:e2e` y presionamos el botón `Run all specs` en la interfaz de Cypress.
 
@@ -242,7 +242,6 @@ app.use('/api/products', async (request, response) => {
 app.listen(port, () => {
   console.log(`App server listening in mode ${environment} on port ${port}`);
 })
-
 
 ```
 Hicimos una refactorización del archivo `backend/server.js` en el cual normalizaremos el uso de `async/await` para ejecutar Promesas y agregaremos un bloque `try/catch` para realizar una consulta a la base de datos para traer todos los productos utilizando los modelos de Sequelize y utilizando el método `Product.findAll`
