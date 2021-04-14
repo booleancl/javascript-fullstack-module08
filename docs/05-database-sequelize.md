@@ -245,7 +245,7 @@ app.listen(port, () => {
 
 
 ```
-Haremos una refactorización del archivo `backend/server.js` en el cual normalizaremos el uso de `async/await` para ejecutar Promesas y agregaremos un bloque `try/catch` para realizar una consulta a la base de datos para traer todos los productos utilizando los modelos de Sequelize y utilizando el método `Product.findAll`
+Hicimos una refactorización del archivo `backend/server.js` en el cual normalizaremos el uso de `async/await` para ejecutar Promesas y agregaremos un bloque `try/catch` para realizar una consulta a la base de datos para traer todos los productos utilizando los modelos de Sequelize y utilizando el método `Product.findAll`
 
 Cuando guardemos el archivo se recargará Nodemon y ahora podemos volver a recargar las pruebas y veremos que siguen pasando.
 Notaremos que ahora en la terminal la consulta a la base de datos aparece en la terminal como muestra la siguiente imagen:
