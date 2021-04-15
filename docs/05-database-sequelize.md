@@ -51,7 +51,7 @@ Esto creará las carpetas `/config`, `/models`, `/config` y `/seeders` dentro de
     ├── migrations
     ├── models
     ├── seeders
-    └── server.js
+        server.js
 .sequelizesrc
 firebase-service-account.json
 nodemon.json
