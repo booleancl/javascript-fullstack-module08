@@ -1,4 +1,4 @@
-# Refactorización utilizando pruebas de software en Backend y Frontend
+# Refactorización utilizando pruebas de software en Backend
 En este punto la funcionalidad ya está completa, pero la organización del código se puede mejorar para aumentar su flexibilidad a los cambios que inevitablemente llegarán.
 
 Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hemos logrado. La funcionalidad se debe mantener, pero la calidad del código debe aumentar. Para esto agregaremos pruebas de software para el código tanto en el Backend como en el Frontend.
@@ -448,7 +448,7 @@ Podemos validar que ahora estamos cubriendo toda la funcionalidad construida has
 
 ![Imagen que muestra la cobertura de las pruebas en el archivo app.js](images/06-testing-frontend-backend-08.png)
 
-Ahora con toda nuestra funcionalidad cubierta con las pruebas pasando, volvemos a refactorizar para dividir los controladores, middleware y rutas siguendo los principios SOLID.
+Ahora con toda nuestra funcionalidad cubierta con las pruebas pasando, volvemos a refactorizar para dividir los controladores, middleware y rutas siguiendo los guías SOLID.
 
 Vamos a re-estructurar el proyecto para que quede de la siguiente forma
 
@@ -586,8 +586,28 @@ finalmente al volver a correr el comando `npm test` veremos que el informe de co
 
 De esta manera logramos hacer una refactorización para ordenar y preparar al código del servidor para ser más escalable para los futuros incrementos del código.
 
+Momento de un nuevo commit. Escribimos lo siguiente en la terminal:
 
+```bash
+git add .
+git commit -m "refactor(backend-refactor): Se agregó set de pruebas de caracterización en el Backend y luego un refactor para dividir responsabilidades"
+```
 
-### Pruebas de software en Frontend
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./05-database-sequelize.md">
+        <span>⬅️ </span>
+       Agregando base de datos en desarrollo
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./07-testing-frontend.md">Pruebas de software para Frontend
+        <span>➡️ </span>
+      </a>
+    </th>
+  </tr>
+</table>
+
 
 

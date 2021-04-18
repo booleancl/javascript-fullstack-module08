@@ -16,9 +16,10 @@ Manos a la obra!
   - [Escribiendo Pruebas E2E siguiendo la metodología BDD](docs/02-bdd-with-cypress.md)
   - [Reorganización del proyecto como un repositorio monolítico y agregar Backend](docs/03-monorepo-backend.md)
   - [Validar autenticación en el Backend](docs/04-firebase-sdk-backend.md)
-  - [Agregando base de datos utlizando Sequelize](docs/05-database-sequelize.md)
-  - [Refactorización guiada por pruebas de software Backend y Frontend](docs/06-testing-frontend-backend.md)
-  - [Configuración de mantenimiento de calidad con Husky](docs/07-development-workflow-husky.md)
-  - [Salida a producción utilizando Postgres y Heroku](docs/08-deployment-postgres.md)
+  - [Agregando base de datos en desarrollo](docs/05-database-sequelize.md)
+  - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
+  - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
+  - [Configuración de mantenimiento de calidad con Husky](docs/08-development-workflow-husky.md)
+  - [Salida a producción utilizando Postgres y Heroku](docs/09-deployment-postgres.md)
 
 Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.

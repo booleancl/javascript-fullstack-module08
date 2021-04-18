@@ -6,10 +6,11 @@ node_modules
 .DS_Store
 node_modules
 dist
+coverage
 
 tests/e2e/videos/
 tests/e2e/screenshots/
-coverage
+
 
 # local env files
 .env.local
