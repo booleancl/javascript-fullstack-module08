@@ -239,6 +239,54 @@ Ahora al recargar las pruebas desde Cypress podemos ver que una vez más las pru
 
 Ahora las peticiones al endpoint `GET /api/products` serán seguras y solo válidas para usuarios que se hayan autenticado a través de Firebase.
 
+La ruta en el Backend está protegida, pero desde el Forntend no debiésemos poder entrar directamente a la ruta `/productos`. Para proteger la ruta debemos implementar la `guard clause` en el router de Vue. Debemos reemplazar el archivo de rutas por lo siguiente: 
+
+```javascript
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Login from '../views/Login.vue'
+import Products from '../views/Products.vue'
+import { Auth } from '@/firebase'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/productos',
+    name: 'Products',
+    component: Products,
+    meta: {
+      login: true
+    }
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+})
+
+router.beforeEach((to, from, next) => {
+  const user = Auth.currentUser
+  const authRequired = to.matched.some(route => route.meta.login)
+
+  if (!user && authRequired) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+export default router
+
+```
+
+
 Ahora es un buen momento para un nuevo commit. Debemos detener el uno se los servidores y ir a la raíz del proyecto. Ahí las instrucciones serían las siguientes:
 
 ```bash

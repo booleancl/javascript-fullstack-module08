@@ -182,9 +182,6 @@ Ahora vamos al archivo `Login.vue` y reemplazaremos todo su contenido con lo sig
       <v-card-title class="pb-0">
         <h1 class="mx-auto mb-5">Ingreso</h1>
       </v-card-title>
-      <v-alert v-if="isFormRejected" type="error">
-        <p>Usuario o contraseña inválidos. Ingresa los datos correctos.</p>
-      </v-alert>
       <v-form ref="form">
         <v-text-field
           v-model="email"
@@ -221,9 +218,6 @@ Ahora vamos al archivo `Login.vue` y reemplazaremos todo su contenido con lo sig
 export default {
   data () {
     return {
-      isFormValid: false,
-      isFormRejected: false,
-      formStatusMessage: '',
       email: '',
       emailRules: [
         (v) => !!v || 'El correo es requerido',
@@ -530,9 +524,6 @@ import { Auth } from '@/firebase'
 export default {
   data () {
     return {
-      isFormValid: false,
-      isFormRejected: false,
-      formStatusMessage: '',
       email: '',
       emailRules: [
         (v) => !!v || 'El correo es requerido',
@@ -547,15 +538,10 @@ export default {
     validate () {
       return this.$refs.form.validate()
     },
-    login () {
+    async login () {
       if (this.validate()) {
-        Auth.signInWithEmailAndPassword(this.email, this.password)
-          .then(() => {
-            this.$router.push({ name: 'Products' })
-          })
-          .catch(() => {
-            this.isFormRejected = true
-          })
+        await Auth.signInWithEmailAndPassword(this.email, this.password)
+        this.$router.push({ name: 'Products' })
       }
     }
   }
