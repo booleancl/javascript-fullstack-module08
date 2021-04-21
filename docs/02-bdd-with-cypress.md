@@ -221,7 +221,7 @@ export default {
       email: '',
       emailRules: [
         (v) => !!v || 'El correo es requerido',
-        (v) => /.+@.+\..+/.test(v) || 'El correo debe ser válido must be valid'
+        (v) => /.+@.+\..+/.test(v) || 'El correo debe tener formato válido'
       ],
       password: '',
       passwordRules: [(v) => !!v || 'La contraseña es requerida'],
@@ -375,7 +375,6 @@ Contraseña: booleanacademia
 Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda.
 Indicamos que este usuario, a pesar de estár en entorno productivo, será solamente para realizar pruebas. 
 
-
 #### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
 
 Ahora trabajaremos el caso (escenario en historias de usuario) exitóso
@@ -527,7 +526,7 @@ export default {
       email: '',
       emailRules: [
         (v) => !!v || 'El correo es requerido',
-        (v) => /.+@.+\..+/.test(v) || 'El correo debe ser válido must be valid'
+        (v) => /.+@.+\..+/.test(v) || 'El correo debe tener formato válido'
       ],
       password: '',
       passwordRules: [(v) => !!v || 'La contraseña es requerida'],
@@ -554,9 +553,7 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 
 ![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
 
-
 #### Página de productos
-
 
 ```ruby
 Funcionalidad: página de productos
@@ -886,7 +883,7 @@ export default new Vuex.Store({
         const response = await axios.get(productsURL)
         commit('SET_PRODUCTS', response.data)
       } catch (error) {
-        console.log(error)
+        console.log(error.message)
       }
     }
   },
