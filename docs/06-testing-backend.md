@@ -22,7 +22,7 @@ Al igual que como lo hicimos con Sequelize-cli, vamos a exponer el comando de Je
   },
 ...
 ```
-Jest tiene el comando --init para configurar el entorno de pruebas. El comando a ejecutar es el siguiente:
+Jest tiene la opción --init para configurar el entorno de pruebas. El comando a ejecutar es el siguiente:
  `npm run jest -- --init`
 Esto nos hará una pequeña serie de preguntas que debemos responder con lo siguiente:
 
@@ -59,7 +59,7 @@ Esto lo ejecutamos con el comando que configuramos `npm test`. La salida en la t
 
 ![error-async](images/06-testing-frontend-backend-02.png)
 
-Tenemos resultados confusos, ya que en concreto la prueba si pasa, pero vemos una indicación en rojo de que estamos ejecutando `console.log` una vez terminada la prueba. En este caso es Express en la llamada `app.listen` que hace correr un proceso en forma indefinida y jest queda ejecutándose. Entonces debemos separar lo que vamos a probar (la lógica) de lo que ejecuta el servidor (`listen`).
+Tenemos resultados confusos, ya que en concreto la prueba si pasa, pero vemos una indicación en rojo de que estamos ejecutando `console.log`. En este caso es Express en la llamada `app.listen` que hace correr un proceso en forma indefinida y jest queda ejecutándose. Entonces debemos separar lo que vamos a probar (la lógica) de lo que ejecuta el servidor (`listen`).
 
 Logramos esto separando el archivo `server.js` para que quede de la siguiente forma: 
 
@@ -160,6 +160,8 @@ En este momento el servidor tiene las siguientes características:
 
 - Valida que las solicitudes a `/api` estén autenticadas con 4 casos posibles. 3 casos en los cuales respondemos un código de error y uno en el cuál resulta exitoso y se deja pasar la solicitud.
 
+EL resumen el archivo server tiene los siguientes bloques de código para cada uno de los casos.
+
 **backend/src/server.js**
 ```javascript
 app.use('/api', async (request, response, next) => {
@@ -184,9 +186,9 @@ app.use('/api', async (request, response, next) => {
 ```javascript
 app.use('/api/products', async (request, response) => {
   try {
-    // Caso 1 exito: Se consulta la base de datos exitosamente 
+    // Caso 1 éxito: Se consulta la base de datos exitosamente 
   } catch (error) {
-    // Caso 2 exito: Ocurre un error al consultar la base de datos
+    // Caso 2 error: Ocurre un error al consultar la base de datos
   }
 })
 ```
@@ -249,8 +251,7 @@ Resultado esperado
 Al validar el token deja pasar la petición ejecutando la función "next"
 ```
 
-Este caso no lo implementaremos debido a que cuando escribamos los casos para el endpoint `GET /api/products` estaremos pasando por este middleware y será implícito que las pruebas ejecuten este caso para poder ejecutar la lógica definida para esto.
-
+Este caso no lo implementaremos acá ya que cuando hagamos las pruebas del endpoint `GET /api/products` estaremos pasando por este middleware y será implícito que la prueba pasa por la función `next`
 
 ##### Caso 4 error: La librería "firebase-admin" no valida el token enviado
 
@@ -289,10 +290,10 @@ it('returns 403 when an invalid token is passed',async () => {
       .set('Authorization', 'Bearer faketoken')
       .expect(403)
     expect(response.body).toMatchObject({ message: 'Could not authorize' })
+})
 
-  })
 ```
-En la ultima prueba jest incluso nos muestra el `console.error` que se debe ejecutar en el código de la aplicación cuando llega un token inválido. Lo puedes ver en el siguiente screenshot:
+Ejecutamos y vemos que en la ultima prueba jest incluso nos muestra el `console.error` que se debe ejecutar en el código de la aplicación cuando llega un token inválido. Lo puedes ver en el siguiente screenshot:
 
 ![jest auth test](images/06-testing-frontend-backend-04.png)
 
@@ -341,7 +342,7 @@ describe('Auth middleware',() => {
 ```
 
 Antes de continuar vamos a echar un vistazo a una nueva carpeta que se ha creado en la raíz del directorio `backend` llamada `coverage`. En su interior veremos otro directorio llamado `lcov-report` y en su interior un archivo `index.html`
-Si nevagamos hasta este archivo a través del sistema de archivos de nuestro sistema operativo y lo abrimos con un navegador web veremos algo como lo siguiente:
+Si lo abrimos con un navegador web veremos algo como lo siguiente:
 
 ![Imagen que muestra reporte de cobertura en el navegador](images/06-testing-frontend-backend-05.png)
 
@@ -352,16 +353,15 @@ Luego si hacemos click en `src` y luego en `app.js` veremos lo que muestra la si
 
 Podemos ver claramente como es que el informe de cobertura nos muestra que aún no hemos escrito pruebas que ejecuten los códigos remarcados en la imagen.
 
-⚠️ Ahora vamos a agregar al archivo `.gitignore` el directorio `coverage` porque es importante que este informe sea regenerado por cada ejecución de las pruebas.
-
+⚠️ Ahora vamos a agregar al archivo `.gitignore` el directorio `coverage` porque es importante que este informe sea regenerado por cada ejecución de las pruebas pero no lo necesitamos como parte del repositorio.
 
 Seguimos adelante con las pruebas cuando la solicitud pasa el middleware de autorización y solicita el listado de productos.
 
-#### Implementación de pruebas para endpoints que hacen consultas a una base de datos
+#### Implementación de pruebas para endpoints de productos
 
-Vamos a escribir las pruebas que definimos para los casos que describimos anteriormente para las funcionalidad de responder al endpoint `GET /api/products`:
+Vamos a escribir las pruebas del endpoint `GET /api/products`:
 
-##### Caso 1 exito: Se consulta la base de datos exitosamente 
+##### Caso 1 éxito: Se consulta la base de datos exitosamente 
 
 Resultado esperado
 ```
@@ -415,13 +415,11 @@ describe('/api/products', () =>{
 
 ```
 
-Lo que hicimos en esta prueba fue antes de ejecutar la solicitud al endpoiint
-
-##### Caso 2 exito: Ocurre un error al consultar la base de datos
+##### Caso 2 error: Ocurre un error al consultar la base de datos
 
 Resultado esperado
 ```
-Retorna 500 y un mensaje con el error que sucedión en la base de datos
+Retorna 500 y un mensaje con el error de la base de datos
 ```
 
 Para hacer que la base de datos falle, lo que haremos será destruir la table `Products` a través de Sequelize utilizando el método `drop`.
@@ -440,7 +438,7 @@ it('returns 500 when the database throws error', async () => {
   })
 ```
 
-al correr el comando `npm test` deberiamos ver todas las pruebas pasando como muestra la siguiente imagen:
+al correr el comando `npm test` deberíamos ver todas las pruebas pasando como muestra la siguiente imagen:
 
 ![Imagen que muestra todas las pruebas de Backend pasando](images/06-testing-frontend-backend-07.png)
 
@@ -481,7 +479,7 @@ package-lock.json
 package.json
 test.database.sqlite3
 ```
-Ahora vamos a mostrar el contenido de 4 archivos involucrados en la refactorización
+Ahora vamos a mostrar el contenido de los 4 archivos involucrados en la refactorización
 
 **backend/controllers/products.js**
 
@@ -580,13 +578,15 @@ module.exports = app
 
 ```
 
-finalmente al volver a correr el comando `npm test` veremos que el informe de cobertura nos muestra la nueva distribución de los archivos que fueron ejecutados en las pruebas.
+Volvemos a correr el comando `npm test`  y veremos que el informe de cobertura nos muestra la nueva distribución de los archivos que fueron ejecutados en las pruebas.
 
 ![Imagen que muestra la cobertura de las pruebas en la terminal](images/06-testing-frontend-backend-09.png)
 
 De esta manera logramos hacer una refactorización para ordenar y preparar al código del servidor para ser más escalable para los futuros incrementos del código.
 
 Momento de un nuevo commit. Escribimos lo siguiente en la terminal:
+
+⚠️ Debes están posicionado en la raíz del proyecto.
 
 ```bash
 git add .

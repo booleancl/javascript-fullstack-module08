@@ -13,13 +13,13 @@ Manos a la obra!
 
 Índice:
   - [Creando un proyecto usando CLI y framework UI](docs/01-vue-cli-install.md)
-  - [Escribiendo Pruebas E2E siguiendo la metodología BDD](docs/02-bdd-with-cypress.md)
-  - [Reorganización del proyecto como un repositorio monolítico y agregar Backend](docs/03-monorepo-backend.md)
-  - [Validar autenticación en el Backend](docs/04-firebase-sdk-backend.md)
-  - [Agregando base de datos en desarrollo](docs/05-database-sequelize.md)
+  - [Implementando historias de usuario con BDD](docs/02-bdd-with-cypress.md)
+  - [Reorganización del proyecto como monolítico fullstack Javascript](docs/03-monorepo-backend.md)
+  - [Autenticar en el Frontend y validar en el Backend](docs/04-firebase-sdk-backend.md)
+  - [Agregando base de datos entorno de desarrollo](docs/05-database-sequelize.md)
   - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
   - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
-  - [Configuración de mantenimiento de calidad con Husky](docs/08-development-workflow-husky.md)
-  - [Salida a producción utilizando Postgres y Heroku](docs/09-deployment-postgres.md)
+  - [Configuración de *tooling* para control de calidad con Husky](docs/08-development-workflow-husky.md)
+  - [Salida a producción utilizando Github Actions y Heroku](docs/09-deployment-postgres.md)
 
 Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
