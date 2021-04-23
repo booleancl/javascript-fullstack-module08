@@ -608,7 +608,3 @@ git commit -m "refactor(backend-refactor): Se agregó set de pruebas de caracter
     </th>
   </tr>
 </table>
-
-
-
-https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue
