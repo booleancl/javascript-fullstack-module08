@@ -882,7 +882,7 @@ git commit -m "refactor(frontend-refactor): Se agregó set de pruebas de caracte
     <th colspan="2">
       <a href="./06-testing-backend.md">
         <span>⬅️ </span>
-       Testing de backend
+       Refactorización utilizando pruebas de software en Backend
       </a>
     </th>
     <th colspan="2">

@@ -2,7 +2,8 @@
 
 En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.
 
-Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas como pre-commits que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad. De esta forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.
+Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas.
+En esta oportunidad vamos a configurar un script `pre-commit` y de `pre-push` que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad. De esta forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.
 
 Nuestro proyecto en la raíz debería verse como en el siguiente esquema:
 
@@ -36,9 +37,15 @@ Esto nos creará un archivo como el que se muestra a continuación.
 ```
 Notar que no usaremos la propiedad `main`, por lo que la eliminamos del archivo.
 
-Instalaremos los paquetes necesarios con el siguiente comando `npm install husky npm-run-all`.
+Instalaremos los paquetes necesarios con el siguiente comando:
 
-Como necesitamos estandarizar las tareas de calidad de código necesitamos configurar el linter en Backend con el mismo estándar configurado por Vue para el Frontend.
+```bash
+npm install husky npm-run-all
+```
+
+Ya tenemos los paquetes necesarios para poder correr scripts asociados a las acciones de git, en este caso `Husky` que es la herramienta que nos ayudará a hacer esto y `npm-run-all` que ejecutará las tareas para el `frontend` y `backend` en simultáneo.
+
+Como necesitamos estandarizar las tareas de calidad de código, nos está faltando algo: Necesitamos configurar el linter en Backend con el mismo estándar configurado por Vue para el Frontend.
 
 #### Configurar linter en el backend
 
@@ -146,9 +153,118 @@ module.exports = {
 
 Con esta configuración ya somos capaces de corregir los errores que nos indique Eslint sin problemas corriendo el comando `npm run lint`.
 
-#### Scripts de pre-commit para el proyecto
+Una vez que solucionemos todo los problemas y guardemos los archivos que hemos debido modificar para pasar el linter del lado `backend`, iremos a la carpeta `frontend` y estando en la raíz de este directorio ejecutaremos:
+
+```bash
+npm run lint
+```
+
+Ahora revisamos si es que existen archivos que tengan problemas. De ser así solucionamos los problemas y guardamos los archivos.
+
+#### Scripts de pre-commit y pre-push para el proyecto
+
+Volveremos a la raíz del proyecto e iremos al archivo `package.json` y modificaremos la sección scripts para que quede de la siguiente manera:
+
+```javascript
+"scripts": {
+  "frontend-test:unit": "cd frontend && npm run test:unit",
+  "frontend-lint": "cd frontend && npm run lint",
+  "backend-lint": "cd backend && npm run lint",
+  "backend-test": "cd backend && npm test",
+  "pre-commit": "npm-run-all frontend-lint backend-lint",
+  "pre-push": "npm-run-all frontend-test:unit backend-test",
+  "husky": "husky"
+}
+```
+
+Podemos probar estos scripts primero corriendo los comandos
+
+```bash
+npm run pre-commit
+```
+
+y luego 
+
+```bash
+npm run pre-push
+```
+
+Deberiamos a estas alturas tener todos los linter tanto de Frontend como Backend pasando, así como las pruebas unitarias.
+
+Nos queda un último paso que sería que estos scripts se activen cada vez que hacemos commit o push de nuestro código.
+
+#### 
+
+Instalar husky
+```bash
+npm run husky install
+```
+
+Veras que se configuro una nueva carpeta en la raíz llamada `.husky`
+Ahora ejecutaremos lo siguiente:
+
+```bash
+npm run husky add .husky/pre-commit "npm run pre-commit"
+npm run husky add .husky/pre-push "npm run pre-push"
+```
+
+ahora veremos que dentro del directorio llamado `.husky` hay 2 nuevos archivos. Si revisamos su interior deberiamos ver lo siguiente:
+
+**.husky/pre-commit**
+
+```bash
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run pre-commit
+
+```
+
+**.husky/pre-push**
+
+```bash
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run pre-push
+
+```
+
+Ahora podemos probar que todo esta funcionando.
+Primero haremos un commit y veremos como es que se corren los linters de los proyectos Frontend y Backend.
+
+```bash
+git add .
+git commit -m "chore(dev-scripts): se agregaron scripts de pre-commit y pre-push para asegurar la calidad de la plataforma"
+```
+
+Veremos como al hacer esto se corre el script `pre-commit`. Si todo salió bien el commit  debería hacerse sin problemas.
 
 
-- extraer el comando husky y hacer husky install
-- npx husky add .husky/pre-commit "npm test"
-- crear los hooks para el proyecto
+- CONFIGURAR TU REMOTO
+
+al final
+```bash
+git push origin main
+```
+
+veremos como corren las pruebas antes de que se haga la subida del código a tu repositorio remoto.
+
+Ya estamos preparados para subir a producción nuestro proyecto en el siguiente capítulo.
+
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./07-testing-frontend.md">
+        <span>⬅️ </span>
+       Refactorización utilizando pruebas de software en Frontend
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./09-deployment-postgres.md"> Salida a producción utilizando Github Actions y Heroku
+        <span>➡️ </span>
+      </a>
+    </th>
+  </tr>
+</table>
+
