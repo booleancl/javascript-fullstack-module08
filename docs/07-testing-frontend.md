@@ -63,35 +63,36 @@ Lo vemos en el siguiente resumen
 ```javascript
 ...
 computed: {
-    ...mapState([
-      'products'
-    ])
-  },
-  methods: {
-    ...mapActions([
-      'getProducts'
-    ])
-  },
-  created () {
-    // Delegación de funcionalidad al store
-    this.getProducts()
-  }
+...mapState([
+    'products'
+  ])
+},
+methods: {
+  ...mapActions([
+    'getProducts'
+  ])
+},
+created () {
+  // Delegación de funcionalidad al store
+  this.getProducts()
+}
 ...
 ```
 
-***frontend/src/store/index.js**
+**frontend/src/store/index.js**
 ```javascript
 actions: {
-    async getProducts (actionContext) {
-      const { commit } = actionContext
-      const productsURL = '/api/products'
+  async getProducts (actionContext) {
+    const { commit } = actionContext
+    const productsURL = '/api/products'
 
-      try {
-      // Caso 1: Al invocar a la acción getProducts al inicio de la vista se crea la lista de productos si el servidor responde exitosamente
-      } catch (error) {
-      // Caso 2: Al invocar a la acción getProducts al inicio de la vista NO se crea la lista de productos si el servidor responde con error
-      }
+    try {
+    // Caso 1: Al invocar a la acción getProducts al inicio de la vista se crea la lista de productos si el servidor responde exitosamente
+    } catch (error) {
+    // Caso 2: Al invocar a la acción getProducts al inicio de la vista NO se crea la lista de productos si el servidor responde con error
     }
+  },
+  ...
 ```
 
 #### Implementación de pruebas sobre la vista Login
@@ -386,7 +387,6 @@ it('Shows an empty list of products when the server response failed', async () =
 Ejecutamos las pruebas y veremos como hemos logrado cubrir todo el código como muestra la siguiente imagen:
 
 ![Imagen que muestra cobertura total en store](images/07-testing-frontend-06.png)
-
 
 #### Refactorización del Store
 
@@ -823,14 +823,14 @@ Modificaremos el archivo `frontend/src/store/index.js` en la función `getProduc
 
 ...
 async getProducts (actionContext) {
-      const { commit } = actionContext
-      try {
-        const products = await productService.getProducts()
-        commit('SET_PRODUCTS', products)
-      } catch(error) {
-        commit('SET_ALERT', { message: error.message, type: 'error' })
-      }
-    },
+  const { commit } = actionContext
+  try {
+    const products = await productService.getProducts()
+    commit('SET_PRODUCTS', products)
+  } catch(error) {
+    commit('SET_ALERT', { message: error.message, type: 'error' })
+  }
+},
 ...
 
 ```
@@ -886,7 +886,7 @@ git commit -m "refactor(frontend-refactor): Se agregó set de pruebas de caracte
       </a>
     </th>
     <th colspan="2">
-      <a href="./08-development-workflow-husky.md">Development workflow
+      <a href="./08-development-workflow-husky.md"> Flujo de desarrollo del proyecto
         <span>➡️ </span>
       </a>
     </th>

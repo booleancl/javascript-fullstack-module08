@@ -19,7 +19,7 @@ Manos a la obra!
   - [Agregando base de datos entorno de desarrollo](docs/05-database-sequelize.md)
   - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
   - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
-  - [Configuración de *tooling* para control de calidad con Husky](docs/08-development-workflow-husky.md)
+  - [ Flujo de desarrollo del proyecto](docs/08-development-workflow-husky.md)
   - [Salida a producción utilizando Github Actions y Heroku](docs/09-deployment-postgres.md)
 
 Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
