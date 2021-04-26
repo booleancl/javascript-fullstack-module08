@@ -75,12 +75,12 @@ Listo! ya estamos preparados para ir al siguiente paso de la construcción del p
 <table>
   <tr>
     <th colspan="2">
-      <a href="../README.md">
+      <a href="docs/01-vue-cli-install.md">
         <span>⬅️ </span> Volver al Índice del curso
       </a>
     </th>
     <th colspan="2">
-      <a href="./02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
+      <a href="docs/01-vue-cli-install.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
         <span>➡️ </span>
       </a>
     </th>
