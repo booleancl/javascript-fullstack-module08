@@ -13,6 +13,4 @@ exclude:
   - node_modules
   - fixtures
   - .github
-  - .husky]
-
-theme: jekyll-theme-minimal
+  - .husky
