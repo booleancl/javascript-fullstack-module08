@@ -3,7 +3,7 @@
 En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.
 
 Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas.
-En esta oportunidad vamos a configurar un script `pre-commit` y de `pre-push` que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad. De esta forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.
+En esta oportunidad vamos a configurar un script `pre-commit` y de `pre-push` que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad de forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.
 
 Nuestro proyecto en la raíz debería verse como en el siguiente esquema:
 
