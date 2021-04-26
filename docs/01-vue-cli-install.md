@@ -1,10 +1,12 @@
 # Creando un proyecto usando CLI y framework UI
-  Comenzaremos creando un proyecto a través de la línea de comandas de Vue. Para ello la instalaremos de  utilizando el siguiente comando
+
+Comenzaremos creando un proyecto a través de la línea de comandos de Vue. Para ello la instalaremos con el siguiente comando
 
 ```bash
 npm install -g @vue/cli
 ```
- Una vez instalado navegamos a través de la terminal hacia el directorio donde queremos crear el proyecto y ejecutamos el siguiente comando:
+
+Una vez instalado navegamos a través de la terminal hacia el directorio donde queremos crear el proyecto y ejecutamos el siguiente comando:
 
 ```bash
 vue create <nombre-de-tu-proyecto>
@@ -43,13 +45,13 @@ Deberemos contestar una serie de preguntas. Veamos en detalle que responderemos 
 
 Esto creará una carpeta con la estructura inicial y todo lo necesario para construir nuestra aplicación Frontend.
 
-Una vez terminada la instalación partimos navegando al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/) (durante el proceso de instalación  vue-cli hizo `git init` por nosotros)  utilizando el siguiente comando:
+Una vez terminada la instalación ingresamos al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/) (durante el proceso de instalación  vue-cli ejecutó `git init`) utilizando el siguiente comando:
 
 ```bash
 vue add vuetify
 ```
 
-Vuetify es una de las tantas (Buefy, Element, Bootstrap Vue) librería de componentes UI de alta productividad para Vue.
+Vuetify es una de las tantas (Buefy, Element, Bootstrap Vue) librerías de componentes UI de alta productividad para Vue.
 
 Nos preguntará si queremos seleccionar algún tipo de configuración. Seleccionaremos la opción predeterminada como muestra la siguiente imagen:
 
@@ -65,7 +67,7 @@ Para finalizar agregaremos los cambios  sumados por Vuetify a Git. Para esto com
 
 ```bash
 git add .
-git commit -m "chore(vuetify): se agrega Vuetify al proyecto Frontend"
+git commit -m "chore(vuetify): Create Vue project with Vuetify"
 ```
 Listo! ya estamos preparados para ir al siguiente paso de la construcción del proyecto .
 

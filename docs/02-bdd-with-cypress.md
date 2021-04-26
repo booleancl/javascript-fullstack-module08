@@ -1,6 +1,6 @@
-# Escribiendo Pruebas E2E siguiendo la metodología BDD
+# Implementando historias de usuario con BDD
 
-Comenzaremos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que quieren que el software haga utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
+Comenzaremos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
 
 Nuestra primera historia de usuario es la siguiente:
 ```ruby
@@ -147,8 +147,8 @@ Finalmente al recargar las pruebas veremos como es que ahora se puso de color ve
 
 #### Refactorización
 
-Si bien nuestras pruebas están pasando, podemos ver que la interfaz de usuario no cumple el objetivo ya que los elementos están definidos sin estilo y además aún tenemos todo el código que agregó Vuetify en su instalación.
-Lo que haremos será cambiar todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.
+Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación.
+Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.
 
 Lo primero será modificar el archivo `src/App.vue` y reemplazaremos todo su contenido por lo siguiente:
 
@@ -171,7 +171,7 @@ export default {
 
 ```
 
-Luego iremos al directorio `views`. Acá eliminaremos el archivo `About.vue` y vamos a cambiar el nombre del archivo `Home.vue` por `Login.vue`. En cuanto guardemos esto veremos un error en la terminal pero lo solucionaremos de inmediato, cuando actualicemos el router.
+Luego iremos al directorio `views`. Eliminamos el archivo `About.vue` y vamos a cambiar el nombre del archivo `Home.vue` por `Login.vue`. En cuanto guardemos esto veremos un error en la terminal pero lo solucionaremos de inmediato, cuando actualicemos el router.
 
 Ahora vamos al archivo `Login.vue` y reemplazaremos todo su contenido con lo siguiente:
 
@@ -239,7 +239,6 @@ export default {
 y ahora actualizamos el archivo `src/router/index.js` con lo siguiente:
 
 ```javascript
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
@@ -260,9 +259,10 @@ const router = new VueRouter({
 })
 
 export default router
+
 ```
 
-Ahora podemos recargar nuestras pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
+Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
@@ -286,7 +286,7 @@ Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y l
 
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
 
-Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que vamos a crear en el directorio `src`.
+Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que crearemos en el directorio `src`.
 Primero vamos a crear el directorio en `src/firebase` y al interior de ese directorio crearemos 2 archivos llamados `config.js` e `index.js`.
 
 ```
@@ -491,10 +491,9 @@ Al recargar vemos que la nueva prueba si está pasando pero estos cambios provoc
 
 
 Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas de software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las otras pruebas pasando y no sólo la que acabamos de escribir.
-Pasaremos al siguiente paso del ciclo que sería refactorizar el código de modo que todas las pruebas queden pasando.
 
-Para solucionar esto aprovecharemos la `ref` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `ref` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate)
-Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en la sección `methods`
+Para solucionar esto usaremos la `refs` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `refs` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate)
+Iremos a modificar el archivo `src/views/Login.vue` y agregamos lo siguiente en la sección `methods`
 
 ```javascript
   ...
@@ -513,8 +512,9 @@ Iremos a modificar el arhivo `src/views/Login.vue` y agregamos lo siguiente en l
 
 y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
 
+Tip: Revisa la consola por errores de identación que puedan entorpecer la "compilación"
 
-Ahora debemos hacer una refatorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección `<script>` del archivo `src/views/Login.vue` por lo siguiente:
+Ahora debemos hacer una refactorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección `<script>` del archivo `src/views/Login.vue` por lo siguiente:
 
 ```javascript
 <script>
@@ -554,6 +554,8 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 ![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
 
 #### Página de productos
+
+Continuamos con con la siguiente historia de usuario. Esta vez con la vista de los productos.
 
 ```ruby
 Funcionalidad: página de productos

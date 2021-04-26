@@ -1,4 +1,6 @@
-
+---
+layout: default
+---
 ![Logo de Boolean Academia](https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg)
 
 # Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueques
@@ -14,12 +16,14 @@ Manos a la obra!
 Índice:
   - [Creando un proyecto usando CLI y framework UI](docs/01-vue-cli-install.md)
   - [Implementando historias de usuario con BDD](docs/02-bdd-with-cypress.md)
-  - [Reorganización del proyecto como monolítico fullstack Javascript](docs/03-monorepo-backend.md)
+  - [Reorganización del proyecto como fullstack Javascript](docs/03-monorepo-backend.md)
   - [Autenticar en el Frontend y validar en el Backend](docs/04-firebase-sdk-backend.md)
-  - [Agregando base de datos entorno de desarrollo](docs/05-database-sequelize.md)
+  - [Agregando base de datos en entorno de desarrollo](docs/05-database-sequelize.md)
   - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
   - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
-  - [ Flujo de desarrollo del proyecto](docs/08-development-workflow-husky.md)
+  - [ Automatización de tareas para el desarrollo](docs/08-development-workflow-husky.md)
   - [Salida a producción utilizando Github Actions y Heroku](docs/09-deployment-postgres.md)
+  
 
+PENDING:  
 Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
