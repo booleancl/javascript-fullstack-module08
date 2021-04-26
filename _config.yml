@@ -1,0 +1,18 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - README.md
+  - LICENSE.md
+exclude: 
+  - backend
+  - frontend
+  - ci
+  - node_modules
+  - fixtures
+  - .github
+  - .husky]
+
+theme: jekyll-theme-minimal
