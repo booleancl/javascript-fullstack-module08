@@ -6,4 +6,11 @@ relative_links:
 include:
   - README.md
   - LICENSE.md
-exclude: [backend, frontend, ci, node_modules, fixtures, .github, .husky]
+exclude: 
+  - backend
+  - frontend
+  - ci
+  - node_modules
+  - fixtures
+  - .github
+  - .husky]
