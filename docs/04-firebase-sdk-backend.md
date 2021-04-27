@@ -13,7 +13,7 @@ Ahora, en una terminal paralela ingresamos a la carpeta backend e ingresamos la 
 ```bash
 npm i firebase-admin
 ```
-En esta parte podemos encender el servidor con `npm start`. Al recargar Cypress veremos que todas pruebas vuelven a pasar, pero aún no verificamos nada en el servidor. Para esto reemplaza el contenido del archivo `backend/src/server.js` con lo siguiente:
+En esta parte podemos encender el servidor con `npm run dev`. Al recargar Cypress veremos que todas pruebas vuelven a pasar, pero aún no verificamos nada en el servidor. Para esto reemplaza el contenido del archivo `backend/src/server.js` con lo siguiente:
 
 ```javascript
 const express = require('express')
@@ -209,7 +209,7 @@ Para esto vamos a detener nuestro servidor de `backend` y creamos un archivo nue
 }
 ```
 
-Ahora que ya tenemos este archivo podemos volver a ejecutar `npm start` y la ejecución de Nodemon tomará estas nuevas variables y estarán disponibles en la aplicación a través de la variable `process.env`. Aprovechando esto vamos a modificar 2 cosas en nuestro archivo `backend/src/server.js`.
+Ahora que ya tenemos este archivo podemos volver a ejecutar `npm run dev` y la ejecución de Nodemon tomará estas nuevas variables y estarán disponibles en la aplicación a través de la variable `process.env`. Aprovechando esto vamos a modificar 2 cosas en nuestro archivo `backend/src/server.js`.
 
 ```javascript
 ...

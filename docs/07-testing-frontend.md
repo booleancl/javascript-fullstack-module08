@@ -861,7 +861,7 @@ Luego de hacer este cambio las pruebas se recargarán y podemos ver como están 
 
 
 #### Probar la aplicación con servidor y frontend corriendo
-Ahora probaremos la aplicación manualmente corriendo el comando `npm run serve` y en otra ventana corriendo `npm start` en Frontend y Backend respectivamente. Como en la siguiente imagen:
+Ahora probaremos la aplicación manualmente corriendo el comando `npm run serve` y en otra ventana corriendo `npm run dev` en Frontend y Backend respectivamente. Como en la siguiente imagen:
 
 ![corriedo dos terminales](images/07-testing-frontend-14.png)
 

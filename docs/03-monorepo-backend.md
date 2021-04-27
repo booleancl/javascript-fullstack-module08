@@ -110,7 +110,7 @@ Modificamos el `backend/package.json` y quedará de la siguiente forma:
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -128,7 +128,7 @@ Modificamos el `backend/package.json` y quedará de la siguiente forma:
 Con esto ya podremos levantar el servidor preocupándonos de estar dentro del directorio `backend` ejecutamos:
 
 ```bash
-npm start
+npm run dev
 ```
 
 Veremos que nuestro servidor ya está corriendo como en la siguiente imagen:

@@ -53,25 +53,143 @@ Deberíamos ver algo como lo que muestra la siguiente imagen:
 
 Veremos aparecer una carpeta `dist` en la raíz del directorio `frontend` por lo cuál si accedemos a ella veremos los archivos generados por Vue además de un archivo `index.html` y `favicon.ico`. 
 
-- agregar carpeta public en backend
-- agregar código en app.js de express.static
+
+**backend/src/app.js**
+```javascript
+
+const express = require('express')
+const authMiddleware = require('./middleware/auth')
+const routes = require('./routes')
+const staticFolder = `${__dirname}/public`
+const app = express()
+
+app.use(express.static(staticFolder))
+app.use('/api', authMiddleware)
+app.use('/api', routes)
+
+app.get('*', (request, response) => {
+  return response.sendFile(`${staticFolder}/index.html`)
+})
+
+module.exports = app
+
+```
+
 - copiar todo el contenido de dist a public
-- correr `npm start` en backend
+- correr `npm run dev` en backend
+
+- Agregar al gitignore
+
+```bash
+backend/src/public
+```
+
+
 - agregar al gitignore `backend/public` y explicar porque
 
 #### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
 
 - heroku crear cuenta
-- heroku crear app
-- comentar sobre imagenes docker en heroku con diagrama y enlaces a documentación
+- heroku crear app intefaz
+- agregar tarea `start` y sección `engines`
 
-(sino tiene docker, puede saltarse la parte que sigue)
-- agregar Dockerfile y probar en local la imagen de producción con docker run
-- explicar como Heroku expondrá nuestra app y hacer analogía con lo hecho en local
+**backend/package.json**
+```javascript
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand --coverage",
+    "eslint": "eslint",
+    "lint": " eslint .",
+    "jest": "jest",
+    "sequelize": "sequelize"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-admin": "^9.6.0",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0",
+    "eslint-plugin-jest": "^24.3.6",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0",
+    "sqlite3": "^5.0.2",
+    "supertest": "^6.1.3"
+  }
+}
 
+```
+
+nos basta la tarea `start` para que heroku reconozca que este será el comando de inicialización. Puedes revisar sobre esta información en la documentación oficial de Heroku a través de [este enlace](https://devcenter.heroku.com/articles/nodejs-support#default-web-process-type)
+
+Es también importante configurar la sección `engines` para confifgurar bajo que versión de NodeJS correrá nuestra aplicación. Más detalles en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version)
+
+#### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
+
+- github actions y variable de ambiente para deployment y seguridad en settings/secrets
+
+  HEROKU_APP_NAME
+  HEROKU_OWNER_EMAIL
+  HEROKU_API_KEY
+
+crear 
+
+
+- subir archivo de service account a Firebase Hosting y explicar almacenamiento de secretos (y que esto es nivel básico)
+
+- Pull request, code review y agilidad etc
+- push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
+
+FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT
+
+crear archivo `.profile`
+la información de porque creamos este archivo está en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#the-profile-file)
+
+**backend/.profile**
+```
+OUTPUT_PATH="$(pwd)/firebase-service-account.json"
+
+curl -X GET \
+  -o $OUTPUT_PATH \
+  $SERVICE_ACCOUNT_FILE_URL
+
+export GOOGLE_APPLICATION_CREDENTIALS=$OUTPUT_PATH
+```
+
+- Interfaz de firebase foto sacar URL
+
+- Ir a config vars de Heroku y crear SERVICE_ACCOUNT_FILE_URL.
+Ahora deberían haber 2: DATABASE_URL y SERVICE_ACCOUNT_FILE_URL.
+Además mencionar la varianble PORT que lo puedes ver más en detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#local-environment-variables)
+
+Ahora somos capaces de generar el archivo de cuenta de servicio de manera segura a través de la variable GOOGLE_APPLICATION_CREDENTIALS
+
+OTRA VEZ FALLA!
+ESTA VEZ PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN
 #### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
 
 - instalar postgres como dependencia del backend
+
+en `backend` en la raíz:
+```bash
+npm i pg
+```
+
+- heroku agregar ADDON Heroku Postgres interfaz
+- revisar config vars y veremos DATABASE_URL que usaremos más adelante
 - configurar sequelize para producción usando 
 ```javascript
 "production": {
@@ -85,19 +203,34 @@ Veremos aparecer una carpeta `dist` en la raíz del directorio `frontend` por lo
   "logging": false
 }
 ```
-- crear el servicio de heroku desde ya y probar en local. poniendo temporarlmente las variables producción y database_url
 
 
-#### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
+Ahora hacemos push, esperamos el deploy!
+autenticamos
+y vemos error 500 en la DB "no existe tabla productos"
+NOS FALTAN LAS MIGRACIONES
 
-- github actions y variable de ambiente para deployment y seguridad
+agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
 
-- subir archivo de service account a Firebase Hosting y explicar almacenamiento de secretos (y que esto es nivel básico)
-- Pipeline y archivos bash de deployment en carpeta `ci` en la raíz
-- Pull request, code review y agilidad etc
-- push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
+```javascript
+"db:migrate": "npm run sequelize db:migrate",
+"heroku-postbuild": "npm run db:migrate -- --env=production"
+```
 
-- Agregar datos utilizando una herramienta para postgres y corroborar los resultados en producción agregando productos.
+Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
+
+para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
+
+hacer push y listo
+
+AHORA SI FUNCIONA!!!! pero la tabla productos está vacia.
+Mostrar foto array vacio en el response del endpoint de productos
+
+#### Cargar datos en la base de datos y ver los productos
+
+
+#### Agregar un usuario real a la aplicación para terminar
+
 
 <table>
   <tr>
