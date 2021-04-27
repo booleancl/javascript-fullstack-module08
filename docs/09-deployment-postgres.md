@@ -145,11 +145,101 @@ Es también importante configurar la sección `engines` para confifgurar bajo qu
   HEROKU_OWNER_EMAIL
   HEROKU_API_KEY
 
-crear 
+- crear carpeta `.github` en la raíz. dentro otra carpeta llamada `worflows` y ahi dentro un archivo llamado `pipeline.yml` como muestra el siguiente esquema:
 
+```
+└─ .github
+  └─ worflows
+     pipeline.yml
+└─ .husky
+└─ backend
+└─ fixtures
+└─ frontend
+.gitignore
+package-lock.json
+package.json
+```
 
-- subir archivo de service account a Firebase Hosting y explicar almacenamiento de secretos (y que esto es nivel básico)
+**.github/workflows/pipeline.yml**
 
+```yaml
+name: Node.js CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:12
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Build Deploy Artifact
+          run: |
+            STATIC_FOLDER=backend/src/public
+
+            cd ./frontend
+            npm install
+            npm run build
+            cd ..
+
+            mkdir -p $STATIC_FOLDER
+            cp -R ./frontend/dist/. $STATIC_FOLDER
+            ls -R -lha $STATIC_FOLDER
+        - name: Archive production artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: platform-artifact
+            path: |
+              backend
+              !backend/tests
+              !backend/.eslintrc.js
+              !backend/jest.config.js
+              !backend/nodemon.json
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      HEROKU_OWNER_EMAIL: ${{ secrets.HEROKU_OWNER_EMAIL }}
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+    steps:
+        - name: Download production artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: platform-artifact
+            path: backend
+        
+        - name: Setup Heroku Credentials
+          run: |
+            cat > ~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_OWNER_EMAIL
+              password $HEROKU_API_KEY
+            machine git.heroku.com
+              login $HEROKU_OWNER_EMAIL
+              password $HEROKU_API_KEY
+            EOF
+            cat ~/.netrc
+
+        - name: Deploy Platform to Production
+          run: |
+            cd backend
+            git init
+            git branch -m main
+            git config user.email "deployment-user@github-actions"
+            git config user.name "Deployment Bot"
+
+            git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git
+            echo 'node_modules' >> .gitignore
+
+            git add .
+            git commit -m "deploy: server artifact deployment from github actions"
+            git push -f heroku main
+
+```
 - Pull request, code review y agilidad etc
 - push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
 
