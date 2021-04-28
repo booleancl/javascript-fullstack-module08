@@ -1,0 +1,250 @@
+I">Q<h1 id="flujo-de-desarrollo-del-proyecto">Flujo de desarrollo del proyecto</h1>
+
+<p>En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.</p>
+
+<p>Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas.
+En esta oportunidad vamos a configurar un script <code class="language-plaintext highlighter-rouge">pre-commit</code> y de <code class="language-plaintext highlighter-rouge">pre-push</code> que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad de forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.</p>
+
+<p>Nuestro proyecto en la raíz debería verse como en el siguiente esquema:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
+├── backend
+├── fixtures
+└── frontend
+.gitignore
+
+</code></pre></div></div>
+
+<p>En la raíz del proyecto vamos a ejecutar el siguiente comando:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm init <span class="nt">-f</span>
+</code></pre></div></div>
+<p>Esto nos creará un archivo como el que se muestra a continuación.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">&lt;nombre-de-tu-proyecto&gt;</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">version</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.0</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">description</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">echo </span><span class="se">\"</span><span class="s2">Error: no test specified</span><span class="se">\"</span><span class="s2"> &amp;&amp; exit 1</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">keywords</span><span class="dl">"</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="dl">"</span><span class="s2">author</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">license</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ISC</span><span class="dl">"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Notar que no usaremos la propiedad <code class="language-plaintext highlighter-rouge">main</code>, por lo que la eliminamos del archivo.</p>
+
+<p>Instalaremos los paquetes necesarios con el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>husky npm-run-all
+</code></pre></div></div>
+
+<p>Ya tenemos los paquetes necesarios para poder correr scripts asociados a las acciones de git, en este caso <code class="language-plaintext highlighter-rouge">Husky</code> que es la herramienta que nos ayudará a hacer esto y <code class="language-plaintext highlighter-rouge">npm-run-all</code> que ejecutará las tareas para el <code class="language-plaintext highlighter-rouge">frontend</code> y <code class="language-plaintext highlighter-rouge">backend</code> en simultáneo.</p>
+
+<p>Como necesitamos estandarizar las tareas de calidad de código, nos está faltando algo: Necesitamos configurar el linter en Backend con el mismo estándar configurado por Vue para el Frontend.</p>
+
+<h4 id="configurar-linter-en-el-backend">Configurar linter en el backend</h4>
+
+<p>Nos aseguramos de navegar hacia la carpeta <code class="language-plaintext highlighter-rouge">backend</code> y en su interior ejecutamos el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save-dev</span> eslint
+</code></pre></div></div>
+<p>Ahora modificaremos la sección <code class="language-plaintext highlighter-rouge">scripts</code> del archivo <code class="language-plaintext highlighter-rouge">backend/package.json</code> y vamos a exponer el comando <code class="language-plaintext highlighter-rouge">eslint</code> como se muestra en el siguiente trozo de código:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">nodemon src/server.js</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest --runInBand --coverage</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span>
+<span class="p">},</span>
+</code></pre></div></div>
+
+<p>Ahora vamos a inicializar Eslint corriendo el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run eslint <span class="nt">--</span> <span class="nt">--init</span>
+</code></pre></div></div>
+
+<p>Se nos harán una serie de pregunta. Nos aseguraremos de contestarlas con las respuestas que muestra la siguiente imagen:</p>
+
+<p><img src="images/08-dev-workflow-05.png" alt="Imagen que muestra respuesta a eslint --init" /></p>
+
+<p>El archivo generado por Eslint debería haber quedado de la siguiente forma:</p>
+
+<p><strong>backend/.eslintrc</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">env</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">commonjs</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">es2021</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">node</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">extends</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint:recommended</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">parserOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">"</span><span class="s2">ecmaVersion</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">rules</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Ahora agregaremos un nuevo script que será el encargado de ejecutar el linter para este proyecto. Volvemos a la sección <code class="language-plaintext highlighter-rouge">script</code> del archivo <code class="language-plaintext highlighter-rouge">backend/package.json</code> y debería verse de la siguiente forma:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">nodemon src/server.js</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest --runInBand --coverage</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">lint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint .</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span>
+<span class="p">},</span>
+</code></pre></div></div>
+
+<p>Ahora podremos ejecutar el siguiente comando desde la raíz del directorio backend:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run lint
+</code></pre></div></div>
+
+<p>Al ejecutar el comando podremos ver todos los errores asociados al estándar que estamos siguiendo con Eslint, pero también veremos otros errores que están relacionados al Framework para pruebas que estamos usando: Jest.
+Estos errores se ven como se muestra en la siguiente imagen:</p>
+
+<p><img src="images/08-dev-workflow-06.png" alt="Imagen que muestra errores de jest en linter" /></p>
+
+<p>Esto sucede porque el estándar por defecto que instalamos con Eslint no viene preparado para ver los archivos de Jest. Para esto instalaremos un plugin de Eslint con el siguiente comando ejecutado en la raíz del directorio <code class="language-plaintext highlighter-rouge">backend</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i <span class="nt">--save-dev</span> eslint-plugin-jest
+</code></pre></div></div>
+
+<p>y reemplazamos el contenido del archivo <code class="language-plaintext highlighter-rouge">backend/.eslintsrc</code> con el siguiente contenido:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">env</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">commonjs</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">es2021</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">node</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">jest/globals</span><span class="dl">"</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">extends</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint:recommended</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">plugins</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span>
+  <span class="p">],</span>
+  <span class="dl">"</span><span class="s2">parserOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">ecmaVersion</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">rules</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</code></pre></div></div>
+
+<p>Con esta configuración ya somos capaces de corregir los errores que nos indique Eslint sin problemas corriendo el comando <code class="language-plaintext highlighter-rouge">npm run lint</code>.</p>
+
+<p>Una vez que solucionemos todo los problemas y guardemos los archivos que hemos debido modificar para pasar el linter del lado <code class="language-plaintext highlighter-rouge">backend</code>, iremos a la carpeta <code class="language-plaintext highlighter-rouge">frontend</code> y estando en la raíz de este directorio ejecutaremos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run lint
+</code></pre></div></div>
+
+<p>Ahora revisamos si es que existen archivos que tengan problemas. De ser así solucionamos los problemas y guardamos los archivos.</p>
+
+<h4 id="scripts-de-pre-commit-y-pre-push-para-el-proyecto">Scripts de pre-commit y pre-push para el proyecto</h4>
+
+<p>Volveremos a la raíz del proyecto e iremos al archivo <code class="language-plaintext highlighter-rouge">package.json</code> y modificaremos la sección scripts para que quede de la siguiente manera:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">frontend-test:unit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">cd frontend &amp;&amp; npm run test:unit</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">frontend-lint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">cd frontend &amp;&amp; npm run lint</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">backend-lint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">cd backend &amp;&amp; npm run lint</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">backend-test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">cd backend &amp;&amp; npm test</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">pre-commit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm-run-all frontend-lint backend-lint</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">pre-push</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm-run-all frontend-test:unit backend-test</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">husky</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">husky</span><span class="dl">"</span>
+<span class="p">},</span>
+
+</code></pre></div></div>
+
+<p>Podemos probar estos scripts primero corriendo los comandos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run pre-commit
+</code></pre></div></div>
+
+<p>y luego</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run pre-push
+</code></pre></div></div>
+
+<p>Deberíamos a estas alturas tener todos los linter tanto de Frontend como Backend pasando, así como las pruebas unitarias.</p>
+
+<p>Nos queda un último paso que sería que estos scripts se activen cada vez que hacemos commit o push de nuestro código.</p>
+
+<p>####</p>
+
+<p>Instalar husky</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run husky <span class="nb">install</span>
+</code></pre></div></div>
+
+<p>Veras que se configuro una nueva carpeta en la raíz llamada <code class="language-plaintext highlighter-rouge">.husky</code>
+Ahora ejecutaremos lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run husky add .husky/pre-commit <span class="s2">"npm run pre-commit"</span>
+npm run husky add .husky/pre-push <span class="s2">"npm run pre-push"</span>
+</code></pre></div></div>
+
+<p>ahora veremos que dentro del directorio llamado <code class="language-plaintext highlighter-rouge">.husky</code> hay 2 nuevos archivos. Si revisamos su interior deberíamos ver lo siguiente:</p>
+
+<p><strong>.husky/pre-commit</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+<span class="nb">.</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="si">)</span><span class="s2">/_/husky.sh"</span>
+
+npm run pre-commit
+
+</code></pre></div></div>
+
+<p><strong>.husky/pre-push</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+<span class="nb">.</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$0</span><span class="s2">"</span><span class="si">)</span><span class="s2">/_/husky.sh"</span>
+
+npm run pre-push
+
+</code></pre></div></div>
+
+<p>Ahora podemos probar que todo esta funcionando.
+Primero haremos un commit y veremos como es que se corren los linters de los proyectos Frontend y Backend.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add <span class="nb">.</span>
+git commit <span class="nt">-m</span> <span class="s2">"chore(dev-scripts): se agregaron scripts de pre-commit y pre-push para asegurar la calidad de la plataforma"</span>
+</code></pre></div></div>
+
+<p>Veremos como al hacer esto se corre el script <code class="language-plaintext highlighter-rouge">pre-commit</code>. Si todo salió bien el commit debería hacerse sin problemas.</p>
+
+<ul>
+  <li>CONFIGURAR TU REMOTO</li>
+</ul>
+
+<p>al final</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push origin main
+</code></pre></div></div>
+
+<p>veremos como corren las pruebas antes de que se haga la subida del código a tu repositorio remoto.</p>
+
+<p>Ya estamos preparados para subir a producción nuestro proyecto en el siguiente capítulo.</p>
+
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./07-testing-frontend.md">
+        <span>⬅️ </span>
+       Refactorización utilizando pruebas de software en Frontend
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./09-deployment-postgres.md"> Salida a producción utilizando Github Actions y Heroku
+        <span>➡️ </span>
+      </a>
+    </th>
+  </tr>
+</table>
+
+:ET

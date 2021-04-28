@@ -1,0 +1,327 @@
+I"�<h1 id="reorganización-del-proyecto-como-un-repositorio-monolítico-y-agregar-backend">Reorganización del proyecto como un repositorio monolítico y agregar Backend</h1>
+
+<p>En función de la metodología que estamos utilizando (el mínimo código posible) lo que haremos será centralizar en este mismo repositorio todo lo necesario para que las pruebas pasen sin problema. En este caso las pruebas end-to-end requieren que desde el Frontend se realice una petición (request) hacia un backend que aún no existe. Este backend debe ser capaz de responder a una petición GET en la URL <code class="language-plaintext highlighter-rouge">/api/products</code>.</p>
+
+<p>Dado este panorama, lo que haremos será reorganizar el repositorio siguiendo algunos lineamientos:</p>
+
+<ul>
+  <li>Dividiremos el repositorio en 2 dominios: Frontend y Backend. Cada dominio resolverá una parte del problema. En este caso el Frontend será la aplicación Web que interactúa con el usuario y el Backend entrega la información gestionando una Base de datos.</li>
+  <li>Crearemos un directorio en la raíz para centralizar todos los Fixtures que le serán útiles tanto al dominio de Backend como Frontend.</li>
+  <li>Cuando ambos dominios de negocio estén listos para salir a producción configuraremos procedimientos automáticos de calidad que validen la sintáxis  en todo el monorepo y que ejecuten las antes de que se suban cambios al repositorio remoto.</li>
+</ul>
+
+<p>Cancelamos la ejecución de Cypress (cmd+C o ctrl+C) y movemos todos los archivos y carpetas hacia <code class="language-plaintext highlighter-rouge">/frontend</code>, excepto el archivo .gitignore que permanece en la raíz, dejando el repositorio como indica el siguiente esquema:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tu-proyecto&gt;
+└─── backend
+└─── frontend &lt;-- acá movemos todo el código generado hasta el momento
+  └─── node_modules
+  └─── public
+  └─── src
+  └─── tests
+      .browserslistrc
+      .editorconfig
+      .eslintrc.js
+      babel.config.js
+      cypress.json
+      jest.config.js
+      package-lock.json
+      package.json
+      README.md
+      vue.config.js
+.gitignore &lt;-- Este archivo permanece en la raíz
+</code></pre></div></div>
+
+<p>Ahora tomaremos la carpeta fixtures que se encuentra en <code class="language-plaintext highlighter-rouge">frontend/tests/e2e</code> y la moveremos hacia la raíz. También aprovecharemos de crear un directorio <code class="language-plaintext highlighter-rouge">src</code> dentro de la carpeta <code class="language-plaintext highlighter-rouge">backend</code> que será donde escribiremos el código del servidor. Con todos los ajustes el proyecto debe quedar como en el siguiente esquema:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tu-proyecto&gt;
+└─── fixtures
+     products.json
+└─── backend
+  └─── src
+└─── frontend 
+  └─── node_modules
+  └─── public
+  └─── src
+  └─── tests
+      .browserslistrc
+      .editorconfig
+      .eslintrc.js
+      babel.config.js
+      cypress.json
+      jest.config.js
+      package-lock.json
+      package.json
+      README.md
+      vue.config.js
+.gitignore
+</code></pre></div></div>
+<p>La implementación de las validaciones automatizadas de linter y pruebas las dejaremos para más adelante, cuando ya tengamos listos los proyectos de Frontend y Backend.</p>
+
+<p>Continuamos con el Backend. Lo primero que haremos será entrar al directorio <code class="language-plaintext highlighter-rouge">backend</code> desde la terminal y ejecutaremos lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm init <span class="nt">-f</span>
+npm i express 
+npm i <span class="nt">--save-dev</span> nodemon
+</code></pre></div></div>
+<p>Ahora creamos un nuevo archivo en <code class="language-plaintext highlighter-rouge">backend/src</code> llamado <code class="language-plaintext highlighter-rouge">server.js</code> con el siguiente contenido:</p>
+
+<p><strong>backend/src/server.js</strong></p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api/products</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">200</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`GET with status code </span><span class="p">${</span><span class="nx">statusCode</span><span class="p">}</span><span class="s2"> in /api/products endpoint`</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">response</span>
+    <span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="nx">statusCode</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">json</span><span class="p">([])</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`App server listening on port </span><span class="p">${</span><span class="nx">port</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="p">})</span>
+
+</code></pre></div></div>
+<p>Una vez ejecutado esto deberíamos ver el directorio <code class="language-plaintext highlighter-rouge">backend</code> de la siguiente forma</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>└─ backend
+  └─ node_modules
+  └─ src
+     server.js
+  package-lock.json
+  package.json
+
+</code></pre></div></div>
+
+<p>Modificamos el <code class="language-plaintext highlighter-rouge">backend/package.json</code> y quedará de la siguiente forma:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"backend"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"index.js"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nodemon src/server.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"echo </span><span class="se">\"</span><span class="s2">Error: no test specified</span><span class="se">\"</span><span class="s2"> &amp;&amp; exit 1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ISC"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"express"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^4.17.1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"nodemon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^2.0.7"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre></div></div>
+<p>Con esto ya podremos levantar el servidor preocupándonos de estar dentro del directorio <code class="language-plaintext highlighter-rouge">backend</code> ejecutamos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run dev
+</code></pre></div></div>
+
+<p>Veremos que nuestro servidor ya está corriendo como en la siguiente imagen:</p>
+
+<p><img src="images/03-monorepo-backend-01.png" alt="Imagen de servidor node con express corriendo en la terminal" /></p>
+
+<p>Ahora abriremos otra ventana de la terminal y nos dirigimos al directorio <code class="language-plaintext highlighter-rouge">frontend</code>. Una vez dentro ejecutamos nuevamente el comando para abrir Cypress y nuestra aplicación:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run <span class="nb">test</span>:e2e
+</code></pre></div></div>
+<p>Una vez veamos la interfaz de Cypress, presionamos el botón <code class="language-plaintext highlighter-rouge">run all specs</code> y veremos el siguiente error:</p>
+
+<p><img src="images/03-monorepo-backend-02.png" alt="Imagen de cypress fallando" /></p>
+
+<p>Esto es debido a que en los pasos anteriores movimos la carpeta <code class="language-plaintext highlighter-rouge">fixtures</code> desde su ubicación hacia la raíz del proyecto.
+Para solucionar esto nos dirigimos al archivo <code class="language-plaintext highlighter-rouge">frontend/tests/e2e/plugins/index.js</code> y reemplazamos completamente su contenido:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">path</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">on</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">fixturesFolder</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="dl">'</span><span class="s1">.</span><span class="dl">'</span><span class="p">),</span> <span class="dl">'</span><span class="s1">../fixtures</span><span class="dl">'</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span> <span class="nx">config</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">fixturesFolder</span><span class="p">,</span>
+    <span class="na">integrationFolder</span><span class="p">:</span> <span class="dl">'</span><span class="s1">tests/e2e/specs</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">screenshotsFolder</span><span class="p">:</span> <span class="dl">'</span><span class="s1">tests/e2e/screenshots</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">videosFolder</span><span class="p">:</span> <span class="dl">'</span><span class="s1">tests/e2e/videos</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">supportFile</span><span class="p">:</span> <span class="dl">'</span><span class="s1">tests/e2e/support/index.js</span><span class="dl">'</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Debido a que hicimos una modificación en una configuración de arranque de <code class="language-plaintext highlighter-rouge">Cypress</code>, debemos reiniciar su ejecución.</p>
+
+<p>Una vez que este corriendo <code class="language-plaintext highlighter-rouge">Cypress</code> veremos que aún persiste un error y seguimos viendo un <code class="language-plaintext highlighter-rouge">GET 404 /api/products</code>.
+En la siguiente imagen se muestra como tenemos 2 terminales corriendo. En la de Frontend (de Cypress) identificamos la llamada que está dando <code class="language-plaintext highlighter-rouge">error 404</code>:</p>
+
+<p><img src="images/03-monorepo-backend-03.png" alt="Imagen de la salida de Cypress en la terminal" /></p>
+
+<p>A pesar de que ya tenemos un servidor que responde al endpoint <code class="language-plaintext highlighter-rouge">/api/products</code> con el método GET, nuestra aplicación hace la solicitud a <code class="language-plaintext highlighter-rouge">http://localhost:8080</code> y nuestro servidor corre en la url <code class="language-plaintext highlighter-rouge">http://localhost:3000</code>.</p>
+
+<p>Para solucionar esto tendremos que una vez más detener la ejecución de Cypress, pero esta vez modificaremos la configuración de Vue (internamente configura webpack-dev-server). Para ello iremos al archivo <code class="language-plaintext highlighter-rouge">frontend/vue.config.js</code> y reemplazamos todo su contenido por lo siguiente:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">transpileDependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="dl">'</span><span class="s1">vuetify</span><span class="dl">'</span>
+  <span class="p">],</span>
+  <span class="na">devServer</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">proxy</span><span class="p">:</span> <span class="p">{</span>
+      <span class="dl">'</span><span class="s1">^/api</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">target</span><span class="p">:</span> <span class="dl">'</span><span class="s1">http://localhost:3000</span><span class="dl">'</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Esto permitirá que, mientras desarrollamos, las llamadas XHR al servidor sean redireccionadas hacia <code class="language-plaintext highlighter-rouge">localhost:3000</code>. Esto tiene sentido solo en el ambiente local de desarrollo ya que en producción las llamadas desde el Frontend hacia el Backend serán bajo el mismo dominio y puerto.</p>
+
+<p>Ahora volvemos a correr el comando <code class="language-plaintext highlighter-rouge">npm run test:e2e</code> dentro de la carpeta <code class="language-plaintext highlighter-rouge">frontend</code>. Veremos como siguen fallando pero la respuesta de la llamada al servidor ahora dice <code class="language-plaintext highlighter-rouge">GET 200 /api/products</code> como se muestra en la siguiente imagen:</p>
+
+<p><img src="images/03-monorepo-backend-04.png" alt="Imagen Cypress con un XHR con status 200" /></p>
+
+<p>Y lo siguiente en la salida de la terminal del servidor:</p>
+
+<p><img src="images/03-monorepo-backend-05.png" alt="Imagen Nodemon con 2 llamadas con status 200" /></p>
+
+<p>Podemos ver que se hicieron 2 llamadas al endpoint <code class="language-plaintext highlighter-rouge">/api/products</code>. Esto es debido a que en la primera prueba de autenticación exitosa también se hace un llamado a la página de productos.</p>
+
+<p>Ahora iremos al archivo <code class="language-plaintext highlighter-rouge">backend/src/server.js</code> y lo reemplazaremos por lo siguiente:</p>
+
+<p><strong>backend/src/server.js</strong></p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="o">=</span> <span class="mi">3000</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api/products</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">statusCode</span> <span class="o">=</span> <span class="mi">200</span>
+  <span class="kd">const</span> <span class="nx">products</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Epiphone Explorer Gothic </span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Guitarra color negro</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1550985616-10810253b84d?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=742&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0001</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Cordoba Mini Bass</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Bajo pequeño tipo ukelele. Excelente sonido de bajo.</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1556449895-a33c9dba33dd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2734&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0002</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Distorsión Custom Badass 78</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Peda del guitarra de distorsión.</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1527865118650-b28bc059d09a?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0003</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Distorsión TMiranda Bass Drive BD-1</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Pedal del bajo de distorsión.</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1614963590047-0b8b9daa3eb7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2089&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0004</span><span class="dl">'</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Looper Hotone Wally</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Pedal de looper. Super portable.</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1595167151695-dfb4846e70f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+      <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0005</span><span class="dl">'</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+  
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`GET with status code </span><span class="p">${</span><span class="nx">statusCode</span><span class="p">}</span><span class="s2"> in /api/products endpoint`</span><span class="p">)</span>
+  
+  
+  <span class="k">return</span> <span class="nx">response</span>
+    <span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="nx">statusCode</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">products</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`App server listening on port </span><span class="p">${</span><span class="nx">port</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+<span class="p">})</span>
+
+</code></pre></div></div>
+
+<p>Como verás, al que en el cápitulo anterior en el Frontend, hemos copiado la lista del archivo <code class="language-plaintext highlighter-rouge">fixtures/products.json</code> para responder esa lista de productos.
+Una vez guardemos el archivo <code class="language-plaintext highlighter-rouge">backend/src/server.js</code> veremos que la terminal donde está corriendo el servidor dice</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>nodemon] restarting due to changes...
+<span class="o">[</span>nodemon] starting <span class="sb">`</span>node src/server.js<span class="sb">`</span>
+</code></pre></div></div>
+
+<p>Así que nuestro servidor ya está actualizado. Ahora simplemente presionamos en botón recargar en Cypress y veremos que nuestras pruebas nuevamente están pasando.</p>
+
+<p><img src="images/03-monorepo-backend-06.png" alt="Imagen de Cypress con las pruebas pasando" /></p>
+
+<p>Con esto ya tenemos nuestra plataforma funcionando. Pero aun nos quedan algunas cosas básicas por resolver. Una de ellas es la seguridad de nuestro servidor. Podemos corroborar que nuestro servidor no valida quién hace la petición escribiendo <code class="language-plaintext highlighter-rouge">http://localhost:3000/api/products</code> en el navegador. Veremos que la información está expuesta sin ningún método de autenticación.</p>
+
+<p><img src="images/03-monorepo-backend-07.png" alt="Endpoint responde en el navegador sin autenticación" /></p>
+
+<p>En el siguiente capítulo solucionaremos esto permitiendo que la autenticación a Firebase nos entregue un Token de autorización que validaremos en el Backend y así darle seguridad a nuestro servidor.</p>
+
+<p>Antes de ir al siguiente capítulo vamos a detener el código del servidor y de Cypress.
+En cualquier de las ventanas de la terminal nos saldremos del directorio y vamos a la raíz del proyecto (importante para que git agregue todo incluyendo frontend, backend, fixtures, etc) y ejecutamos lo siguiente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add <span class="nb">.</span>
+git commit <span class="nt">-m</span> <span class="s2">"feature(products): se agrega Backend con un endpoint de productos para ser consumido desde el Frontend para completar la funcionalidad de listar productos y autenticarse en la aplicación"</span>
+</code></pre></div></div>
+<p>Aún cuando tenemos el endpoint descubierto, es importante notar que nuestras historias de usuario están corroboradas mediante pruebas y tenemos, en ambiente de desarrollo, la funcionalidad completa (feature). En adelante lo que sigue es aumentar la calidad de nuestra aplicación para hacerla más segura y flexible a los cambios.</p>
+
+<p>Echemos un vistazo al resumen de nuestras historias de usuario que representan toda la funcionalidad que hemos desarrollado hasta el momento:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Funcionalidad</span><span class="p">:</span> <span class="n">login</span> <span class="n">de</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span>
+
+<span class="no">Escenario</span><span class="p">:</span> <span class="n">login</span> <span class="n">con</span> <span class="n">credenciales</span> <span class="n">inv</span><span class="err">á</span><span class="n">lidas</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">no</span> <span class="n">registrado</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span> 
+<span class="no">Y</span> <span class="n">completo</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">username</span> <span class="n">con</span> <span class="s1">'info'</span>
+<span class="no">Y</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">password</span> <span class="n">con</span> <span class="s1">'visitor'</span> 
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">permanecer</span> <span class="n">en</span> <span class="n">la</span> <span class="n">misma</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span>
+
+<span class="no">Escenario</span><span class="p">:</span> <span class="n">login</span> <span class="n">con</span> <span class="n">credenciales</span> <span class="n">v</span><span class="err">á</span><span class="n">lidas</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">no</span> <span class="n">registrado</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span> 
+<span class="no">Y</span> <span class="n">completo</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">username</span> <span class="n">con</span> <span class="s1">'test-e2e@boolean.cl'</span>
+<span class="no">Y</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">password</span> <span class="n">con</span> <span class="s1">'booleanacademia'</span> 
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">ver</span> <span class="n">la</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Funcionalidad</span><span class="p">:</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+
+<span class="no">Escenario</span><span class="p">:</span> <span class="n">listado</span> <span class="n">simple</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">que</span> <span class="n">inici</span><span class="err">ó</span> <span class="n">sesi</span><span class="err">ó</span><span class="n">n</span> <span class="n">en</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">ver</span> <span class="n">una</span> <span class="n">lista</span> <span class="n">de</span> <span class="n">productos</span>
+
+</code></pre></div></div>
+
+<table>
+  <tr>
+    <th colspan="2">
+      <a href="./01-vue-cli-install.md">
+        <span>⬅️ </span>Escribiendo Pruebas E2E siguiendo la metodología BDD
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="./04-firebase-sdk-backend.md"> Validar autenticación en el Backend
+        <span>➡️ </span>
+      </a>
+    </th>
+  </tr>
+</table>
+:ET

@@ -1,0 +1,30 @@
+I"�	<p><img src="https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg" alt="Logo de Boolean Academia" /></p>
+
+<h1 id="proyecto-de-integración-curso-javascript-full-stack-plataforma-de-trueque">Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueque</h1>
+
+<blockquote>
+  <p>PENDING:<br />
+Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
+Mencionar que haremos todo el scaffolding para trabajar de forma profesionarl y que será el alumno quien debe luego de completar esto, construir su propia aplicación resolviendo Historias de Usuario de alto nivel y ellos deben darle la especificidad.</p>
+</blockquote>
+
+<p>Vamos a construir la base de una plataforma de trueques utilizando Javascript. Seguiremos la metodología BDD para implementar una historia de usuario. Utilizaremos el framework <em>VueJS</em> para construir una vista de ingreso (<em>login</em>) que nos permitirá acceder a un catálogo de instrumentos musicales disponibles para trueques.</p>
+
+<p>La autenticación será soportada por la plataforma Firebase y la aplicación será publicada utilizando la plataforma Heroku, en la cual montaremos un servidor que construiremos utilizando NodeJS y la librería Express.</p>
+
+<p>Manos a la obra!</p>
+
+<p>Índice:</p>
+<ul>
+  <li><a href="docs/01-vue-cli-install.md">Creando un proyecto usando CLI y framework UI</a></li>
+  <li><a href="docs/02-bdd-with-cypress.md">Implementando historias de usuario con BDD</a></li>
+  <li><a href="docs/03-monorepo-backend.md">Reorganización del proyecto como fullstack Javascript</a></li>
+  <li><a href="docs/04-firebase-sdk-backend.md">Autenticar en el Frontend y validar en el Backend</a></li>
+  <li><a href="docs/05-database-sequelize.md">Agregando base de datos en entorno de desarrollo</a></li>
+  <li><a href="docs/06-testing-backend.md">Refactorización utilizando pruebas de software en Backend</a></li>
+  <li><a href="docs/07-testing-frontend.md">Refactorización utilizando pruebas de software en Frontend</a></li>
+  <li><a href="docs/08-development-workflow-husky.md">Automatización de tareas para el desarrollo</a></li>
+  <li><a href="docs/09-deployment-postgres.md">Salida a producción utilizando Github Actions y Heroku</a></li>
+</ul>
+
+:ET

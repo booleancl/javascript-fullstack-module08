@@ -1,0 +1,366 @@
+I"hi<h1 id="salida-a-producción-utilizando-github-actions-y-heroku">Salida a producción utilizando Github Actions y Heroku</h1>
+
+<p>Ha sido un largo camino en el cuál hemos construido nuestra plataforma, integrado prácticas comunes de la comunidad Javascript, prácticas relacionadas a la agilidad de Software y varias técnicas de Ingeniería para mejorar nuestro código como el uso de tecnologías en las partes Frontend y Backend. Todo esto fue con el objetivo de poder poner a disposición de los usuarios nuestra plataforma de trueques. Pero hay una pregunta que quien haya seguido estos capítulos puede estar haciendose:</p>
+
+<blockquote>
+  <p>¿Es acaso un buen momento para salir a producción y disponibilizar la plataforma a los usuarios?</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>La respuesta es sí.</p>
+  </li>
+  <li>
+    <p>Pero si solamente tenemos un método de Autenticación y una página de lista de productos.</p>
+  </li>
+  <li>
+    <p>OK. podemos salir a producción pero no mostrarle aún a los usuarios está página.</p>
+  </li>
+  <li>
+    <p>Pero es necesario estandarizar desde una etapa temprana el procedimiento de subida a producción.</p>
+  </li>
+</ul>
+
+<p>Para ello hay una serie de preguntas técnicas que debemos plantearnos.
+Veremos si nuestra plataforma cumple al menos con los requerimiento básicos para esta etapa:</p>
+
+<ul>
+  <li>
+    <p>¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?</p>
+  </li>
+  <li>
+    <p>¿Qué método de puesta en producción en servidores en la nube utilizaremos?</p>
+  </li>
+  <li>
+    <p>¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?</p>
+  </li>
+  <li>
+    <p>¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?</p>
+  </li>
+</ul>
+
+<p>Iremos respondiendo a cada una de estas pregunta e implementaremos lo necesario para lograr solucionar lo necesario para salir a producción sin problemas.</p>
+
+<h4 id="cúal-será-el-método-por-el-cuál-disponibilizaremos-el-frontend-para-los-usuarios-de-la-plataforma">¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?</h4>
+
+<p>En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes, íconos, etc que queramos incluir.
+De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio.</p>
+
+<p>La siguiente imagen muestra un diagrama que intenta explicar esta estrategia:</p>
+
+<p><img src="images/09-deployment-postgres-01.png" alt="Imagen que muestra la estrategia de puesta en producción con NodeJS" /></p>
+
+<p>Para logra esto haremos 2 pasos:</p>
+
+<ol>
+  <li>Generar un proyecto Frontend listo para poner en producción</li>
+  <li>Agregar una carpeta pública en el proyecto Backend y el código necesario para exponerla a través de Express.</li>
+</ol>
+
+<h5 id="generar-un-proyecto-frontend-listo-para-poner-en-producción">Generar un proyecto Frontend listo para poner en producción</h5>
+
+<p>Para lograr esto ingresaremos a la carpeta <code class="language-plaintext highlighter-rouge">frontend</code> a través de la terminal y correremos el siguiente comando:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run build
+</code></pre></div></div>
+<p>Deberíamos ver algo como lo que muestra la siguiente imagen:</p>
+
+<p><img src="images/09-deployment-postgres-02.png" alt="Imagen que muestra salida para producción de Vue" /></p>
+
+<p>Veremos aparecer una carpeta <code class="language-plaintext highlighter-rouge">dist</code> en la raíz del directorio <code class="language-plaintext highlighter-rouge">frontend</code> por lo cuál si accedemos a ella veremos los archivos generados por Vue además de un archivo <code class="language-plaintext highlighter-rouge">index.html</code> y <code class="language-plaintext highlighter-rouge">favicon.ico</code>.</p>
+
+<p><strong>backend/src/app.js</strong></p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">express</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">authMiddleware</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./middleware/auth</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./routes</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">staticFolder</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">__dirname</span><span class="p">}</span><span class="s2">/public`</span>
+<span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kd">static</span><span class="p">(</span><span class="nx">staticFolder</span><span class="p">))</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api</span><span class="dl">'</span><span class="p">,</span> <span class="nx">authMiddleware</span><span class="p">)</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api</span><span class="dl">'</span><span class="p">,</span> <span class="nx">routes</span><span class="p">)</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">*</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">staticFolder</span><span class="p">}</span><span class="s2">/index.html`</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">app</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>copiar todo el contenido de dist a public</li>
+  <li>
+    <p>correr <code class="language-plaintext highlighter-rouge">npm run dev</code> en backend</p>
+  </li>
+  <li>Agregar al gitignore</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>backend/src/public
+</code></pre></div></div>
+
+<ul>
+  <li>agregar al gitignore <code class="language-plaintext highlighter-rouge">backend/public</code> y explicar porque</li>
+</ul>
+
+<h4 id="qué-método-de-puesta-en-producción-en-servidores-en-la-nube-utilizaremos">¿Qué método de puesta en producción en servidores en la nube utilizaremos?</h4>
+
+<ul>
+  <li>heroku crear cuenta</li>
+  <li>heroku crear app intefaz</li>
+  <li>agregar tarea <code class="language-plaintext highlighter-rouge">start</code> y sección <code class="language-plaintext highlighter-rouge">engines</code></li>
+</ul>
+
+<p><strong>backend/package.json</strong></p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">backend</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">version</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1.0.0</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">description</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">engines</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">node</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">12.x</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">start</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">node src/server.js</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">dev</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">nodemon src/server.js</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">test</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest --runInBand --coverage</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">lint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2"> eslint .</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">keywords</span><span class="dl">"</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="dl">"</span><span class="s2">author</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">license</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">ISC</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">dependencies</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">express</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^4.17.1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">firebase-admin</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^9.6.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">sequelize</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^6.6.2</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="dl">"</span><span class="s2">devDependencies</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">eslint</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^7.24.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">eslint-plugin-jest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^24.3.6</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">jest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^26.6.3</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">jest-cli</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^26.6.3</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">nodemon</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^2.0.7</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">sequelize-cli</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^6.2.0</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">sqlite3</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^5.0.2</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">supertest</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^6.1.3</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>nos basta la tarea <code class="language-plaintext highlighter-rouge">start</code> para que heroku reconozca que este será el comando de inicialización. Puedes revisar sobre esta información en la documentación oficial de Heroku a través de <a href="https://devcenter.heroku.com/articles/nodejs-support#default-web-process-type">este enlace</a></p>
+
+<p>Es también importante configurar la sección <code class="language-plaintext highlighter-rouge">engines</code> para confifgurar bajo que versión de NodeJS correrá nuestra aplicación. Más detalles en el siguiente <a href="https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version">enlace</a></p>
+
+<h4 id="que-requisitos-debe-cumplir-el-código-fuente-para-salir-a-producción-desde-este-punto-en-adelante">¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?</h4>
+
+<ul>
+  <li>
+    <p>github actions y variable de ambiente para deployment y seguridad en settings/secrets</p>
+
+    <p>HEROKU_APP_NAME
+HEROKU_OWNER_EMAIL
+HEROKU_API_KEY</p>
+  </li>
+  <li>
+    <p>crear carpeta <code class="language-plaintext highlighter-rouge">.github</code> en la raíz. dentro otra carpeta llamada <code class="language-plaintext highlighter-rouge">worflows</code> y ahi dentro un archivo llamado <code class="language-plaintext highlighter-rouge">pipeline.yml</code> como muestra el siguiente esquema:</p>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>└─ .github
+  └─ worflows
+     pipeline.yml
+└─ .husky
+└─ backend
+└─ fixtures
+└─ frontend
+.gitignore
+package-lock.json
+package.json
+</code></pre></div></div>
+
+<p><strong>.github/workflows/pipeline.yml</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Node.js CI</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">main</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">container</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">node:12</span>
+    <span class="na">steps</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout code</span>
+          <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build Deploy Artifact</span>
+          <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">STATIC_FOLDER=backend/src/public</span>
+
+            <span class="s">cd ./frontend</span>
+            <span class="s">npm install</span>
+            <span class="s">npm run build</span>
+            <span class="s">cd ..</span>
+
+            <span class="s">mkdir -p $STATIC_FOLDER</span>
+            <span class="s">cp -R ./frontend/dist/. $STATIC_FOLDER</span>
+            <span class="s">ls -R -lha $STATIC_FOLDER</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Archive production artifact</span>
+          <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v2</span>
+          <span class="na">with</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">platform-artifact</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="pi">|</span>
+              <span class="s">backend</span>
+              <span class="s">!backend/tests</span>
+              <span class="s">!backend/.eslintrc.js</span>
+              <span class="s">!backend/jest.config.js</span>
+              <span class="s">!backend/nodemon.json</span>
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build</span>
+    <span class="na">env</span><span class="pi">:</span>
+      <span class="na">HEROKU_APP_NAME</span><span class="pi">:</span> <span class="s">$</span>
+      <span class="na">HEROKU_OWNER_EMAIL</span><span class="pi">:</span> <span class="s">$</span>
+      <span class="na">HEROKU_API_KEY</span><span class="pi">:</span> <span class="s">$</span>
+    <span class="na">steps</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Download production artifact</span>
+          <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/download-artifact@v2</span>
+          <span class="na">with</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">platform-artifact</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">backend</span>
+        
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup Heroku Credentials</span>
+          <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">cat &gt; ~/.netrc &lt;&lt;EOF</span>
+            <span class="s">machine api.heroku.com</span>
+              <span class="s">login $HEROKU_OWNER_EMAIL</span>
+              <span class="s">password $HEROKU_API_KEY</span>
+            <span class="s">machine git.heroku.com</span>
+              <span class="s">login $HEROKU_OWNER_EMAIL</span>
+              <span class="s">password $HEROKU_API_KEY</span>
+            <span class="s">EOF</span>
+            <span class="s">cat ~/.netrc</span>
+
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy Platform to Production</span>
+          <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">cd backend</span>
+            <span class="s">git init</span>
+            <span class="s">git branch -m main</span>
+            <span class="s">git config user.email "deployment-user@github-actions"</span>
+            <span class="s">git config user.name "Deployment Bot"</span>
+
+            <span class="s">git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git</span>
+            <span class="s">echo 'node_modules' &gt;&gt; .gitignore</span>
+
+            <span class="s">git add .</span>
+            <span class="s">git commit -m "deploy: server artifact deployment from github actions"</span>
+            <span class="s">git push -f heroku main</span>
+
+</code></pre></div></div>
+<ul>
+  <li>Pull request, code review y agilidad etc</li>
+  <li>push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions</li>
+</ul>
+
+<p>FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT</p>
+
+<p>crear archivo <code class="language-plaintext highlighter-rouge">.profile</code>
+la información de porque creamos este archivo está en el siguiente <a href="https://devcenter.heroku.com/articles/dynos#the-profile-file">enlace</a></p>
+
+<p><strong>backend/.profile</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OUTPUT_PATH="$(pwd)/firebase-service-account.json"
+
+curl -X GET \
+  -o $OUTPUT_PATH \
+  $SERVICE_ACCOUNT_FILE_URL
+
+export GOOGLE_APPLICATION_CREDENTIALS=$OUTPUT_PATH
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Interfaz de firebase foto sacar URL</p>
+  </li>
+  <li>
+    <p>Ir a config vars de Heroku y crear SERVICE_ACCOUNT_FILE_URL.
+Ahora deberían haber 2: DATABASE_URL y SERVICE_ACCOUNT_FILE_URL.
+Además mencionar la varianble PORT que lo puedes ver más en detalle en el siguiente <a href="https://devcenter.heroku.com/articles/dynos#local-environment-variables">enlace</a></p>
+  </li>
+</ul>
+
+<p>Ahora somos capaces de generar el archivo de cuenta de servicio de manera segura a través de la variable GOOGLE_APPLICATION_CREDENTIALS</p>
+
+<p>OTRA VEZ FALLA!
+ESTA VEZ PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN</p>
+<h4 id="qué-tipo-base-de-datos-y-servicio-en-la-nube-para-almacenar-datos-utilizaremos">¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?</h4>
+
+<ul>
+  <li>instalar postgres como dependencia del backend</li>
+</ul>
+
+<p>en <code class="language-plaintext highlighter-rouge">backend</code> en la raíz:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm i pg
+</code></pre></div></div>
+
+<ul>
+  <li>heroku agregar ADDON Heroku Postgres interfaz</li>
+  <li>revisar config vars y veremos DATABASE_URL que usaremos más adelante</li>
+  <li>configurar sequelize para producción usando
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">production</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+<span class="dl">"</span><span class="s2">use_env_variable</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">DATABASE_URL</span><span class="dl">"</span><span class="p">,</span>
+<span class="dl">"</span><span class="s2">dialect</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">postgres</span><span class="dl">"</span><span class="p">,</span>
+<span class="dl">"</span><span class="s2">dialectOptions</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+  <span class="dl">"</span><span class="s2">ssl</span><span class="dl">"</span><span class="p">:{</span>
+    <span class="dl">"</span><span class="s2">rejectUnauthorized</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">}</span>
+<span class="p">},</span>
+<span class="dl">"</span><span class="s2">logging</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Ahora hacemos push, esperamos el deploy!
+autenticamos
+y vemos error 500 en la DB “no existe tabla productos”
+NOS FALTAN LAS MIGRACIONES</p>
+
+<p>agregar scripts <code class="language-plaintext highlighter-rouge">db:migrate</code> y <code class="language-plaintext highlighter-rouge">heroku-postbuild</code> a <code class="language-plaintext highlighter-rouge">backend/package.json</code></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">db:migrate</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run sequelize db:migrate</span><span class="dl">"</span><span class="p">,</span>
+<span class="dl">"</span><span class="s2">heroku-postbuild</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">npm run db:migrate -- --env=production</span><span class="dl">"</span>
+</code></pre></div></div>
+
+<p>Utilizamos <code class="language-plaintext highlighter-rouge">heroku-postbuild</code> ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.</p>
+
+<p>para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente <a href="https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps">enlace</a></p>
+
+<p>hacer push y listo</p>
+
+<p>AHORA SI FUNCIONA!!!! pero la tabla productos está vacia.
+Mostrar foto array vacio en el response del endpoint de productos</p>
+
+<h4 id="cargar-datos-en-la-base-de-datos-y-ver-los-productos">Cargar datos en la base de datos y ver los productos</h4>
+
+<h4 id="agregar-un-usuario-real-a-la-aplicación-para-terminar">Agregar un usuario real a la aplicación para terminar</h4>
+
+<table>
+  <tr>
+    <th colspan="2">
+      <span>⬅️ </span>
+      <a href="./08-development-workflow-husky.md"> Flujo de desarrollo del proyecto
+      </a>
+    </th>
+    <th colspan="2">
+      <a href="../README.md">
+        Volver al Índice del curso
+        <span>➡️ </span>
+      </a>
+    </th>
+  </tr>
+</table>
+:ET
