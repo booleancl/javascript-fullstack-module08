@@ -89,8 +89,8 @@ module.exports = app
 backend/src/public
 ```
 
-
 - agregar al gitignore `backend/public` y explicar porque
+
 
 #### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
 
@@ -247,33 +247,10 @@ jobs:
 ```
 - Pull request, code review y agilidad etc
 - push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
+- push FALLA
 
-FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT
-
-crear archivo `.profile`
-la información de porque creamos este archivo está en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#the-profile-file)
-
-**backend/.profile**
-```
-OUTPUT_PATH="$(pwd)/firebase-service-account.json"
-
-curl -X GET \
-  -o $OUTPUT_PATH \
-  $SERVICE_ACCOUNT_FILE_URL
-
-export GOOGLE_APPLICATION_CREDENTIALS=$OUTPUT_PATH
-```
-
-- Interfaz de firebase foto sacar URL
-
-- Ir a config vars de Heroku y crear SERVICE_ACCOUNT_FILE_URL.
-Ahora deberían haber 2: DATABASE_URL y SERVICE_ACCOUNT_FILE_URL.
-Además mencionar la varianble PORT que lo puedes ver más en detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#local-environment-variables)
-
-Ahora somos capaces de generar el archivo de cuenta de servicio de manera segura a través de la variable GOOGLE_APPLICATION_CREDENTIALS
-
-OTRA VEZ FALLA!
-ESTA VEZ PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN
+FALLA!
+PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN
 #### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
 
 - instalar postgres como dependencia del backend
@@ -315,6 +292,39 @@ agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
 Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
 
 para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
+
+
+
+
+
+---
+
+
+FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT
+
+crear archivo `.profile`
+la información de porque creamos este archivo está en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#the-profile-file)
+
+**backend/.profile**
+```
+OUTPUT_PATH="$(pwd)/firebase-service-account.json"
+
+curl -X GET \
+  -o $OUTPUT_PATH \
+  $SERVICE_ACCOUNT_FILE_URL
+
+export GOOGLE_APPLICATION_CREDENTIALS=$OUTPUT_PATH
+```
+
+- Interfaz de firebase foto sacar URL
+
+- Ir a config vars de Heroku y crear SERVICE_ACCOUNT_FILE_URL.
+Ahora deberían haber 2: DATABASE_URL y SERVICE_ACCOUNT_FILE_URL.
+Además mencionar la varianble PORT que lo puedes ver más en detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/dynos#local-environment-variables)
+
+Ahora somos capaces de generar el archivo de cuenta de servicio de manera segura a través de la variable GOOGLE_APPLICATION_CREDENTIALS
+
+OTRA VEZ 
 
 hacer push y listo
 
