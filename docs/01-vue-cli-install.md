@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Creando proyecto con CLI"
+nav_order: 1
+---
+
 # Creando un proyecto usando CLI y framework UI
 
 Comenzaremos creando un proyecto a través de la línea de comandos de Vue. Para ello la instalaremos con el siguiente comando

@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Fullstack Javascript"
+nav_order: 3
+---
+
 # Reorganización del proyecto como un repositorio monolítico y agregar Backend
 
 En función de la metodología que estamos utilizando (el mínimo código posible) lo que haremos será centralizar en este mismo repositorio todo lo necesario para que las pruebas pasen sin problema. En este caso las pruebas end-to-end requieren que desde el Frontend se realice una petición (request) hacia un backend que aún no existe. Este backend debe ser capaz de responder a una petición GET en la URL `/api/products`.

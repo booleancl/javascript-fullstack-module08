@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Automatización en desarrollo"
+nav_order: 8
+---
+
 # Flujo de desarrollo del proyecto
 
 En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.

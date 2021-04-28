@@ -1,0 +1,568 @@
+<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <title>Historias de usuario y BDD - Fullstack JS</title> <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"> <link rel="stylesheet" href="/assets/css/just-the-docs-default.css"> <script type="text/javascript" src="/assets/js/vendor/lunr.min.js"></script> <script type="text/javascript" src="/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.7.1 --> <title>Historias de usuario y BDD | Fullstack JS</title> <meta name="generator" content="Jekyll v4.2.0" /> <meta property="og:title" content="Historias de usuario y BDD" /> <meta property="og:locale" content="en_US" /> <link rel="canonical" href="/docs/02-bdd-with-cypress.html" /> <meta property="og:url" content="/docs/02-bdd-with-cypress.html" /> <meta property="og:site_name" content="Fullstack JS" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="Historias de usuario y BDD" /> <script type="application/ld+json"> {"url":"/docs/02-bdd-with-cypress.html","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/logo.svg"}},"@type":"WebPage","headline":"Historias de usuario y BDD","@context":"https://schema.org"}</script> <!-- End Jekyll SEO tag --> </head> <body> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header"> <a href="/" class="site-title lh-tight"> <div class="site-logo"></div> </a> <a href="#" id="menu-button" class="site-button"> <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg> </a> </div> <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/" class="nav-list-link">Inicio</a></li><li class="nav-list-item"><a href="/docs/01-vue-cli-install.html" class="nav-list-link">Creando proyecto con CLI</a></li><li class="nav-list-item active"><a href="/docs/02-bdd-with-cypress.html" class="nav-list-link active">Historias de usuario y BDD</a></li><li class="nav-list-item"><a href="/docs/03-monorepo-backend.html" class="nav-list-link">Fullstack Javascript</a></li><li class="nav-list-item"><a href="/docs/04-firebase-sdk-backend.html" class="nav-list-link">Autenticación en backend</a></li><li class="nav-list-item"><a href="/docs/05-database-sequelize.html" class="nav-list-link">Base de datos en desarrollo</a></li><li class="nav-list-item"><a href="/docs/06-testing-backend.html" class="nav-list-link">Refactorización con pruebas I</a></li><li class="nav-list-item"><a href="/docs/07-testing-frontend.html" class="nav-list-link">Refactorización con pruebas II</a></li><li class="nav-list-item"><a href="/docs/08-development-workflow-husky.html" class="nav-list-link">Automatización en desarrollo</a></li><li class="nav-list-item"><a href="/docs/09-deployment-postgres.html" class="nav-list-link">Deploy automatizado</a></li></ul> </nav> <footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> <div class="search"> <div class="search-input-wrap"> <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Fullstack JS" aria-label="Search Fullstack JS" autocomplete="off"> <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label> </div> <div id="search-results" class="search-results"></div> </div> </div> <div id="main-content-wrap" class="main-content-wrap"> <div id="main-content" class="main-content" role="main"> <h1 id="implementando-historias-de-usuario-con-bdd"> <a href="#implementando-historias-de-usuario-con-bdd" class="anchor-heading" aria-labelledby="implementando-historias-de-usuario-con-bdd"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Implementando historias de usuario con BDD </h1> <p>Comenzaremos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver <a href="https://www.youtube.com/watch?v=_bGtaCvaHLE&amp;t=2959s">este video</a>. En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.</p> <p>Nuestra primera historia de usuario es la siguiente:</p> <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Funcionalidad</span><span class="p">:</span> <span class="n">login</span> <span class="n">de</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span>
+
+<span class="no">Escenario</span><span class="p">:</span> <span class="n">login</span> <span class="n">con</span> <span class="n">credenciales</span> <span class="n">inv</span><span class="err">á</span><span class="n">lidas</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">no</span> <span class="n">registrado</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span> 
+<span class="no">Y</span> <span class="n">completo</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">username</span> <span class="n">con</span> <span class="s1">'info'</span>
+<span class="no">Y</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">password</span> <span class="n">con</span> <span class="s1">'visitor'</span> 
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">permanecer</span> <span class="n">en</span> <span class="n">la</span> <span class="n">misma</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span>
+</code></pre></div></div> <p>Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la api de Cypress.</p> <p>Para esto vamos a modificar la prueba e2e por defecto generada durante el proceso de creación. En concreto el archivo de llama <code class="language-plaintext highlighter-rouge">test.js</code>. Te puedes guiar por el siguiente esquema del proyecto:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tu-proyecto&gt;
+...
+└─── public
+└─── src
+└─── tests
+    └─── e2e
+         └─── plugins
+         └─── specs
+                  test.js &lt;-- vamos a renombrar este archivo
+         └─── support
+    └─── unit
+
+...
+</code></pre></div></div> <p>Renombramos el archivo test.js indicado en la figura anterior y lo llamaremos simplemente <code class="language-plaintext highlighter-rouge">login.js</code>. Luego cambiaremos su contenido a lo indicado en el siguiente código:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">login test suite</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">does not work with wrong credentials</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=username]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=password]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">visitor</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=login-btn]</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">equal</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div></div> <h4 id="que-significa-este-código"> <a href="#que-significa-este-código" class="anchor-heading" aria-labelledby="que-significa-este-código"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ¿Que significa este código? </h4> <p>Te preguntarás por qué utilizamos los atributo del tipo <code class="language-plaintext highlighter-rouge">data-cy=*</code> como selectores HTML en nuestra aplicación. Puedes ver el siguiente artículo desde el Blog oficial de Cypress en <a href="https://docs.cypress.io/guides/references/best-practices#Selecting-Elements">este enlace</a>. En resumen se trata de que las pruebas e2e sean independientes (no acopladas) a cambios en el diseño, resistente a los posibles cambios que podrían sufrir las tradicionales clases o ids.</p> <p>Por supuesto que como aún no hemos escrito código, esta prueba de software comenzará fallando y será nuestro deber escribir el mínimo código necesario para hacerla pasar. Una vez que la prueba de software esté pasando, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como <code class="language-plaintext highlighter-rouge">Red - Green - Refactor</code>.</p> <p>Para ver nuestra prueba fallando ejecutaremos el siguiente comando:</p> <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run <span class="nb">test</span>:e2e
+</code></pre></div></div> <p>Veremos aparecer la siguiente ventana:</p> <p><img src="images/02-bdd-with-cypress-01.png" alt="Imagen que muestra el menú principal de cypress" /></p> <p>Al hacer click sobre <code class="language-plaintext highlighter-rouge">login.js</code> aparecerá finalmente la prueba de software fallando como muestra la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-02.png" alt="Imagen que muestra el navegador que corre cypress" /></p> <p>Veremos una ventana del navegador en la cual al lado izquierdo están los pasos sucesivos que hemos escrito en la prueba de software y al lado derecho está nuestra aplicación. Si nos fijamos en el panel izquierdo hay 2 instrucciones:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    1 VISIT /
+    2 GET   [data-cy=username]
+</code></pre></div></div> <p>La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intentó encontrar en el HTML un elemento con el atributo <code class="language-plaintext highlighter-rouge">data-cy=username</code>. Esto lo vemos traducido en el siguiente mensaje de error:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
+</code></pre></div></div> <p>Si vamos a revisar el código podremos encontrar las 2 líneas que desencadenaron las acciones del panel izquierdo:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+  <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=username]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">)</span>
+</code></pre></div></div> <p>podemos ver como es que el comando <code class="language-plaintext highlighter-rouge">cy.get</code> es el que se usa para encontrar elementos HTML y luego interactuar con ellos.</p> <h4 id="cómo-hacemos-para-pasar-la-prueba"> <a href="#cómo-hacemos-para-pasar-la-prueba" class="anchor-heading" aria-labelledby="cómo-hacemos-para-pasar-la-prueba"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ¿Cómo hacemos para pasar la prueba? </h4> <p>Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el menor código posible. En este caso basta con que agreguemos cualquier etiqueta HTML que tenga el atributo <code class="language-plaintext highlighter-rouge">[data-cy=username]</code>.</p> <p>Para esto nos vamos a dirigir al archivo <code class="language-plaintext highlighter-rouge">src/App.vue</code> y agregaremos lo siguiente en la sección HTML (<code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>), donde esta definido el elemento <code class="language-plaintext highlighter-rouge">&lt;v-main&gt;</code></p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  ...
+  <span class="nt">&lt;v-main&gt;</span>
+    <span class="nt">&lt;HelloWorld/&gt;</span>
+    <span class="c">&lt;!-- Este será el elemento que hará que la prueba deje de arrojar el error actual ---&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">data-cy=</span><span class="s">"username"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+  ...
+</code></pre></div></div> <p>Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá <code class="language-plaintext highlighter-rouge">COMPILING</code>. Esperaremos que esto salga OK y luego vamos nuevamente a Cypress y presionamos el botón para recargar las pruebas como se ve en al siguiente imagen</p> <p><img src="images/02-bdd-with-cypress-03.png" alt="Imagen que muestra el menú principal de cypress" /></p> <p>Veremos como al lado derecho aparece el input que agregamos y con valor <code class="language-plaintext highlighter-rouge">info</code>. Esto gracias al comando <code class="language-plaintext highlighter-rouge">.type</code> que ejecutamos sobre el elemento seleccionado.</p> <p>Ahora veremos un nuevo mensaje de error:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CypressError: Timed out retrying: Expected to find element: '[data-cy=password]', but never found it.
+</code></pre></div></div> <p>Si hacemos un análisis de lo que está escrito en la prueba de software podemos deducir que necesitaremos otro input esta vez con el atributo <code class="language-plaintext highlighter-rouge">[data-cy="password"]</code> y luego un botón con el atributo <code class="language-plaintext highlighter-rouge">data-cy="login-btn"</code>.</p> <p>Al agregar esto en el archivo <code class="language-plaintext highlighter-rouge">views/App.vue</code> quedará así:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  ...
+  <span class="nt">&lt;v-main&gt;</span>
+    <span class="nt">&lt;HelloWorld/&gt;</span>
+
+    <span class="nt">&lt;input</span> <span class="na">data-cy=</span><span class="s">"username"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">data-cy=</span><span class="s">"password"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">data-cy=</span><span class="s">"login-btn"</span><span class="nt">&gt;</span>Ingresar<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+  ...
+</code></pre></div></div> <p>Finalmente al recargar las pruebas veremos como es que ahora se puso de color verde lo que indica que la prueba está pasando.</p> <p><img src="images/02-bdd-with-cypress-04.png" alt="Imagen que muestra el navegador que corre cypress con las pruebas pasando" /></p> <h4 id="refactorización"> <a href="#refactorización" class="anchor-heading" aria-labelledby="refactorización"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Refactorización </h4> <p>Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación. Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.</p> <p>Lo primero será modificar el archivo <code class="language-plaintext highlighter-rouge">src/App.vue</code> y reemplazaremos todo su contenido por lo siguiente:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;v-app&gt;</span>
+    <span class="nt">&lt;v-main&gt;</span>
+      <span class="nt">&lt;router-view&gt;&lt;/router-view&gt;</span>
+    <span class="nt">&lt;/v-main&gt;</span>
+  <span class="nt">&lt;/v-app&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">App</span><span class="dl">'</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre></div></div> <p>Luego iremos al directorio <code class="language-plaintext highlighter-rouge">views</code>. Eliminamos el archivo <code class="language-plaintext highlighter-rouge">About.vue</code> y vamos a cambiar el nombre del archivo <code class="language-plaintext highlighter-rouge">Home.vue</code> por <code class="language-plaintext highlighter-rouge">Login.vue</code>. En cuanto guardemos esto veremos un error en la terminal pero lo solucionaremos de inmediato, cuando actualicemos el router.</p> <p>Ahora vamos al archivo <code class="language-plaintext highlighter-rouge">Login.vue</code> y reemplazaremos todo su contenido con lo siguiente:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;v-main</span> <span class="na">class=</span><span class="s">"home"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;v-card</span> <span class="na">width=</span><span class="s">"400px"</span> <span class="na">class=</span><span class="s">"mx-auto my-auto"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;v-card-title</span> <span class="na">class=</span><span class="s">"pb-0"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"mx-auto mb-5"</span><span class="nt">&gt;</span>Ingreso<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;/v-card-title&gt;</span>
+      <span class="nt">&lt;v-form</span> <span class="na">ref=</span><span class="s">"form"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;v-text-field</span>
+          <span class="na">v-model=</span><span class="s">"email"</span>
+          <span class="na">label=</span><span class="s">"Correo"</span>
+          <span class="na">prepend-icon=</span><span class="s">"mdi-account-circle"</span>
+          <span class="na">:rules=</span><span class="s">"emailRules"</span>
+          <span class="na">validate-on-blur</span>
+          <span class="na">data-cy=</span><span class="s">"username"</span>
+        <span class="nt">/&gt;</span>
+        <span class="nt">&lt;v-text-field</span>
+          <span class="na">v-model=</span><span class="s">"password"</span>
+          <span class="na">label=</span><span class="s">"Contraseña"</span>
+          <span class="na">:type=</span><span class="s">"showPassword ? 'text' : 'password'"</span>
+          <span class="na">:rules=</span><span class="s">"passwordRules"</span>
+          <span class="na">validate-on-blur</span>
+          <span class="na">prepend-icon=</span><span class="s">"mdi-lock"</span>
+          <span class="na">:append-icon=</span><span class="s">"showPassword ? 'mdi-eye' : 'mdi-eye-off'"</span>
+          <span class="err">@</span><span class="na">click:append=</span><span class="s">"showPassword = !showPassword"</span>
+          <span class="na">data-cy=</span><span class="s">"password"</span>
+        <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/v-form&gt;</span>
+      <span class="nt">&lt;v-divider</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;v-card-actions&gt;</span>
+        <span class="nt">&lt;v-btn</span> <span class="na">to=</span><span class="s">"/registro"</span> <span class="na">color=</span><span class="s">"success"</span><span class="nt">&gt;</span> Registro <span class="nt">&lt;/v-btn&gt;</span>
+        <span class="nt">&lt;v-spacer</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;v-btn</span> <span class="na">color=</span><span class="s">"info"</span> <span class="na">data-cy=</span><span class="s">"login-btn"</span> <span class="err">@</span><span class="na">click=</span><span class="s">"login"</span><span class="nt">&gt;</span> Ingresar <span class="nt">&lt;/v-btn&gt;</span>
+      <span class="nt">&lt;/v-card-actions&gt;</span>
+    <span class="nt">&lt;/v-card&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">email</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+      <span class="na">emailRules</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">El correo es requerido</span><span class="dl">'</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="sr">/.+@.+</span><span class="se">\.</span><span class="sr">.+/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">El correo debe tener formato válido</span><span class="dl">'</span>
+      <span class="p">],</span>
+      <span class="na">password</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+      <span class="na">passwordRules</span><span class="p">:</span> <span class="p">[(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">La contraseña es requerida</span><span class="dl">'</span><span class="p">],</span>
+      <span class="na">showPassword</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">login</span> <span class="p">()</span> <span class="p">{}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre></div></div> <p>y ahora actualizamos el archivo <code class="language-plaintext highlighter-rouge">src/router/index.js</code> con lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">VueRouter</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue-router</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">Login</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../views/Login.vue</span><span class="dl">'</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Login</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">component</span><span class="p">:</span> <span class="nx">Login</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">history</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">routes</span>
+<span class="p">})</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">router</span>
+
+</code></pre></div></div> <p>Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-05.png" alt="Imagen que muestra el navegador que corre cypress con las pruebas pasando" /></p> <h4 id="integrando-el-servicio-de-autenticación-de-firebase"> <a href="#integrando-el-servicio-de-autenticación-de-firebase" class="anchor-heading" aria-labelledby="integrando-el-servicio-de-autenticación-de-firebase"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Integrando el servicio de autenticación de Firebase </h4> <p>Dado el contexto de nuestra aplicación, lo que haremos será enviar invitaciones manualmente a quienes publicarán productos para trueques y darles un usuario y contraseña de acceso que manejaremos directamente desde la interfaz de Firebase.</p> <p>Si ya tienes cuenta de Google, puedes autenticarte y dirigirte a <a href="https://console.firebase.google.com/">https://console.firebase.google.com/</a>, donde veremos una pantalla como la siguiente:</p> <p><img src="images/02-bdd-with-cypress-06.png" alt="Imagen que muestra la interfaz de firebase para crear un proyecto" /></p> <p>Una vez dentro del admin de Firebase creamos un proyecto. Después de agregar el nombre nos pregunta si queremos incluir Analytics. Deshabilitar esta opción como en la siguiente imágen: <img src="images/02-bdd-with-cypress-06-b.png" alt="Deshabilitar Analytics" />. Después se puede activar si se requiere.</p> <p>Cuando indique que el proyecto ha sido creado damos click en <code class="language-plaintext highlighter-rouge">continuar</code>. Posteriormente presionamos el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:</p> <p><img src="images/02-bdd-with-cypress-07.png" alt="Imagen que muestra la interfaz de firebase para registrar una aplicación" /></p> <p>Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y luego aparecerá lo siguiente:</p> <p><img src="images/02-bdd-with-cypress-08.png" alt="Imagen que muestra la interfaz de firebase para obtener los datos de acceso" /></p> <p>Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que crearemos en el directorio <code class="language-plaintext highlighter-rouge">src</code>. Primero vamos a crear el directorio en <code class="language-plaintext highlighter-rouge">src/firebase</code> y al interior de ese directorio crearemos 2 archivos llamados <code class="language-plaintext highlighter-rouge">config.js</code> e <code class="language-plaintext highlighter-rouge">index.js</code>.</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tu-proyecto&gt;
+...
+└─── public
+└─── src
+     ...
+    └─── firebase
+            config.js
+            index.js
+
+...
+</code></pre></div></div> <p>el contenido de ambos archivos será el siguiente:</p> <p><strong>config.js</strong></p> <p>Los datos de este archivo los copiaremos de lo indicado en la imagen anterior.</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">apiKey</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="na">authDomain</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="na">projectId</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="na">storageBucket</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="na">messagingSenderId</span><span class="p">:</span> <span class="dl">''</span>
+  <span class="na">appId</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+<span class="p">}</span>
+
+</code></pre></div></div> <p><strong>index.js</strong></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">firebase</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">firebase/app</span><span class="dl">'</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">firebase/auth</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">config</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./config</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">firebaseApp</span> <span class="o">=</span> <span class="nx">firebase</span><span class="p">.</span><span class="nx">initializeApp</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">Auth</span> <span class="o">=</span> <span class="nx">firebaseApp</span><span class="p">.</span><span class="nx">auth</span><span class="p">()</span>
+
+<span class="k">export</span> <span class="p">{</span> <span class="nx">Auth</span> <span class="p">}</span>
+
+</code></pre></div></div> <p>Ahora debemos instalar <code class="language-plaintext highlighter-rouge">firebase</code> en el proyecto. Para ello ejecutamos el siguiente comando en una terminal aparte para mantener corriendo Cypress:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>firebase
+</code></pre></div></div> <p>Con esto nuestro proyecto quedará preparado para conectarnos a Firebase llegado el momento.</p> <p>Ahora volvemos a la interfaz de Firebase donde nos quedamos anteriormente y presionamos el botón <code class="language-plaintext highlighter-rouge">Ir a la consola</code>:</p> <p><img src="images/02-bdd-with-cypress-09.png" alt="Imagen que muestra la interfaz de firebase para obtener los datos de acceso" /></p> <p>Finalmente habilitaremos la autenticación a través de correo electrónico/contraseña desde la consola de Firebase siguiendo estos pasos:</p> <p>Presionamos desde el panel de control la opción <code class="language-plaintext highlighter-rouge">Authentication</code> como muestra la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-10.png" alt="Imagen que muestra la interfaz de firebase para configurar la autenticación" /></p> <p>Nos llevará a otra pantalla donde debemos presionar <code class="language-plaintext highlighter-rouge">Comenzar</code> y eso hará aparecer todas las opciones disponibles para la autenticación. Por defecto todos los tipos de autenticación vienen desactivados. Para habilitar la autenticación con correo electrónico/Contraseña y presionamos el botón editar donde se indica:</p> <p><img src="images/02-bdd-with-cypress-11.png" alt="Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña" /></p> <p>Y finalmente habilitamos este servicio y presionamos “Guardar”. Notar que mantenemos desactivada la opción `Vínculo del correo electrónico (acceso sin contraseña)</p> <p><img src="images/02-bdd-with-cypress-12.png" alt="Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña" /></p> <p>Ahora crearemos un usuario presionando el tab <code class="language-plaintext highlighter-rouge">Users</code> tal como se indica en la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-13.png" alt="Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña" /></p> <p>Presionamos el Botón <code class="language-plaintext highlighter-rouge">Agregar usuario</code> y crearemos un usuario con el siguiente perfil:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Correo electrónico: test-e2e@boolean.cl
+Contraseña: booleanacademia
+
+</code></pre></div></div> <p><img src="images/02-bdd-with-cypress-14.png" alt="Imagen que muestra la interfaz de firebase para configurar la autenticación de correo electrónico/contraseña" /></p> <p>Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda. Indicamos que este usuario, a pesar de estár en entorno productivo, será solamente para realizar pruebas.</p> <h4 id="un-nuevo-escenario-en-la-historia-de-usuario-para-realizar-una-autenticación-exitosa"> <a href="#un-nuevo-escenario-en-la-historia-de-usuario-para-realizar-una-autenticación-exitosa" class="anchor-heading" aria-labelledby="un-nuevo-escenario-en-la-historia-de-usuario-para-realizar-una-autenticación-exitosa"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa </h4> <p>Ahora trabajaremos el caso (escenario en historias de usuario) exitóso de la autenticación. La historia sería como sigue:</p> <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Funcionalidad</span><span class="p">:</span> <span class="n">login</span> <span class="n">de</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span>
+<span class="o">...</span>
+<span class="no">Escenario</span><span class="p">:</span> <span class="n">login</span> <span class="n">con</span> <span class="n">credenciales</span> <span class="n">v</span><span class="err">á</span><span class="n">lidas</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">no</span> <span class="n">registrado</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span> 
+<span class="no">Y</span> <span class="n">completo</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">username</span> <span class="n">con</span> <span class="s1">'test-e2e@boolean.cl'</span>
+<span class="no">Y</span> <span class="n">el</span> <span class="n">campo</span> <span class="n">password</span> <span class="n">con</span> <span class="s1">'booleanacademia'</span> 
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">ver</span> <span class="n">la</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+
+</code></pre></div></div> <p>Escribiremos una nueva prueba de software basada en la historia de usuario que consistirá en autenticarse en Firebase con los datos de prueba y validar que la aplicación nos lleve a la página <code class="language-plaintext highlighter-rouge">/productos</code>.</p> <p>Vamos a editar el archivo <code class="language-plaintext highlighter-rouge">tests/e2e/specs/login.js</code> y reemplazar su contenido por lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">login test suite</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">does not work with wrong credentials</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="username"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="password"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">visitor</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="login-btn"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">equal</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">})</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">does work with valid credentials</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="username"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">test-e2e@boolean.cl</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="password"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">booleanacademia</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="login-btn"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">equal</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/productos</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+</code></pre></div></div> <p>Ahora recargamos Cypress y veremos el siguiente error:</p> <p><img src="images/02-bdd-with-cypress-15.png" alt="Imagen que muestra el error de Cypress cuando agregamos una nueva prueba" /></p> <p>Ahora vamos a escribir el código más simple que sea capaz de dejar pasando esta prueba. Vamos al archivo <code class="language-plaintext highlighter-rouge">src/views/Login.vue</code> y agregamos el siguiente contenido al metodo <code class="language-plaintext highlighter-rouge">login()</code></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="p">...</span>
+  <span class="nx">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">login</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Products</span><span class="dl">'</span> <span class="p">})</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+</code></pre></div></div> <p>Luego vamos a crear un nuevo archivo en <code class="language-plaintext highlighter-rouge">src/views</code> llamado <code class="language-plaintext highlighter-rouge">Products.vue</code> con el siguiente contenido:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;v-main&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Productos<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre></div></div> <p>Luego vamos al archivo <code class="language-plaintext highlighter-rouge">src/router/index.js</code> y reemplazamos su contenido por el siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">VueRouter</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue-router</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">Login</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../views/Login.vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">Products</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">../views/Products.vue</span><span class="dl">'</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">VueRouter</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Login</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">component</span><span class="p">:</span> <span class="nx">Login</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/productos</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Products</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">component</span><span class="p">:</span> <span class="nx">Products</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="kd">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">VueRouter</span><span class="p">({</span>
+  <span class="na">mode</span><span class="p">:</span> <span class="dl">'</span><span class="s1">history</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">routes</span>
+<span class="p">})</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">router</span>
+
+</code></pre></div></div> <p>Al recargar vemos que la nueva prueba si está pasando pero estos cambios provocaron que se cayera la prueba anterior:</p> <p><img src="images/02-bdd-with-cypress-16.png" alt="Imagen que muestra el error de Cypress cuando agregamos una nueva prueba" /></p> <p>Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas de software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las otras pruebas pasando y no sólo la que acabamos de escribir.</p> <p>Para solucionar esto usaremos la <code class="language-plaintext highlighter-rouge">refs</code> que hemos asociado al elemento <code class="language-plaintext highlighter-rouge">v-form</code> para crear una función que valide si el formulario está correcto. A través de la <code class="language-plaintext highlighter-rouge">refs</code> obtendremos la instancia del elemento <code class="language-plaintext highlighter-rouge">v-form</code> y podremos utilizar su API para usar el método <code class="language-plaintext highlighter-rouge">validate</code>. Si quieres ver más detalle sobre la API de este elemento puedes visitar el <a href="https://vuetifyjs.com/en/api/v-form/#functions-validate">siguiente enlance</a> Iremos a modificar el archivo <code class="language-plaintext highlighter-rouge">src/views/Login.vue</code> y agregamos lo siguiente en la sección <code class="language-plaintext highlighter-rouge">methods</code></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="p">...</span>
+  <span class="nx">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">validate</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">validate</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="nx">login</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">validate</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Products</span><span class="dl">'</span> <span class="p">})</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+</code></pre></div></div> <p>y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!</p> <p>Tip: Revisa la consola por errores de identación que puedan entorpecer la “compilación”</p> <p>Ahora debemos hacer una refactorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> del archivo <code class="language-plaintext highlighter-rouge">src/views/Login.vue</code> por lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Auth</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@/firebase</span><span class="dl">'</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">email</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+      <span class="na">emailRules</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">El correo es requerido</span><span class="dl">'</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="sr">/.+@.+</span><span class="se">\.</span><span class="sr">.+/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">El correo debe tener formato válido</span><span class="dl">'</span>
+      <span class="p">],</span>
+      <span class="na">password</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span>
+      <span class="na">passwordRules</span><span class="p">:</span> <span class="p">[(</span><span class="nx">v</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">!!</span><span class="nx">v</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">La contraseña es requerida</span><span class="dl">'</span><span class="p">],</span>
+      <span class="na">showPassword</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">validate</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">validate</span><span class="p">()</span>
+    <span class="p">},</span>
+    <span class="k">async</span> <span class="nx">login</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">validate</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">Auth</span><span class="p">.</span><span class="nx">signInWithEmailAndPassword</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">password</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Products</span><span class="dl">'</span> <span class="p">})</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span>
+</code></pre></div></div> <p>Podemos notar como es que importamos el código de firebase que agregamos al comienzo de este capítulo. La función que efectúa la integración del logín es <code class="language-plaintext highlighter-rouge">signInWithEmailAndPassword</code> que puedes ver en la misma <a href="https://firebase.google.com/docs/auth/web/password-auth#sign_in_a_user_with_an_email_address_and_password">documentación</a>. Ahora al recargar las pruebas estas deberían seguir funcionando.</p> <p><img src="images/02-bdd-with-cypress-17.png" alt="Imagen que muestra las 2 pruebas pasando" /></p> <h4 id="página-de-productos"> <a href="#página-de-productos" class="anchor-heading" aria-labelledby="página-de-productos"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Página de productos </h4> <p>Continuamos con con la siguiente historia de usuario. Esta vez con la vista de los productos.</p> <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Funcionalidad</span><span class="p">:</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+
+<span class="no">Escenario</span><span class="p">:</span> <span class="no">Listado</span> <span class="n">simple</span>
+
+<span class="no">Como</span> <span class="n">un</span> <span class="n">usuario</span> <span class="n">que</span> <span class="n">inici</span><span class="err">ó</span> <span class="n">sesi</span><span class="err">ó</span><span class="n">n</span> <span class="n">en</span> <span class="n">la</span> <span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span>
+<span class="no">Cuando</span> <span class="n">ingreso</span> <span class="n">a</span> <span class="n">la</span> <span class="n">p</span><span class="err">á</span><span class="n">gina</span> <span class="n">de</span> <span class="n">productos</span>
+<span class="no">Entonces</span> <span class="n">deber</span><span class="err">í</span><span class="n">a</span> <span class="n">ver</span> <span class="n">una</span> <span class="n">lista</span> <span class="n">de</span> <span class="n">productos</span>
+
+</code></pre></div></div> <p>Ahora escribiremos una prueba basada en la historia. Para esto crearemos un nuevo archivo en el directorio <code class="language-plaintext highlighter-rouge">tests/e2e/specs</code> y lo llamaremos <code class="language-plaintext highlighter-rouge">products.js</code>. Ahora agregaremos el siguiente contenido:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">products test suite</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">shows a list of products</span><span class="dl">'</span><span class="p">,()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=username]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">test-e2e@boolean.cl</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=password]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">booleanacademia</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=login-btn]</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">products.json</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">products</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+        <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="products"] li</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">have.length</span><span class="dl">'</span><span class="p">,</span> <span class="nx">products</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+      <span class="p">});</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+</code></pre></div></div> <p>Si ejecutamos esta prueba veremos que falla por los fixtures, pero nos encargaremos de eso más adelante.</p> <p>En esta prueba vemos que es la tercera vez que escribimos las instrucciones para realizar una autenticación. Por suerte Cypress permite agrupar comandos comunes en funciones que podemos centralizar y reutilizar. Para lograr esto iremos al archivo <code class="language-plaintext highlighter-rouge">tests/e2e/support/commands.js</code> y descomentaremos la linea indicada en la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-18.png" alt="Imagen que muestra el comando de cypress a descomentar" /></p> <p>y los reemplazaremos por lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Cypress</span><span class="p">.</span><span class="nx">Commands</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="dl">"</span><span class="s2">login</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+
+  <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=username]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="nx">email</span><span class="p">)</span>
+  <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=password]</span><span class="dl">'</span><span class="p">).</span><span class="nx">type</span><span class="p">(</span><span class="nx">password</span><span class="p">)</span>
+  <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=login-btn]</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>  
+<span class="p">})</span>
+</code></pre></div></div> <p>y luego iremos a editar los archivos en el directorio <code class="language-plaintext highlighter-rouge">tests/e2e/specs</code> y reemplazaremos cada uno con el código correspondiente:</p> <p><strong>login.js</strong></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">login test suite</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">does not work with wrong credentials</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="dl">'</span><span class="s1">info</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">visitor</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">equal</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">})</span>
+
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">does work with valid credentials</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="dl">'</span><span class="s1">test-e2e@boolean.cl</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">booleanacademia</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">location</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">equal</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/productos</span><span class="dl">'</span><span class="p">)</span>
+   <span class="p">})</span>
+<span class="p">});</span>
+</code></pre></div></div> <p><strong>products.js</strong></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">products test suite</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">shows a list of products</span><span class="dl">'</span><span class="p">,()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="dl">'</span><span class="s1">test-e2e@boolean.cl</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">booleanacademia</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">products.json</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">products</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+        <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy="product-item"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">have.length</span><span class="dl">'</span><span class="p">,</span> <span class="nx">products</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+      <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+
+</code></pre></div></div> <p>Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos incluido el nuevo archivo. Ahora presionamos el botón que dice <code class="language-plaintext highlighter-rouge">Run all specs</code> que debería lucir como la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-19.png" alt="Imagen que muestra el menu principal de Cypress" /></p> <p>Y veremos el siguiente error:</p> <p><img src="images/02-bdd-with-cypress-20.png" alt="Imagen que muestra el menu principal de Cypress" /></p> <h4 id="qué-son-los-fixtures-"> <a href="#qué-son-los-fixtures-" class="anchor-heading" aria-labelledby="qué-son-los-fixtures-"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ¿Qué son los Fixtures ? </h4> <p>El error de la anterior prueba es porque aún no creamos el archivo <code class="language-plaintext highlighter-rouge">products.json</code>. Al revisar más en detalle podemos revisar que el siguiente código es el que causa el problema</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">cy</span><span class="p">.</span><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">products.json</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">products</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-cy=product-item]</span><span class="dl">'</span><span class="p">).</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">have.length</span><span class="dl">'</span><span class="p">,</span> <span class="nx">products</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+  <span class="p">})</span>
+
+</code></pre></div></div> <p>¿Para que agregamos este código?</p> <p>Un <code class="language-plaintext highlighter-rouge">Fixture</code> es información estática que permite que las pruebas de software sean repetibles en el tiempo. En otras palabras es un estado fijo que se le carga a las pruebas a través de los fixtures. En nuestro caso asumiremos la existencia de un archivo <code class="language-plaintext highlighter-rouge">products.json</code> que contendrá esta información. Este simple archivo estático cobra relevancia por que sirve de punto de encuentro entre las personas de negocio y los desarrolladores Backend y Frontend.</p> <p>Si vamos al archivo <code class="language-plaintext highlighter-rouge">tests/e2e/plugins/index.js</code> veremos entre otras configuraciones una en particular que dice lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">fixturesFolder</span><span class="p">:</span> <span class="dl">'</span><span class="s1">tests/e2e/fixtures</span><span class="dl">'</span><span class="p">,</span>
+</code></pre></div></div> <p>En esta linea de código se define desde donde Cypress va a leer los archivos Fixture. Lo haremos será crear una carpeta llamada <code class="language-plaintext highlighter-rouge">fixtures </code> en <code class="language-plaintext highlighter-rouge">tests/e2e</code> tal como lo indica la línea de código que estamos analizando. dentro de esta nueva carpeta agregaremos un archivo llamado <code class="language-plaintext highlighter-rouge">products.json</code> con el siguiente contenido:</p> <p><strong>products.json</strong></p> <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Epiphone Explorer Gothic "</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Guitarra color negro"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://images.unsplash.com/photo-1550985616-10810253b84d?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=742&amp;q=80"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0001"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cordoba Mini Bass"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bajo pequeño tipo ukelele. Excelente sonido de bajo."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://images.unsplash.com/photo-1556449895-a33c9dba33dd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2734&amp;q=80"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0002"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Distorsión Custom Badass 78"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peda del guitarra de distorsión."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://images.unsplash.com/photo-1527865118650-b28bc059d09a?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0003"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Distorsión TMiranda Bass Drive BD-1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pedal del bajo de distorsión."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://images.unsplash.com/photo-1614963590047-0b8b9daa3eb7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2089&amp;q=80"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0004"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Looper Hotone Wally"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pedal de looper. Super portable."</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://images.unsplash.com/photo-1595167151695-dfb4846e70f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0005"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre></div></div> <p>Ahora deberíamos obtener un nuevo error en Cypress, ya que la prueba esperaba encontrar cinco (5) elementos con el atributo <code class="language-plaintext highlighter-rouge">data-cy=product-item</code>, pero encuentra cero (0) como indica la siguiente imagen:</p> <p><img src="images/02-bdd-with-cypress-20.png" alt="Imagen que muestra error de cypress" /></p> <p>Al igual que las veces anteriores escribiremos el código lo más simple posible para pasar esta prueba.</p> <p>Modificamos el archivo <code class="language-plaintext highlighter-rouge">src/views/Products.vue</code> y agregaremos lo siguiente en la sección <code class="language-plaintext highlighter-rouge">&lt;template&gt;</code>:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;v-main&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Productos<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="nt">&lt;section&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"https://picsum.photos/id/10/200"</span> <span class="na">data-cy=</span><span class="s">"product-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"https://picsum.photos/id/11/200"</span> <span class="na">data-cy=</span><span class="s">"product-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"https://picsum.photos/id/12/200"</span> <span class="na">data-cy=</span><span class="s">"product-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"https://picsum.photos/id/13/200"</span> <span class="na">data-cy=</span><span class="s">"product-item"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"https://picsum.photos/id/14/200"</span> <span class="na">data-cy=</span><span class="s">"product-item"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</code></pre></div></div> <p>Guardamos, recargamos las pruebas en Cypress y vemos que todas la prueba está pasando:</p> <p><img src="images/02-bdd-with-cypress-22.png" alt="Imagen que muestra error de cypress" /></p> <p>Para la refactorización nos basaremos en el ejemplo de Vuetify presentado en el siguiente <a href="https://vuetifyjs.com/en/components/images/#grid">enlace</a>.</p> <p>Modificamos completo el archivo <code class="language-plaintext highlighter-rouge">src/views/Products.vue</code> con el siguiente contenido:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;v-main&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Productos<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="nt">&lt;section</span> <span class="na">data-cy=</span><span class="s">"products"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;v-row&gt;</span>
+        <span class="nt">&lt;v-col</span>
+          <span class="na">v-for=</span><span class="s">"product in products"</span>
+          <span class="na">:key=</span><span class="s">"product.id"</span>
+          <span class="na">cols=</span><span class="s">"4"</span>
+          <span class="na">data-cy=</span><span class="s">"product-item"</span>
+        <span class="nt">&gt;</span>
+          <span class="nt">&lt;h3&gt;&lt;/h3&gt;</span>
+          <span class="nt">&lt;v-img</span>
+            <span class="na">:src=</span><span class="s">"product.image"</span>
+            <span class="na">lazy-src=</span><span class="s">"https://via.placeholder.com/300"</span>
+            <span class="na">aspect-ratio=</span><span class="s">"1"</span>
+            <span class="na">class=</span><span class="s">"grey lighten-2"</span>
+          <span class="nt">&gt;</span>
+            <span class="nt">&lt;template</span> <span class="na">v-slot:placeholder</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;v-row</span>
+                <span class="na">class=</span><span class="s">"fill-height ma-0"</span>
+                <span class="na">align=</span><span class="s">"center"</span>
+                <span class="na">justify=</span><span class="s">"center"</span>
+              <span class="nt">&gt;</span>
+                <span class="nt">&lt;v-progress-circular</span>
+                  <span class="na">indeterminate</span>
+                  <span class="na">color=</span><span class="s">"grey lighten-5"</span>
+                <span class="nt">&gt;&lt;/v-progress-circular&gt;</span>
+              <span class="nt">&lt;/v-row&gt;</span>
+            <span class="nt">&lt;/template&gt;</span>
+          <span class="nt">&lt;/v-img&gt;</span>
+
+          <span class="nt">&lt;p&gt;&lt;/p&gt;</span>
+        <span class="nt">&lt;/v-col&gt;</span>
+      <span class="nt">&lt;/v-row&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+  <span class="nt">&lt;/v-main&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Epiphone Explorer Gothic </span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Guitarra color negro</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1550985616-10810253b84d?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=742&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0001</span><span class="dl">'</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="na">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Cordoba Mini Bass</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Bajo pequeño tipo ukelele. Excelente sonido de bajo.</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1556449895-a33c9dba33dd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2734&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0002</span><span class="dl">'</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="na">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Distorsión Custom Badass 78</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Peda del guitarra de distorsión.</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1527865118650-b28bc059d09a?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0003</span><span class="dl">'</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="na">id</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Distorsión TMiranda Bass Drive BD-1</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Pedal del bajo de distorsión.</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1614963590047-0b8b9daa3eb7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2089&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0004</span><span class="dl">'</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="na">id</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Looper Hotone Wally</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Pedal de looper. Super portable.</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">image</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://images.unsplash.com/photo-1595167151695-dfb4846e70f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=668&amp;q=80</span><span class="dl">'</span><span class="p">,</span>
+          <span class="na">code</span><span class="p">:</span> <span class="dl">'</span><span class="s1">0005</span><span class="dl">'</span>
+        <span class="p">}</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre></div></div> <p>Notarás que hicimos una copia del contenido del archivo <code class="language-plaintext highlighter-rouge">products.json</code> que agregamos como fixture anteriormente. Esto será de utilidad ya que ahora nuestra aplicación implementa “el contrato” JSON del archivo y esta mostrando los atributos en función de esta lista.</p> <p>Al recargar Cypress veremos que luego de hacer los cambios en el código nuestra prueba sigue pasando:</p> <p><img src="images/02-bdd-with-cypress-23.png" alt="Imagen que muestra cypress con las pruebas pasando" /></p> <h4 id="agregando-axios-y-haciendo-una-petición-al-servidor"> <a href="#agregando-axios-y-haciendo-una-petición-al-servidor" class="anchor-heading" aria-labelledby="agregando-axios-y-haciendo-una-petición-al-servidor"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Agregando Axios y haciendo una petición al Servidor </h4> <p>Ya hemos modelado y escrito las pruebas necesarias para que nuestra aplicación cuente con la funcionalidad básica que permita mostrar una lista de productos luego de una autenticación. Pero la última funcionalidad que escribimos muestra una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON que modelamos utilizando Fixtures.</p> <p>Sin dejar de correr Cypress, abriremos una nueva terminal en el proyecto e instalaremos la librerías <code class="language-plaintext highlighter-rouge">Axios</code> utilizando el siguiente comando:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>axios
+</code></pre></div></div> <p>Si quieres conocer más sobre su documentación te recomendamos mirar <a href="https://github.com/axios/axios#axios-api">este enlace</a>.</p> <p>Ahora iremos al archivo <code class="language-plaintext highlighter-rouge">src/store</code> y reemplazaremos su contenido por lo siguiente:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">Vue</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vue</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">Vuex</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vuex</span><span class="dl">'</span>
+<span class="k">import</span> <span class="nx">axios</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span>
+
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Vuex</span><span class="p">)</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Vuex</span><span class="p">.</span><span class="nx">Store</span><span class="p">({</span>
+  <span class="na">state</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">products</span><span class="p">:</span> <span class="p">[]</span>
+  <span class="p">},</span>
+  <span class="na">mutations</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">SET_PRODUCTS</span> <span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">products</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">store</span><span class="p">.</span><span class="nx">products</span> <span class="o">=</span> <span class="nx">products</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">actions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">async</span> <span class="nx">getProducts</span> <span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="p">{</span> <span class="nx">commit</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">actionContext</span>
+      <span class="kd">const</span> <span class="nx">productsURL</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/api/products</span><span class="dl">'</span>
+
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">productsURL</span><span class="p">)</span>
+        <span class="nx">commit</span><span class="p">(</span><span class="dl">'</span><span class="s1">SET_PRODUCTS</span><span class="dl">'</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">modules</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+
+</code></pre></div></div> <p>Con esto dejaremos lista una acción de <code class="language-plaintext highlighter-rouge">Vuex</code> que nos permitirá desde nuestro componente ejecutar la acción <code class="language-plaintext highlighter-rouge">getProducts</code> que agregará al estado de la aplicación los productos desde un servidor externo. El servidor deberá responder los productos basados en el contrato que consume nuestro componente <code class="language-plaintext highlighter-rouge">Products</code>.</p> <p>Ahora iremos al archivo <code class="language-plaintext highlighter-rouge">src/views/Login.vue</code> y editaremos la sección <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> de la siguiente manera:</p> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script&gt;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">mapActions</span><span class="p">,</span> <span class="nx">mapState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">vuex</span><span class="dl">'</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">computed</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">mapState</span><span class="p">([</span>
+      <span class="dl">'</span><span class="s1">products</span><span class="dl">'</span>
+    <span class="p">])</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">mapActions</span><span class="p">([</span>
+      <span class="dl">'</span><span class="s1">getProducts</span><span class="dl">'</span>
+    <span class="p">])</span>
+  <span class="p">},</span>
+  <span class="nx">created</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">getProducts</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+
+</code></pre></div></div> <p>Al recargar Cypress vamos a notar que las pruebas vuelven a fallar.</p> <p><img src="images/02-bdd-with-cypress-24.png" alt="Imagen que muestra error de cypress" /></p> <p>Esto quiere decir que nuestro componente está tomando el valor por defecto desde el <code class="language-plaintext highlighter-rouge">store</code> y eso hace fallar las pruebas.</p> <p>Si quieres entender mejor los métodos como <code class="language-plaintext highlighter-rouge">created</code> que se ejecuta cuando el componente se inicializa en Vue puedes revisar el <a href="https://v3.vuejs.org/api/options-lifecycle-hooks.html#created">siguiente enlace</a></p> <p>Y si quieres conocer como el store de Vuex nos permite agregar acciones al componente para ejecutarlas cuando sea necesario puedes ver <a href="https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components">este enlace</a></p> <p>Además en la imagen anterior vemos resaltado la petición al servidor que se hizo y que Cypress nos informa que ha recibido como respuesta un error de tipo <code class="language-plaintext highlighter-rouge">404</code></p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(XHR) GET 404 /api/products
+
+</code></pre></div></div> <p>Esto es debido a que en nuestro componente realiza al inicializarse un llamado a la acción <code class="language-plaintext highlighter-rouge">getProducts</code> configurada en nuestro Store de Vuex. Esto lo podemos ver en el método <code class="language-plaintext highlighter-rouge">created()</code> del componente en <code class="language-plaintext highlighter-rouge">src/views/Products.vue</code></p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">methods</span><span class="p">:</span> <span class="p">{</span>
+  <span class="p">...</span><span class="nx">mapActions</span><span class="p">([</span>
+    <span class="dl">'</span><span class="s1">getProducts</span><span class="dl">'</span>
+  <span class="p">])</span>
+<span class="p">},</span>
+<span class="nx">created</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">getProducts</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div> <p>Para que esta prueba pase necesitaremos un servidor que responda la petición a la url <code class="language-plaintext highlighter-rouge">http://localhost:8080/api/products</code>. ¿Como lograremos esto? Lo resolveremos en el siguiente capítulo.</p> <div class="table-wrapper"><table> <tr> <th colspan="2"> <a href="./01-vue-cli-install.md"> <span>⬅️ </span>Creando un proyecto usando CLI y framework UI </a> </th> <th colspan="2"> <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend <span>➡️ </span> </a> </th> </tr> </table></div> </div> </div> <div class="search-overlay"></div> </div> </body> </html>

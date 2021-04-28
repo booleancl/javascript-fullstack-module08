@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Refactorización con pruebas I"
+nav_order: 6
+---
+
 # Refactorización utilizando pruebas de software en Backend
 En este punto la funcionalidad ya está completa, pero la organización del código se puede mejorar para aumentar su flexibilidad a los cambios que inevitablemente llegarán.
 

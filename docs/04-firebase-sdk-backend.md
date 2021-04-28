@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Autenticación en backend"
+nav_order: 4
+---
+
 # Validar autenticación en el Backend
 
 Firebase hace muy simple la comprobación de tokens de autorización en el Backend. En resumen, debemos enviar una cabecera específica desde el Frontend y con la librería de Firebase integrada a nuestro backend podremos validar que las solicitudes sean de un usuario autenticado.

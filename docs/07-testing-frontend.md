@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Refactorización con pruebas II"
+nav_order: 7
+---
+
 # Refactorización utilizando pruebas de software en Frontend
 Continuamos caracterizando la aplicación para refactorizar y dejar la aplicación más flexible y mantenible. 
 
