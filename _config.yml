@@ -2,5 +2,4 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 baseurl: "" # the subpath of your site, e.g. /blog
 title: "Fullstack JS" # the name of your site, e.g. ACME Corp.
 theme: "just-the-docs"
-logo: "logo.svg"
-
+remote_theme: pmarsceill/just-the-docs
