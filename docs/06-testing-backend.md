@@ -8,7 +8,7 @@ Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hem
 Utilizaremos tres herramientas populares de Javascript para escribir y ejecutar pruebas: `jest`, `jest-cli` y `supertest`. Primero navegamos a la carpeta `/backend` y luego ejecutamos el siguiente comando: 
 
 ```bash
-npm i jest jest-cli supertest --save-dev
+npm i --save-dev jest jest-cli supertest 
 ```
 Al igual que como lo hicimos con Sequelize-cli, vamos a exponer el comando de Jest para no tener que instalarlo globalmente. Eso es en el archivo `backend/package.json`. También vamos a cambiar el comando de test que viene por defecto. El archivo quedaría de la siguiente forma:
 

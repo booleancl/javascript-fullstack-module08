@@ -21,7 +21,7 @@ Manos a la obra!
   - [Agregando base de datos en entorno de desarrollo](docs/05-database-sequelize.md)
   - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
   - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
-  - [ Automatización de tareas para el desarrollo](docs/08-development-workflow-husky.md)
+  - [Automatización de tareas para el desarrollo](docs/08-development-workflow-husky.md)
   - [Salida a producción utilizando Github Actions y Heroku](docs/09-deployment-postgres.md)
   
 

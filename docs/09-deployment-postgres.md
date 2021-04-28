@@ -45,7 +45,7 @@ Para logra esto haremos 2 pasos:
 Para lograr esto ingresaremos a la carpeta `frontend` a través de la terminal y correremos el siguiente comando:
 
 ```bash
-npm run build -- --mode production
+npm run build
 ```
 Deberíamos ver algo como lo que muestra la siguiente imagen:
 
@@ -63,7 +63,7 @@ Veremos aparecer una carpeta `dist` en la raíz del directorio `frontend` por lo
 
 - heroku crear cuenta
 - heroku crear app
-- comentar sobre imagenes docker en heroku con diagrama y enlaces a documentación
+- comentar sobre imágenes docker en heroku con diagrama y enlaces a documentación
 
 (sino tiene docker, puede saltarse la parte que sigue)
 - agregar Dockerfile y probar en local la imagen de producción con docker run

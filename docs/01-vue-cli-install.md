@@ -80,7 +80,7 @@ Listo! ya estamos preparados para ir al siguiente paso de la construcción del p
       </a>
     </th>
     <th colspan="2">
-      <a href="docs/01-vue-cli-install.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
+      <a href="docs/02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
         <span>➡️ </span>
       </a>
     </th>

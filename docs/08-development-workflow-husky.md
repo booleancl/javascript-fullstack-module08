@@ -174,7 +174,8 @@ Volveremos a la raíz del proyecto e iremos al archivo `package.json` y modifica
   "pre-commit": "npm-run-all frontend-lint backend-lint",
   "pre-push": "npm-run-all frontend-test:unit backend-test",
   "husky": "husky"
-}
+},
+
 ```
 
 Podemos probar estos scripts primero corriendo los comandos
@@ -189,7 +190,7 @@ y luego
 npm run pre-push
 ```
 
-Deberiamos a estas alturas tener todos los linter tanto de Frontend como Backend pasando, así como las pruebas unitarias.
+Deberíamos a estas alturas tener todos los linter tanto de Frontend como Backend pasando, así como las pruebas unitarias.
 
 Nos queda un último paso que sería que estos scripts se activen cada vez que hacemos commit o push de nuestro código.
 
@@ -208,7 +209,7 @@ npm run husky add .husky/pre-commit "npm run pre-commit"
 npm run husky add .husky/pre-push "npm run pre-push"
 ```
 
-ahora veremos que dentro del directorio llamado `.husky` hay 2 nuevos archivos. Si revisamos su interior deberiamos ver lo siguiente:
+ahora veremos que dentro del directorio llamado `.husky` hay 2 nuevos archivos. Si revisamos su interior deberíamos ver lo siguiente:
 
 **.husky/pre-commit**
 
@@ -238,7 +239,7 @@ git add .
 git commit -m "chore(dev-scripts): se agregaron scripts de pre-commit y pre-push para asegurar la calidad de la plataforma"
 ```
 
-Veremos como al hacer esto se corre el script `pre-commit`. Si todo salió bien el commit  debería hacerse sin problemas.
+Veremos como al hacer esto se corre el script `pre-commit`. Si todo salió bien el commit debería hacerse sin problemas.
 
 
 - CONFIGURAR TU REMOTO
