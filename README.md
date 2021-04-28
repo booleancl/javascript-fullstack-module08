@@ -1,6 +1,3 @@
----
-layout: default
----
 ![Logo de Boolean Academia](https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg)
 
 # Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueque
