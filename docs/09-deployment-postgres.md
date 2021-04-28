@@ -247,20 +247,36 @@ jobs:
 ```
 - Pull request, code review y agilidad etc
 - push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
-- push FALLA
+- push FALLA al mirar nuestra app en producción esta fallando.
+
+Para saber que pasó, en la raíz:
+
+```bash
+npm install heroku
+```
+
+```bash
+npm run heroku logs -- --app=<nombre-de-tu-app>
+```
 
 FALLA!
-PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN
+PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN FOTO
+
+
 #### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
 
 - instalar postgres como dependencia del backend
 
 en `backend` en la raíz:
+
 ```bash
-npm i pg
+npm install pg
 ```
 
 - heroku agregar ADDON Heroku Postgres interfaz
+
+`heroku-postgresql`
+
 - revisar config vars y veremos DATABASE_URL que usaremos más adelante
 - configurar sequelize para producción usando 
 ```javascript
@@ -276,29 +292,11 @@ npm i pg
 }
 ```
 
+ERROR, MIRAR PORQUE
 
-Ahora hacemos push, esperamos el deploy!
-autenticamos
-y vemos error 500 en la DB "no existe tabla productos"
-NOS FALTAN LAS MIGRACIONES
-
-agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
-
-```javascript
-"db:migrate": "npm run sequelize db:migrate",
-"heroku-postbuild": "npm run db:migrate -- --env=production"
+```bash
+npm run heroku logs -- --app=<nombre-de-tu-app>
 ```
-
-Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
-
-para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
-
-
-
-
-
----
-
 
 FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT
 
@@ -330,6 +328,31 @@ hacer push y listo
 
 AHORA SI FUNCIONA!!!! pero la tabla productos está vacia.
 Mostrar foto array vacio en el response del endpoint de productos
+
+
+Ahora hacemos push, esperamos el deploy!
+autenticamos
+y vemos error 500 en la DB "no existe tabla productos"
+NOS FALTAN LAS MIGRACIONES
+
+agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
+
+```javascript
+"db:migrate": "npm run sequelize db:migrate",
+"heroku-postbuild": "npm run db:migrate -- --env=production"
+```
+
+Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
+
+para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
+
+
+
+
+
+---
+
+
 
 #### Cargar datos en la base de datos y ver los productos
 
