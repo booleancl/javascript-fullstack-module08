@@ -9,7 +9,7 @@ En este punto la funcionalidad ya está completa, pero la organización del cód
 
 Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hemos logrado. La funcionalidad se debe mantener, pero la calidad del código debe aumentar. Para esto agregaremos pruebas de software para el código tanto en el Backend como en el Frontend.
 
-##Pruebas de software en Backend
+## Pruebas de software en Backend
 
 Utilizaremos tres herramientas populares de Javascript para escribir y ejecutar pruebas: `jest`, `jest-cli` y `supertest`. Primero navegamos a la carpeta `/backend` y luego ejecutamos el siguiente comando: 
 
