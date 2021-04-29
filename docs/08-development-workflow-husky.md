@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Automatización en desarrollo"
+title: "Flujo de desarrollo del proyecto"
 nav_order: 8
 ---
 

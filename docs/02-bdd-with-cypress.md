@@ -961,18 +961,3 @@ created () {
 ```
 
 Para que esta prueba pase necesitaremos un servidor que responda la petición a la url `http://localhost:8080/api/products`. ¿Como lograremos esto? Lo resolveremos en el siguiente capítulo.
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./01-vue-cli-install.md">
-        <span>⬅️ </span>Creando un proyecto usando CLI y framework UI
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./03-monorepo-backend.md"> Reorganización del proyecto como un repositorio monolítico y agregar Backend
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>

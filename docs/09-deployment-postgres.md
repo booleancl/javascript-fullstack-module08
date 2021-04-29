@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Deploy automatizado"
+title: "Salida a producción utilizando Github Actions y Heroku"
 nav_order: 9
 ---
 # Salida a producción utilizando Github Actions y Heroku

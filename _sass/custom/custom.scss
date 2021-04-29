@@ -1,0 +1,16 @@
+@import 'fonts.scss';
+
+// https://github.com/pmarsceill/just-the-docs/blob/master/_sass/support/_variables.scss
+
+$backgroundColor: #ffffff;
+$bodyColor: #000000;
+$bodyFont: "Mark", sans-serif;
+
+body {
+  height: 100%;
+  font-family: $bodyFont;
+  font-weight: 400;
+  background: $backgroundColor;
+  color: $bodyColor;
+  text-rendering: optimizeLegibility;
+}

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Refactorización con pruebas II"
+title: "Refactorización utilizando pruebas de software en Frontend"
 nav_order: 7
 ---
 
@@ -882,21 +882,3 @@ Momento de un nuevo commit. Agrega lo siguiente desde la raíz del proyecto
 git add .
 git commit -m "refactor(frontend-refactor): Se agregó set de pruebas de caracterización en el Frontend y luego un refactor para dividir responsabilidades. Además se trabajo alerta global con TDD"
 ```
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./06-testing-backend.md">
-        <span>⬅️ </span>
-       Refactorización utilizando pruebas de software en Backend
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./08-development-workflow-husky.md"> Flujo de desarrollo del proyecto
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
-
-

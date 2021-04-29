@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Refactorización con pruebas I"
+title: "Refactorización utilizando pruebas de software en Backend"
 nav_order: 6
 ---
 
@@ -598,19 +598,3 @@ Momento de un nuevo commit. Escribimos lo siguiente en la terminal:
 git add .
 git commit -m "refactor(backend-refactor): Se agregó set de pruebas de caracterización en el Backend y luego un refactor para dividir responsabilidades"
 ```
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./05-database-sequelize.md">
-        <span>⬅️ </span>
-       Agregando base de datos en desarrollo
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./07-testing-frontend.md">Pruebas de software para Frontend
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
