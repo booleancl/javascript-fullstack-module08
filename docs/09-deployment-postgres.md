@@ -31,7 +31,7 @@ Veremos si nuestra plataforma cumple al menos con los requerimiento básicos par
 Iremos respondiendo a cada una de estas pregunta e implementaremos lo necesario para lograr solucionar lo necesario para salir a producción sin problemas.
 
 
-#### ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
+### ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
 
 En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes, íconos, etc que queramos incluir.
 De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio.
@@ -92,7 +92,7 @@ backend/src/public
 - agregar al gitignore `backend/public` y explicar porque
 
 
-#### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
+### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
 
 - heroku crear cuenta
 - heroku crear app intefaz
@@ -142,7 +142,7 @@ nos basta la tarea `start` para que heroku reconozca que este será el comando d
 
 Es también importante configurar la sección `engines` para confifgurar bajo que versión de NodeJS correrá nuestra aplicación. Más detalles en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version)
 
-#### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
+### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
 
 - github actions y variable de ambiente para deployment y seguridad en settings/secrets
 
@@ -263,7 +263,7 @@ FALLA!
 PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN FOTO
 
 
-#### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
+### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
 
 - instalar postgres como dependencia del backend
 
@@ -356,8 +356,8 @@ para saber más sobre los scripts que puede correr heroku utilizando las config 
 
 
 
-#### Cargar datos en la base de datos y ver los productos
+### Cargar datos en la base de datos y ver los productos
 
 
-#### Agregar un usuario real a la aplicación para terminar
+### Agregar un usuario real a la aplicación para terminar
 

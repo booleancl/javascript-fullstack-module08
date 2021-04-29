@@ -57,7 +57,7 @@ describe('login test suite', () => {
 })
 ```
 
-#### ¿Que significa este código?
+### ¿Que significa este código?
 
 Te preguntarás por qué utilizamos los atributo del tipo `data-cy=*` como selectores HTML en nuestra aplicación. Puedes ver el siguiente artículo desde el Blog oficial de Cypress en [este enlace](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements). En resumen se trata de que las pruebas e2e sean independientes (no acopladas) a cambios en el diseño, resistente a los posibles cambios que podrían sufrir las tradicionales clases o ids.
 
@@ -98,7 +98,7 @@ Si vamos a revisar el código podremos encontrar las 2 líneas que desencadenaro
 ```
 podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML y luego interactuar con ellos.
 
-#### ¿Cómo hacemos para pasar la prueba?
+### ¿Cómo hacemos para pasar la prueba?
 
 Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el menor código posible. En este caso basta con que agreguemos cualquier etiqueta HTML que tenga el atributo `[data-cy=username]`. 
 
@@ -151,7 +151,7 @@ Finalmente al recargar las pruebas veremos como es que ahora se puso de color ve
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-04.png)
 
 
-#### Refactorización
+### Refactorización
 
 Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación.
 Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.
@@ -273,7 +273,7 @@ Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando y la int
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
 
-#### Integrando el servicio de autenticación de Firebase
+### Integrando el servicio de autenticación de Firebase
 
 Dado el contexto de nuestra aplicación, lo que haremos será enviar invitaciones manualmente a quienes publicarán productos para trueques y darles un usuario y contraseña de acceso que manejaremos directamente desde la interfaz de Firebase.
 
@@ -381,7 +381,7 @@ Contraseña: booleanacademia
 Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda.
 Indicamos que este usuario, a pesar de estár en entorno productivo, será solamente para realizar pruebas. 
 
-#### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
+### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
 
 Ahora trabajaremos el caso (escenario en historias de usuario) exitóso
 de la autenticación. La historia sería como sigue:
@@ -559,7 +559,7 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 
 ![Imagen que muestra las 2 pruebas pasando](images/02-bdd-with-cypress-17.png)
 
-#### Página de productos
+### Página de productos
 
 Continuamos con con la siguiente historia de usuario. Esta vez con la vista de los productos.
 
@@ -657,7 +657,7 @@ Y veremos el siguiente error:
 
 ![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-20.png)
 
-#### ¿Qué son los Fixtures ?
+### ¿Qué son los Fixtures ?
 
 El error de la anterior prueba es porque aún no creamos el archivo `products.json`. Al revisar más en detalle podemos revisar que el siguiente código es el que causa el problema
 
@@ -851,7 +851,7 @@ Al recargar Cypress veremos que luego de hacer los cambios en el código nuestra
 ![Imagen que muestra cypress con las pruebas pasando](images/02-bdd-with-cypress-23.png)
 
 
-#### Agregando Axios y haciendo una petición al Servidor
+### Agregando Axios y haciendo una petición al Servidor
 
 Ya hemos modelado y escrito las pruebas necesarias para que nuestra aplicación cuente con la funcionalidad básica que permita mostrar una lista de productos luego de una autenticación. Pero la última funcionalidad que escribimos muestra una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON que modelamos utilizando Fixtures.
 

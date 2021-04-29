@@ -41,7 +41,7 @@ Aprovecharemos de incluir la opción para analizar la cobertura de las pruebas d
 ```
 
 Una vez configurado esto comenzaremos a escribir las pruebas. 
-#### Casos de la funcionalidad para definir pruebas 
+### Casos de la funcionalidad para definir pruebas 
 En estos momentos el Frontend cuanta con las siguientes características
 
 - Una vista `Login`  con un formulario con Vuetify que como finalidad ejecutar una función `login` que a su vez llama al método de autenticación de Firebase. En caso de ser exitoso, se redirige a la página de productos.
@@ -101,7 +101,7 @@ actions: {
   ...
 ```
 
-#### Implementación de pruebas sobre la vista Login
+### Implementación de pruebas sobre la vista Login
 Vamos a escribir las pruebas para los casos que describimos anteriormente.
 
 ##### Caso 1: Para un formulario válido ir a la página de productos si la autenticación fue exitosa
@@ -279,7 +279,7 @@ describe('Login.vue', () => {
 })
 
 ```
-#### Implementación de pruebas sobre la vista Products
+### Implementación de pruebas sobre la vista Products
 
 Pasaremos a hacer las pruebas para productos.
 
@@ -394,7 +394,7 @@ Ejecutamos las pruebas y veremos como hemos logrado cubrir todo el código como 
 
 ![Imagen que muestra cobertura total en store](images/07-testing-frontend-06.png)
 
-#### Refactorización del Store
+### Refactorización del Store
 
 Con esto ya tenemos una capa de cobertura o caracterización completa del código que nos permite implementar la refactorización con mayor confianza. En el caso del framework Vue con Vuex es clásico que el `store` es la primera fuente de *code smells* y tenemos una oportunidad de extraer la llamada al servidor en un servicio independiente. Para esto creamos el directorio `services` dentro de `src` y ahora crearemos un archivo llamado `product.service.js` con el siguiente contenido:
 
@@ -460,7 +460,7 @@ Ahora volvemos a ejecutar las pruebas y veremos que siguen pasando y que aún ma
 ![Imagen que muestra cobertura total en store](images/07-testing-frontend-07.png)
 
 
-#### Nueva funcionalidad a través de la metodología TDD
+### Nueva funcionalidad a través de la metodología TDD
 
 Escribiremos una nueva funcionalidad para nuestra aplicación. Antes de comenzar haremos una simulación de como se generaría la necesidad de programar algo nuevo en una aplicación si estuvieramos en el caso de una aplicación en la que hay un equipo multidisciplinario involucrado comenzando desde quienes solicitan el cambio hasta como lo hace el programador para describir lo que tiene que hacer y aprovecharemos esto para aplicar la metodolodía TDD: Desarrollo guiado por pruebas
 
@@ -496,7 +496,7 @@ Ahora ejecutamos el comando `npm run tdd` y veremos algo como en la siguiente im
 
 Vemos que ahora la terminal está esperando que se hagan cambios ya sea en las pruebas o en el código fuente.
 
-#### Implementación de la alerta cuando falla autenticación en vista Login
+### Implementación de la alerta cuando falla autenticación en vista Login
 
 Comenzaremos por modificar las pruebas que ya habíamos escrito y así hacerlas fallar. Agregaremos una nueva prueba para la vista Login
 
@@ -794,7 +794,7 @@ export default {
 
 Ahora quitaremos el código HTML que agregamos a la vista Login en la sección `template` y veremos que nuestras pruebas continúan pasando a pesar de toda la refactorización que hemos hecho.
 
-#### Implementación de la alerta cuando falla el servidor en vista Products
+### Implementación de la alerta cuando falla el servidor en vista Products
 
 Ahora modificaremos la prueba que escribimos para el caso que el servidor falla agregando dos nuevas sentencias `expect` a la prueba ya escrita. Reemplazamos por el siguiente código
 
@@ -866,7 +866,7 @@ Luego de hacer este cambio las pruebas se recargarán y podemos ver como están 
 ![Después del refactor y tdd](images/07-testing-frontend-13.png)
 
 
-#### Probar la aplicación con servidor y frontend corriendo
+### Probar la aplicación con servidor y frontend corriendo
 Ahora probaremos la aplicación manualmente corriendo el comando `npm run serve` y en otra ventana corriendo `npm run dev` en Frontend y Backend respectivamente. Como en la siguiente imagen:
 
 ![corriedo dos terminales](images/07-testing-frontend-14.png)

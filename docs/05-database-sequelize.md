@@ -173,7 +173,7 @@ pnpm-debug.log*
 
 Con todo esto ya tenemos nuestro ambiente de Base de datos montado en el ambiente de desarrollo. Solo falta incorporar que la respuesta del servidor entregue los datos desde la BDD 
 
-#### Agregar modelos de base de datos como respuesta a la llamada al Servidor
+### Agregar modelos de base de datos como respuesta a la llamada al Servidor
 
  Volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
   - Primero para el Backend ejecutamos `npm run dev`
