@@ -292,7 +292,9 @@ npm install pg
 }
 ```
 
-ERROR, MIRAR PORQUE
+Ahora
+
+
 
 ```bash
 npm run heroku logs -- --app=<nombre-de-tu-app>
