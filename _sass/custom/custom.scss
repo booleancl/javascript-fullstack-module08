@@ -14,3 +14,24 @@ body {
   color: $bodyColor;
   text-rendering: optimizeLegibility;
 }
+
+.nav-list .nav-list-item {
+  font-size: 14px !important;
+
+  display: inline-flex;
+  border: 1px solid #e5e8ee;
+  border-left: 0px;
+  border-right: 0;
+  padding: 10px 0;
+  width: 100%;
+
+  &::before {
+    content: "📖";
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list-link {
+    color: #132193;
+  }
+}

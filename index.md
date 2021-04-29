@@ -3,9 +3,6 @@ layout: default
 title: "Inicio"
 nav_order: 0
 ---
-
-![Logo de Boolean Academia](https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg)
-
 # Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueque
 
 > PENDING:  
@@ -19,15 +16,3 @@ Vamos a construir la base de una plataforma de trueques utilizando Javascript. S
 La autenticación será soportada por la plataforma Firebase y la aplicación será publicada utilizando la plataforma Heroku, en la cual montaremos un servidor que construiremos utilizando NodeJS y la librería Express.
 
 Manos a la obra!
-
-Índice:
-  - [Creando un proyecto usando CLI y framework UI](docs/01-vue-cli-install.md)
-  - [Implementando historias de usuario con BDD](docs/02-bdd-with-cypress.md)
-  - [Reorganización del proyecto como fullstack Javascript](docs/03-monorepo-backend.md)
-  - [Autenticar en el Frontend y validar en el Backend](docs/04-firebase-sdk-backend.md)
-  - [Agregando base de datos en entorno de desarrollo](docs/05-database-sequelize.md)
-  - [Refactorización utilizando pruebas de software en Backend](docs/06-testing-backend.md)
-  - [Refactorización utilizando pruebas de software en Frontend](docs/07-testing-frontend.md)
-  - [Automatización de tareas para el desarrollo](docs/08-development-workflow-husky.md)
-  - [Salida a producción utilizando Github Actions y Heroku](docs/09-deployment-postgres.md)
-  
