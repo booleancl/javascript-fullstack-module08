@@ -361,19 +361,3 @@ para saber más sobre los scripts que puede correr heroku utilizando las config 
 
 #### Agregar un usuario real a la aplicación para terminar
 
-
-<table>
-  <tr>
-    <th colspan="2">
-      <span>⬅️ </span>
-      <a href="./08-development-workflow-husky.md"> Flujo de desarrollo del proyecto
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="../README.md">
-        Volver al Índice del curso
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>

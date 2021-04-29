@@ -259,19 +259,3 @@ veremos como corren las pruebas antes de que se haga la subida del código a tu 
 
 Ya estamos preparados para subir a producción nuestro proyecto en el siguiente capítulo.
 
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./07-testing-frontend.md">
-        <span>⬅️ </span>
-       Refactorización utilizando pruebas de software en Frontend
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./09-deployment-postgres.md"> Salida a producción utilizando Github Actions y Heroku
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
-
