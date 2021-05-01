@@ -1,4 +1,10 @@
-title: "Fullstack JS" # the name of your site, e.g. ACME Corp.
-# remote_theme: pmarsceill/just-the-docs
+title: "Curso Javascript Fullstack"
 remote_theme: pmarsceill/just-the-docs
-logo: "logo.svg"
+logo: "https://res.cloudinary.com/boolean-spa/image/upload/v1591158800/logo_vayedu.svg"
+aux_links:
+  "Academia":
+    - "https://boolean.cl"
+  "Empresas":
+    - "https://boolean.cl/services"
+
+aux_links_new_tab: true

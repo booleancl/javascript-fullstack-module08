@@ -76,19 +76,3 @@ git add .
 git commit -m "chore(vuetify): Create Vue project with Vuetify"
 ```
 Listo! ya estamos preparados para ir al siguiente paso de la construcción del proyecto .
-
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="docs/01-vue-cli-install.md">
-        <span>⬅️ </span> Volver al Índice del curso
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="docs/02-bdd-with-cypress.md"> Escribiendo Pruebas E2E siguiendo la metodología BDD
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>

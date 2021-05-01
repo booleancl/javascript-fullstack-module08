@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Refactorización con pruebas I"
+title: "Refactorización utilizando pruebas de software en Backend"
 nav_order: 6
 ---
 
@@ -9,7 +9,7 @@ En este punto la funcionalidad ya está completa, pero la organización del cód
 
 Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hemos logrado. La funcionalidad se debe mantener, pero la calidad del código debe aumentar. Para esto agregaremos pruebas de software para el código tanto en el Backend como en el Frontend.
 
-### Pruebas de software en Backend
+## Pruebas de software en Backend
 
 Utilizaremos tres herramientas populares de Javascript para escribir y ejecutar pruebas: `jest`, `jest-cli` y `supertest`. Primero navegamos a la carpeta `/backend` y luego ejecutamos el siguiente comando: 
 
@@ -160,7 +160,7 @@ Con estos ajustes la salida de las pruebas queda como indica la siguiente imagen
 
 ![jest simple test passing](images/06-testing-frontend-backend-03.png)
 
-#### Casos de la funcionalidad para definir pruebas
+### Casos de la funcionalidad para definir pruebas
 
 En este momento el servidor tiene las siguientes características:
 
@@ -202,7 +202,7 @@ Estas son las funcionalidades que debemos mantener y que deben resistir el proce
 
 Es una buena práctica primero previsualizar los casos a los cuales vamos a escribir las pruebas así tenemos claro que código está involucrado en cada uno de los casos y será más fácil escribir la implementación de la prueba.
 
-#### Implementación de pruebas sobre el Middleware de validación de solicitudes autorizadas
+### Implementación de pruebas sobre el Middleware de validación de solicitudes autorizadas
 
 Vamos a escribir las pruebas que definimos para los casos que describimos anteriormente.
 
@@ -363,7 +363,7 @@ Podemos ver claramente como es que el informe de cobertura nos muestra que aún 
 
 Seguimos adelante con las pruebas cuando la solicitud pasa el middleware de autorización y solicita el listado de productos.
 
-#### Implementación de pruebas para endpoints de productos
+### Implementación de pruebas para endpoints de productos
 
 Vamos a escribir las pruebas del endpoint `GET /api/products`:
 
@@ -598,19 +598,3 @@ Momento de un nuevo commit. Escribimos lo siguiente en la terminal:
 git add .
 git commit -m "refactor(backend-refactor): Se agregó set de pruebas de caracterización en el Backend y luego un refactor para dividir responsabilidades"
 ```
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./05-database-sequelize.md">
-        <span>⬅️ </span>
-       Agregando base de datos en desarrollo
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./07-testing-frontend.md">Pruebas de software para Frontend
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>

@@ -173,7 +173,7 @@ pnpm-debug.log*
 
 Con todo esto ya tenemos nuestro ambiente de Base de datos montado en el ambiente de desarrollo. Solo falta incorporar que la respuesta del servidor entregue los datos desde la BDD 
 
-#### Agregar modelos de base de datos como respuesta a la llamada al Servidor
+### Agregar modelos de base de datos como respuesta a la llamada al Servidor
 
  Volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
   - Primero para el Backend ejecutamos `npm run dev`
@@ -267,21 +267,3 @@ git commit -m "refactor(backend-sequelize): Se agregó Sequelize para el manejo 
 
 Con esto ya tenemos completa la funcionalidad de nuestra aplicación conectados a una Base de datos.
 En el próximo cápitulo escribiremos pruebas de software de integración tanto en Backend como Frontend de manera de asegurar que la calidad de la solución que hemos escrito no se vea afectada con las sucesivas modificaciones que se hagan en el futuro.
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./04-firebase-sdk-backend.md">
-        <span>⬅️ </span>
-        Validar autenticación en el Backend
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./06-testing-frontend-backend.md">Pruebas de software para Backend y Frontend
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
-
-

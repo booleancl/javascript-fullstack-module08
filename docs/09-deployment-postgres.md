@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Deploy automatizado"
+title: "Salida a producción utilizando Github Actions y Heroku"
 nav_order: 9
 ---
 # Salida a producción utilizando Github Actions y Heroku
@@ -31,7 +31,7 @@ Veremos si nuestra plataforma cumple al menos con los requerimiento básicos par
 Iremos respondiendo a cada una de estas pregunta e implementaremos lo necesario para lograr solucionar lo necesario para salir a producción sin problemas.
 
 
-#### ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
+### ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
 
 En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes, íconos, etc que queramos incluir.
 De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio.
@@ -92,7 +92,7 @@ backend/src/public
 - agregar al gitignore `backend/public` y explicar porque
 
 
-#### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
+### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
 
 - heroku crear cuenta
 - heroku crear app intefaz
@@ -142,7 +142,7 @@ nos basta la tarea `start` para que heroku reconozca que este será el comando d
 
 Es también importante configurar la sección `engines` para confifgurar bajo que versión de NodeJS correrá nuestra aplicación. Más detalles en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version)
 
-#### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
+### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
 
 - github actions y variable de ambiente para deployment y seguridad en settings/secrets
 
@@ -247,20 +247,36 @@ jobs:
 ```
 - Pull request, code review y agilidad etc
 - push y mirar todo el proceso de puesta en producción con la interfaz de Github Actions
-- push FALLA
+- push FALLA al mirar nuestra app en producción esta fallando.
+
+Para saber que pasó, en la raíz:
+
+```bash
+npm install heroku
+```
+
+```bash
+npm run heroku logs -- --app=<nombre-de-tu-app>
+```
 
 FALLA!
-PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN
-#### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
+PORQUE SEQUELIZE NO RECONOCE LA CONFIGURACIÓN PARA PRODUCCIÓN FOTO
+
+
+### ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
 
 - instalar postgres como dependencia del backend
 
 en `backend` en la raíz:
+
 ```bash
-npm i pg
+npm install pg
 ```
 
 - heroku agregar ADDON Heroku Postgres interfaz
+
+`heroku-postgresql`
+
 - revisar config vars y veremos DATABASE_URL que usaremos más adelante
 - configurar sequelize para producción usando 
 ```javascript
@@ -276,29 +292,13 @@ npm i pg
 }
 ```
 
+Ahora
 
-Ahora hacemos push, esperamos el deploy!
-autenticamos
-y vemos error 500 en la DB "no existe tabla productos"
-NOS FALTAN LAS MIGRACIONES
 
-agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
 
-```javascript
-"db:migrate": "npm run sequelize db:migrate",
-"heroku-postbuild": "npm run db:migrate -- --env=production"
+```bash
+npm run heroku logs -- --app=<nombre-de-tu-app>
 ```
-
-Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
-
-para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
-
-
-
-
-
----
-
 
 FALLA! DEBEMOS INCLUIR SERVICE-ACCOUNT
 
@@ -331,24 +331,33 @@ hacer push y listo
 AHORA SI FUNCIONA!!!! pero la tabla productos está vacia.
 Mostrar foto array vacio en el response del endpoint de productos
 
-#### Cargar datos en la base de datos y ver los productos
+
+Ahora hacemos push, esperamos el deploy!
+autenticamos
+y vemos error 500 en la DB "no existe tabla productos"
+NOS FALTAN LAS MIGRACIONES
+
+agregar scripts `db:migrate` y `heroku-postbuild` a `backend/package.json`
+
+```javascript
+"db:migrate": "npm run sequelize db:migrate",
+"heroku-postbuild": "npm run db:migrate -- --env=production"
+```
+
+Utilizamos `heroku-postbuild` ya que en esta etapa podemos utilizar las dependencias de desarrollo ya que antes de la publicación Heroku elimina las dependencias de desarrollo.
+
+para saber más sobre los scripts que puede correr heroku utilizando las config vars seteadas en al interfaz puede ver más detalle en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#heroku-specific-build-steps)
 
 
-#### Agregar un usuario real a la aplicación para terminar
 
 
-<table>
-  <tr>
-    <th colspan="2">
-      <span>⬅️ </span>
-      <a href="./08-development-workflow-husky.md"> Flujo de desarrollo del proyecto
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="../README.md">
-        Volver al Índice del curso
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
+
+---
+
+
+
+### Cargar datos en la base de datos y ver los productos
+
+
+### Agregar un usuario real a la aplicación para terminar
+

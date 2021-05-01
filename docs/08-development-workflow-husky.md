@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Automatización en desarrollo"
+title: "Flujo de desarrollo del proyecto"
 nav_order: 8
 ---
 
@@ -53,7 +53,7 @@ Ya tenemos los paquetes necesarios para poder correr scripts asociados a las acc
 
 Como necesitamos estandarizar las tareas de calidad de código, nos está faltando algo: Necesitamos configurar el linter en Backend con el mismo estándar configurado por Vue para el Frontend.
 
-#### Configurar linter en el backend
+### Configurar linter en el backend
 
 Nos aseguramos de navegar hacia la carpeta `backend` y en su interior ejecutamos el siguiente comando:
 
@@ -167,7 +167,7 @@ npm run lint
 
 Ahora revisamos si es que existen archivos que tengan problemas. De ser así solucionamos los problemas y guardamos los archivos.
 
-#### Scripts de pre-commit y pre-push para el proyecto
+### Scripts de pre-commit y pre-push para el proyecto
 
 Volveremos a la raíz del proyecto e iremos al archivo `package.json` y modificaremos la sección scripts para que quede de la siguiente manera:
 
@@ -200,7 +200,7 @@ Deberíamos a estas alturas tener todos los linter tanto de Frontend como Backen
 
 Nos queda un último paso que sería que estos scripts se activen cada vez que hacemos commit o push de nuestro código.
 
-#### 
+### 
 
 Instalar husky
 ```bash
@@ -258,20 +258,4 @@ git push origin main
 veremos como corren las pruebas antes de que se haga la subida del código a tu repositorio remoto.
 
 Ya estamos preparados para subir a producción nuestro proyecto en el siguiente capítulo.
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./07-testing-frontend.md">
-        <span>⬅️ </span>
-       Refactorización utilizando pruebas de software en Frontend
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./09-deployment-postgres.md"> Salida a producción utilizando Github Actions y Heroku
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
 

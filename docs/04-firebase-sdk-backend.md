@@ -301,19 +301,3 @@ git commit -m "refactor(backend-firebase): Se agregó firebase-admin al backend 
 ```
 
 Nuestro siguiente objetivo será dejar de enviar información estática desde el servidor y conectarnos a una base de datos. Utilizaremos los Fixtures para mantener la consistencia entre los datos de la base de datos y los verificados por Cypress en las pruebas.
-
-<table>
-  <tr>
-    <th colspan="2">
-      <a href="./03-monorepo-backend.md">
-        <span>⬅️ </span>
-        Reorganización del proyecto como un repositorio monolítico y agregar Backend
-      </a>
-    </th>
-    <th colspan="2">
-      <a href="./05-database-sequelize.md">Agregando base de datos utlizando Sequelize
-        <span>➡️ </span>
-      </a>
-    </th>
-  </tr>
-</table>
