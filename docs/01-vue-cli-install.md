@@ -63,7 +63,8 @@ si te pregunta (Y/n) y queremos seleccionar 'Y'
 
    ![Imagen de paso 9 de instalación](images/01-vue-cli-install-09.png)
 
-Esto creará una carpeta con la estructura inicial y todo lo necesario para construir nuestra aplicación Frontend. Durante este proceso Vue CLI configuró [Webpack](https://webpack.js.org/). Webpack es una herramienta que nos permite tener códigos amigables para desarrollar y los trasforma en códigos amigables para el navegador. Esto lo logra aplicando una serie de transformaciones (*loaders*) cada vez de vemos nuestras aplicación ejecutándose en un navegador. Las etapas más importantes que hizo Vue CLI fueron:
+Esto creará una carpeta con la estructura inicial y todo lo necesario para construir nuestra aplicación Frontend. Durante este proceso Vue CLI configuró [Webpack](https://webpack.js.org/). Webpack es una herramienta que nos permite tener códigos amigables para desarrollar y los trasforma en códigos amigables para el navegador. Esto lo logra aplicando una serie de transformaciones (*loaders*) cada vez de vemos nuestras aplicación ejecutándose en un navegador. Las configuraciones más importantes que hizo Vue CLI fueron:
+
    +  Configurar el uso de *Single file components* (.vue) 
    +  Configurar Babel para las últimas versiones de ECMAScript
    +  Activar *Hot Module Replacement* en [webpack-dev-server](https://github.com/webpack/webpack-dev-server) para que al guardar los cambios se reflejen inmediatamente en el navegador
@@ -75,7 +76,7 @@ Una vez terminada la instalación ingresamos al repositorio recién creado y agr
 vue add vuetify
 ```
 
-> Decimos *repositorio* porque durante el proceso de instalación  Vue CLI ejecutó `git init` por nosotros.
+> Decimos *repositorio* porque durante el proceso de instalación Vue CLI ejecutó `git init` por nosotros.
 
 Vuetify es una de las tantas librerías de componentes UI de alta productividad para Vue (Buefy, Element, Bootstrap Vue, etc).
 
