@@ -6,13 +6,13 @@ nav_order: 1
 
 # Creando un proyecto usando CLI y framework UI
 
-Comenzaremos creando un proyecto a través de la línea de comandos de Vue. Para ello la instalaremos con el siguiente comando
+Comenzaremos creando un proyecto a través de la línea de comandos de Vue. Si no la tienes puedes instalarla con el siguiente comando
 
 ```bash
 npm install -g @vue/cli
 ```
 
-Una vez instalado navegamos a través de la terminal hacia el directorio donde queremos crear el proyecto y ejecutamos el siguiente comando:
+Una vez instalado navegamos por la terminal hacia el directorio donde queremos crear el proyecto y ejecutamos el siguiente comando:
 
 ```bash
 vue create <nombre-de-tu-proyecto>
@@ -35,7 +35,8 @@ Deberemos contestar una serie de preguntas. Veamos en detalle que responderemos 
 5) Utilizaremos la configuración de Javascript estándar para la herramienta [ESLint](https://eslint.org/). Si quieres conocer más detalles sobre este estándar puedes visitar [este link](https://standardjs.com/)  
 ![Imagen de paso 5 de instalación](images/01-vue-cli-install-05.png?raw=true)
 
-6) Seleciona lint on save ![Lint on save](images/01-vue-cli-install-05-b.png?raw=true)
+6) Selecciona lint on save 
+   ![Lint on save](images/01-vue-cli-install-05-b.png?raw=true)
 
 7) Utilizaremos [Jest](https://jestjs.io/) para crear pruebas de integración en el proyecto.
 ![Imagen de paso 6 de instalación](images/01-vue-cli-install-06.png?raw=true)

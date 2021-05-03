@@ -3,16 +3,19 @@ layout: default
 title: "Inicio"
 nav_order: 0
 ---
-# Proyecto de Integración Curso Javascript Full Stack: Plataforma de trueque
+# Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
 
-> PENDING:  
-Tener un prólogo que explique el contexto del proyecto con el material del curso y cómo está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack.
-Mencionar que haremos todo el scaffolding para trabajar de forma profesionarl y que será el alumno quien debe luego de completar esto, construir su propia aplicación resolviendo Historias de Usuario de alto nivel y ellos deben darle la especificidad.
+Esta guía es parte del proyecto final del curso Fullstack Javascript para programadores. Está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack. Se ejemplifican técnicas profesionales de refactorización y mejora contínua para solucionar bugs y mejorar la calidad y flexibilidad del código. 
 
+**Con esta guía el estudiante podrá:**
+  1) Poner en producción el resultado de un sprint que será la base para su futura personalización. 
+  2) Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas 
 
+**Advertencia**
+> En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc). La elección específica de las herramientas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil.   
 
-Vamos a construir la base de una plataforma de trueques utilizando Javascript. Seguiremos la metodología BDD para implementar una historia de usuario. Utilizaremos el framework *VueJS* para construir una vista de ingreso (*login*) que nos permitirá acceder a un catálogo de instrumentos musicales disponibles para trueques.
+En concreto vamos a construir la base de una aplicación escalable y flexible utilizando Javascript y siguiendo la metodología BDD para implementar 2 historias de usuario. En el Frontend usaremos el framework **VueJS** y parte de su ecosistema de *plugins* para construir una Single Page Application (SPA), mientras que en el Backend construiremos un servidor con **NodeJS** y la librería **Express**. 
 
-La autenticación será soportada por la plataforma Firebase y la aplicación será publicada utilizando la plataforma Heroku, en la cual montaremos un servidor que construiremos utilizando NodeJS y la librería Express.
+La autenticación será soportada en todo el stack por la plataforma **Firebase** y la aplicación será publicada en la plataforma **Heroku** con un proceso de despliegue apoyado por **Github actions**.
 
 Manos a la obra!
