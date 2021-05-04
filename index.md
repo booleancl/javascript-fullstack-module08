@@ -9,8 +9,8 @@ Esta guía es parte del proyecto final del curso Fullstack Javascript para progr
 
 **Con esta guía el estudiante podrá:**
 
-  1) Poner en producción el resultado de un sprint que será la base para su futura personalización y proyecto final del curso. 
-  2) Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas. 
+  1)  Poner en producción el resultado de un sprint que será la base para su futura personalización y proyecto final del curso. 
+  2)  Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas. 
 
 **Advertencia**
 > En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc). La elección específica de las herramientas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil.   
