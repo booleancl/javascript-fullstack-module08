@@ -4,15 +4,16 @@ title: "Historias de usuario y BDD"
 nav_order: 2
 ---
 
-# Implementando historias de usuario con BDD
+# Historias de usuario con BDD
 
-Comenzaremos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
+Vamos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
 
 Nuestra primera historia de usuario es la siguiente:
-```ruby
-Funcionalidad: login de la aplicación
 
-Escenario: login con credenciales inválidas
+```ruby
+Funcionalidad: Login de la aplicación
+
+Escenario: Login con credenciales inválidas
 
 Como un usuario no registrado
 Cuando ingreso a la aplicación 
@@ -21,29 +22,29 @@ Y el campo password con 'visitor'
 Entonces debería permanecer en la misma página
 ```
 
-Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la api de Cypress.
+Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la API de Cypress.
 
-Para esto vamos a modificar la prueba e2e por defecto generada durante el proceso de creación. En concreto el archivo de llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
+Para esto vamos a modificar la prueba e2e por defecto generada durante el proceso de creación. El archivo a modificar se llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
 
 ```
 <tu-proyecto>
 ...
-└─── public
-└─── src
-└─── tests
-    └─── e2e
-         └─── plugins
-         └─── specs
-                  test.js <-- vamos a renombrar este archivo
-         └─── support
-    └─── unit
-
+└─ public
+└─ src
+└─ tests
+    └─ e2e
+        └─ plugins
+        └─ specs
+            test.js <-- vamos a renombrar este archivo
+        └─ support
+    └─ unit
 ...
 ```
 Renombramos el archivo test.js indicado en la figura anterior y lo llamaremos simplemente `login.js`.
 Luego cambiaremos su contenido a lo indicado en el siguiente código:
 
 ```javascript
+
 describe('login test suite', () => {
   it('does not work with wrong credentials', () => {
     cy.visit('/')
@@ -55,13 +56,14 @@ describe('login test suite', () => {
     cy.location('pathname').should('equal', '/')
   })
 })
+
 ```
 
 ### ¿Que significa este código?
 
-Te preguntarás por qué utilizamos los atributo del tipo `data-cy=*` como selectores HTML en nuestra aplicación. Puedes ver el siguiente artículo desde el Blog oficial de Cypress en [este enlace](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements). En resumen se trata de que las pruebas e2e sean independientes (no acopladas) a cambios en el diseño, resistente a los posibles cambios que podrían sufrir las tradicionales clases o ids.
+Te preguntarás por qué utilizamos los atributos del tipo `data-cy=*` como selectores HTML en nuestra prueba. La respuesta está en el siguiente [artículo](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements) del Blog oficial de Cypress. En resumen se hace para que las pruebas e2e no estén acopladas al diseño y sean afectadas por cambios que podrían sufrir las tradicionales clases o ids.
 
-Por supuesto que como aún no hemos escrito código, esta prueba de software comenzará fallando y será nuestro deber escribir el mínimo código necesario para hacerla pasar. Una vez que la prueba de software esté pasando, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como `Red - Green - Refactor`.
+Por supuesto que como aún no hemos escrito código, esta prueba de software fallará y será nuestro deber escribir el **mínimo código** necesario para hacerla pasar. Una vez que la prueba de software pase, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como `Red - Green - Refactor`.
 
 Para ver nuestra prueba fallando ejecutaremos el siguiente comando:
 
@@ -69,22 +71,23 @@ Para ver nuestra prueba fallando ejecutaremos el siguiente comando:
 npm run test:e2e
 ```
 
-Veremos aparecer la siguiente ventana:
+Veremos aparecer el *runner* de Cypress en la siguiente ventana:
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-01.png)
 
-Al hacer click sobre `login.js` aparecerá finalmente la prueba de software fallando como muestra la siguiente imagen:
+Al hacer click sobre `login.js` veremos la prueba de software fallando como muestra la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress](images/02-bdd-with-cypress-02.png)
 
-Veremos una ventana del navegador en la cual al lado izquierdo están los pasos sucesivos que hemos escrito en la prueba de software y al lado derecho está nuestra aplicación.
-Si nos fijamos en el panel izquierdo hay 2 instrucciones:
+Veremos una ventana dividida verticalmente, cual al lado izquierdo están los pasos sucesivos que hemos escrito en la prueba de software y al lado derecho esta el resultado de ejecutar esos pasos en nuestra aplicación.
+
+Si vemos en detalle el panel izquierdo hay 2 instrucciones:
 
   ```
     1 VISIT /
     2 GET   [data-cy=username]
   ```
-La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, pero luego la segunda instrucción intentó encontrar en el HTML un elemento con el atributo `data-cy=username`. Esto lo vemos traducido en el siguiente mensaje de error:
+La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz sin problemas, luego, la segunda instrucción intentó, sin éxito, encontrar en el HTML un elemento con el atributo `data-cy=username`. Esto lo vemos en el siguiente mensaje de error:
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
@@ -96,13 +99,13 @@ Si vamos a revisar el código podremos encontrar las 2 líneas que desencadenaro
   cy.visit('/')
   cy.get('[data-cy=username]').type('info')
 ```
-podemos ver como es que el comando `cy.get` es el que se usa para encontrar elementos HTML y luego interactuar con ellos.
+Vemos que el comando `cy.get` es el que se usa para encontrar elementos HTML y luego interactuar con ellos.
 
-### ¿Cómo hacemos para pasar la prueba?
+### ¿Cómo pasar la prueba?
 
-Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el menor código posible. En este caso basta con que agreguemos cualquier etiqueta HTML que tenga el atributo `[data-cy=username]`. 
+Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el **menor código** posible. En este caso basta con agregar cualquier etiqueta HTML que tenga el atributo `[data-cy=username]`. 
 
-Para esto nos vamos a dirigir al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
+Para esto nos vamos al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
 
 ```html
 
@@ -115,14 +118,13 @@ Para esto nos vamos a dirigir al archivo `src/App.vue` y agregaremos lo siguient
   ...
 ```
 
-Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COMPILING`. Esperaremos que esto salga OK y luego vamos nuevamente a Cypress y presionamos el botón para recargar las pruebas  como se ve en al siguiente imagen
+Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COMPILING`. Esperaremos que esto termine y vamos nuevamente a Cypress. Presionamos el botón para recargar las pruebas como se ve en al siguiente imagen.
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-03.png)
 
 Veremos como al lado derecho aparece el input que agregamos y con valor `info`. Esto gracias al comando `.type` que ejecutamos sobre el elemento seleccionado.
 
-Ahora veremos un nuevo mensaje de error:
-
+Ahora veremos un mensaje de error diferente:
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=password]', but never found it.
@@ -146,7 +148,7 @@ Al agregar esto en el archivo `views/App.vue` quedará así:
   ...
 ```
 
-Finalmente al recargar las pruebas veremos como es que ahora se puso de color verde lo que indica que la prueba está pasando.
+Finalmente al recargar las pruebas veremos que ahora está de color verde, indicando que la prueba pasó sin problemas.
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-04.png)
 
@@ -154,7 +156,7 @@ Finalmente al recargar las pruebas veremos como es que ahora se puso de color ve
 ### Refactorización
 
 Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación.
-Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar recarguemos las pruebas y nos aseguremos que siguen pasando.
+Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar refrescamos las pruebas y nos aseguremos que siguen pasando.
 
 Lo primero será modificar el archivo `src/App.vue` y reemplazaremos todo su contenido por lo siguiente:
 

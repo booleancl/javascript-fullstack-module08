@@ -8,6 +8,7 @@ nav_order: 0
 Esta guía es parte del proyecto final del curso Fullstack Javascript para programadores. Está enfocado en aplicar los conocimientos del curso más la metodología de desarrollo ágil en un proyecto digital utilizando javascript en todo el stack. Se ejemplifican técnicas profesionales de refactorización que permiten entre otras cosas solucionar bugs y mejorar la calidad y flexibilidad del código. 
 
 **Con esta guía el estudiante podrá:**
+
   1) Poner en producción el resultado de un sprint que será la base para su futura personalización y proyecto final del curso. 
   2) Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas. 
 
