@@ -79,7 +79,7 @@ Al hacer click sobre `login.js` veremos la prueba de software fallando como mues
 
 ![Imagen que muestra el navegador que corre cypress](images/02-bdd-with-cypress-02.png)
 
-Veremos una ventana dividida verticalmente, cual al lado izquierdo están los pasos sucesivos que hemos escrito en la prueba de software y al lado derecho esta el resultado de ejecutar esos pasos en nuestra aplicación.
+Veremos una ventana dividida verticalmente, al lado izquierdo están los pasos sucesivos que hemos escrito en la prueba de software y al derecho está el resultado de ejecutar esos pasos en nuestra aplicación.
 
 Si vemos en detalle el panel izquierdo hay 2 instrucciones:
 
@@ -93,19 +93,20 @@ La primera instrucción hizo que nuestra aplicación navegará a la ruta raíz s
 CypressError: Timed out retrying: Expected to find element: '[data-cy=username]', but never found it.
 ```
 
-Si vamos a revisar el código podremos encontrar las 2 líneas que desencadenaron las acciones del panel izquierdo:
+Al revisar el código veremos las dos (2) sentencias que ejecutaron las acciones del panel izquierdo:
 
 ```javascript
   cy.visit('/')
   cy.get('[data-cy=username]').type('info')
 ```
-Vemos que el comando `cy.get` es el que se usa para encontrar elementos HTML y luego interactuar con ellos.
+
+Vemos que el comando `cy.get` es usado para encontrar elementos HTML para luego encadenar acciones sobre ellos.
 
 ### ¿Cómo pasar la prueba?
 
-Como mencionamos anteriormente la metodología dice que la prueba de software debe pasar escribiendo el **menor código** posible. En este caso basta con agregar cualquier etiqueta HTML que tenga el atributo `[data-cy=username]`. 
+Recordemos que la metodología propone que debemos pasar la prueba de software escribiendo el **menor código** posible. En este caso basta con agregar un input HTML que tenga el atributo `[data-cy=username]`. 
 
-Para esto nos vamos al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
+Para esto vamos al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
 
 ```html
 
@@ -122,7 +123,7 @@ Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COM
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-03.png)
 
-Veremos como al lado derecho aparece el input que agregamos y con valor `info`. Esto gracias al comando `.type` que ejecutamos sobre el elemento seleccionado.
+Veremos como al lado derecho aparece el input que agregamos y con valor `info`. Esto es por el comando `.type` que ejecutamos sobre el elemento seleccionado.
 
 Ahora veremos un mensaje de error diferente:
 
@@ -136,7 +137,6 @@ Al agregar esto en el archivo `views/App.vue` quedará así:
 
 
 ```html
-
   ...
   <v-main>
     <HelloWorld/>
@@ -148,20 +148,18 @@ Al agregar esto en el archivo `views/App.vue` quedará así:
   ...
 ```
 
-Finalmente al recargar las pruebas veremos que ahora está de color verde, indicando que la prueba pasó sin problemas.
+A continuación, al recargar las pruebas veremos que ahora está de color verde, indicando que la prueba pasó sin problemas.
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-04.png)
 
 
 ### Refactorización
 
-Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación.
-Modificaremos todo el código de la página inicial para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras implementamos los cambios para que al terminar refrescamos las pruebas y nos aseguremos que siguen pasando.
+Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación. Modificaremos todo el código de esta vista para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras refactorizamos, para que al terminar refresquemos las pruebas y nos aseguremos que sigan pasando.
 
-Lo primero será modificar el archivo `src/App.vue` y reemplazaremos todo su contenido por lo siguiente:
+Lo primero será simplificar el archivo `src/App.vue`. Reemplazaremos todo su contenido por lo siguiente:
 
 ```html
-
 <template>
   <v-app>
     <v-main>
@@ -179,7 +177,7 @@ export default {
 
 ```
 
-Luego iremos al directorio `views`. Eliminamos el archivo `About.vue` y vamos a cambiar el nombre del archivo `Home.vue` por `Login.vue`. En cuanto guardemos esto veremos un error en la terminal pero lo solucionaremos de inmediato, cuando actualicemos el router.
+Luego iremos al directorio `views`. Eliminamos el archivo `About.vue` y cambiamos el nombre del archivo `Home.vue` por `Login.vue`. En cuanto guardemos estos cambios veremos un error en la terminal pero lo solucionaremos cuando actualicemos el router.
 
 Ahora vamos al archivo `Login.vue` y reemplazaremos todo su contenido con lo siguiente:
 
@@ -244,7 +242,7 @@ export default {
 
 ```
 
-y ahora actualizamos el archivo `src/router/index.js` con lo siguiente:
+El paso siguiente es actualizar  el *router* presente en el archivo `src/router/index.js` con lo siguiente:
 
 ```javascript
 import Vue from 'vue'
@@ -270,21 +268,25 @@ export default router
 
 ```
 
-Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando y la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
+Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando, esta vez con la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
 
-### Integrando el servicio de autenticación de Firebase
+## Integrando el servicio de autenticación de Firebase
 
-Dado el contexto de nuestra aplicación, lo que haremos será enviar invitaciones manualmente a quienes publicarán productos para trueques y darles un usuario y contraseña de acceso que manejaremos directamente desde la interfaz de Firebase.
+Dado el contexto de nuestra aplicación, es decir, un desarrollo ágil con recursos limitados, muy similar a lo que ocurre en emprendimientos tecnológicos o proyectos internos de empresas, lo que haremos será enviar invitaciones *"manualmente"* a quienes publicarán productos directamente desde la interfaz de Firebase. Esto ahorra trabajo y nos permite probar ideas rápido y barato.
 
-Si ya tienes cuenta de Google, puedes autenticarte y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos una pantalla como la siguiente:
+Si ya tienes cuenta de Google, puedes iniciar sesión y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos un interfaz de es básicamente un CRUD de proyectos.
+
+
+> **Tip!** Los proyectos permiten agrupar aplicaciones (web, IOs y Android) que pueden compartir recursos o servicios (algunos de pago a precios muy competitivos) como *Analytics*, *Firestore* (base de dato en tiempo real), *Cloud Functions* y *Cloud Messaging*.    
 
 ![Imagen que muestra la interfaz de firebase para crear un proyecto](images/02-bdd-with-cypress-06.png)
 
-Una vez dentro del admin de Firebase creamos un proyecto. 
-Después de agregar el nombre nos pregunta si queremos incluir Analytics. Deshabilitar esta opción como en la siguiente imágen: ![Deshabilitar Analytics](images/02-bdd-with-cypress-06-b.png).  Después se puede activar si se requiere. 
+Una vez dentro del admin de Firebase hacemos click en crear un proyecto. Agregamos el nombre y deshabilitamos la opción de *Analytics*, como en la siguiente imágen:
+
+![Deshabilitar Analytics](images/02-bdd-with-cypress-06-b.png). 
 
 Cuando indique que el proyecto ha sido creado damos click en `continuar`. Posteriormente presionamos el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:
 
