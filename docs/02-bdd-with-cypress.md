@@ -275,12 +275,14 @@ Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando, esta ve
 
 ## Integrando el servicio de autenticación de Firebase
 
-Dado el contexto de nuestra aplicación, es decir, un desarrollo ágil con recursos limitados, muy similar a lo que ocurre en emprendimientos tecnológicos o proyectos internos de empresas, lo que haremos será enviar invitaciones *"manualmente"* a quienes publicarán productos directamente desde la interfaz de Firebase. Esto ahorra trabajo y nos permite probar ideas rápido y barato.
+Dado el contexto de nuestra aplicación, es decir, un desarrollo ágil con recursos limitados, muy similar a lo que ocurre en emprendimientos tecnológicos o proyectos internos de empresas, enviaremos invitaciones directamente a quienes publicarán productos desde la interfaz de Firebase. Esto ahorra trabajo y libera tiempo probar ideas rápido y barato. 
 
-Si ya tienes cuenta de Google, puedes iniciar sesión y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos un interfaz de es básicamente un CRUD de proyectos.
+>**Tip** Por ahí dicen [Sencillez: el arte de maximizar la cantidad del trabajo no hecho - es esencial.](https://agilemanifesto.org/principles.html)
+
+Si ya tienes cuenta de Google, puedes iniciar sesión y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos un interfaz que es básicamente un CRUD de proyectos.
 
 
-> **Tip!** Los proyectos permiten agrupar aplicaciones (web, IOs y Android) que pueden compartir recursos o servicios (algunos de pago a precios muy competitivos) como *Analytics*, *Firestore* (base de dato en tiempo real), *Cloud Functions* y *Cloud Messaging*.    
+> **Tip!** Los proyectos permiten agrupar aplicaciones (web, IOs y Android) que pueden compartir recursos o servicios (algunos de pago a precios muy competitivos) como *Analytics*, *Firestore* (base de dato en tiempo real), *Cloud Functions* y *Cloud Messaging*. Con esto podríamos tener aplicaciones sincronizadas en distintas plataformas en tiempo real!!  
 
 ![Imagen que muestra la interfaz de firebase para crear un proyecto](images/02-bdd-with-cypress-06.png)
 
