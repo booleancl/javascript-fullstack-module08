@@ -12,8 +12,7 @@ Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para program
   1. Poner en producción el resultado de una iteración que será la base para su futura personalización y proyecto final del curso. 
   2. Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas. 
    
-**Advertencia**
-> La elección de los frameworks y plataformas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil. En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc).    
+  
 
 En concreto vamos a construir la base de una aplicación escalable y flexible utilizando Javascript, siguiendo la metodología **BDD** para implementar 2 **Historias de usuario**. 
 
@@ -32,6 +31,13 @@ La aplicación será publicada en la plataforma **Heroku** con un proceso de des
 ## Calidad y mantenimiento
 
 Utilizaremos **Cypress** para las pruebas de extremo a extremo (e2e) integrando Backend y Frontend. **Jest** para pruebas unitarias y herramientas como **eslint** y **husky** para resguardar la calidad del código. 
+
+<hr/>
+<blockquote style="background-color:PaleGoldenRod;padding:20px">
+  <h6>Advertencia</h6>
+  <p>La elección de los frameworks y plataformas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil. En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc).</p>
+</blockquote>
+<hr/>
 
 El resultado final será similar a las siguientes imágenes:
 

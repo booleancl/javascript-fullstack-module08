@@ -686,6 +686,14 @@ Vemos que al recargarse las pruebas estas siguen pasando. Ahora modificaremos el
 <template>
   <v-app>
     <v-main>
+      <v-app-bar color="primary" dark>
+        <v-toolbar-title>
+          Proyecto Javascript Fullstack
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text to="/productos">Productos</v-btn>
+        <v-btn text>Login</v-btn>
+      </v-app-bar>
       <v-alert
         v-if="alert"
         class="text-center"
@@ -759,6 +767,14 @@ Ahora con los cambios necesarios en el `App.vue`, quedaría de la siguiente form
 <template>
   <v-app>
     <v-main>
+      <v-app-bar color="primary" dark>
+        <v-toolbar-title>
+          Proyecto Javascript Fullstack
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text to="/productos">Productos</v-btn>
+        <v-btn text>Login</v-btn>
+      </v-app-bar>
       <app-alert 
         v-if="alert"
         :message="alert.message"
