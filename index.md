@@ -34,7 +34,7 @@ Utilizaremos **Cypress** para las pruebas de extremo a extremo (e2e) integrando 
 
 <hr/>
 <blockquote style="background-color:PaleGoldenRod;padding:20px">
-  <h6>Advertencia</h6>
+  <h3>Advertencia</h3>
   <p>La elección de los frameworks y plataformas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil. En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc).</p>
 </blockquote>
 <hr/>
