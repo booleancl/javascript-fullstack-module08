@@ -764,8 +764,7 @@ Modificamos completo el archivo `src/views/Products.vue` con el siguiente conten
 ```html
 <template>
   <v-main>
-    <h1>Productos</h1>
-
+    <h1 class="title-1 text-center my-5">Productos</h1>
     <section data-cy="products">
       <v-row>
         <v-col
@@ -774,30 +773,23 @@ Modificamos completo el archivo `src/views/Products.vue` con el siguiente conten
           cols="4"
           data-cy="product-item"
         >
-          <h3>{{ product.name }}</h3>
-          <v-img
-            :src="product.image"
-            lazy-src="https://via.placeholder.com/300"
-            aspect-ratio="1"
-            class="grey lighten-2"
+          <v-card
+            class="mx-auto"
+            max-width="400"
           >
-            <template v-slot:placeholder>
-              <v-row
-                class="fill-height ma-0"
-                align="center"
-                justify="center"
-              >
-                <v-progress-circular
-                  indeterminate
-                  color="grey lighten-5"
-                ></v-progress-circular>
-              </v-row>
-            </template>
-          </v-img>
-
-          <p>{{ product.description }}</p>
+            <v-img
+              :src="product.image"
+              lazy-src="https://via.placeholder.com/300"
+              aspect-ratio="1"
+              class="white--text align-end"
+              height="200px"
+            >
+            </v-img>
+            <v-card-title>{{ product.name }}</v-card-title>
+            <v-card-text>{{ product.description }}</v-card-text>
+          </v-card>
         </v-col>
-      </v-row>
+    </v-row>
     </section>
   </v-main>
 </template>
