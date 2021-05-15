@@ -19,6 +19,6 @@ En concreto vamos a construir la base de una aplicación escalable y flexible ut
 
 ![Lo que haremos 1](docs/images/00-demoScreen-1.png)
 
-![Lo que haremos 2](docs/images/00-demoScreen-1.png)
+![Lo que haremos 2](docs/images/00-demoScreen-2.png)
 
 Manos a la obra!
