@@ -33,10 +33,14 @@ La aplicación será publicada en la plataforma **Heroku** con un proceso de des
 
 Utilizaremos **Cypress** para las pruebas de extremo a extremo (e2e) integrando Backend y Frontend. **Jest** para pruebas unitarias y herramientas como **eslint** y **husky** para resguardar la calidad del código. 
 
+El resultado final será similar a las siguientes imágenes:
+
 <figure>
   <img src="docs/images/00-demoScreen-1.png" alt="Lo que haremos 1">
   <figcaption style="text-align:right">Vista login de la aplicación</figcaption>
 </figure>
+
+<hr>
 
 <figure>
   <img src="docs/images/00-demoScreen-2.png" alt="Lo que haremos 2">
