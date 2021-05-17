@@ -304,7 +304,7 @@ Cuando indique que el proyecto ha sido creado damos click en `continuar`. Poster
 
 Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y luego aparecerá lo siguiente:
 
-[AGREGAR FOTO DEL REGISTRO DE APP INDICANDO QUE NO SE HAGA CHECK . F PINCHEIRA]
+[AUDIT: AGREGAR FOTO DEL REGISTRO DE APP INDICANDO QUE NO SE HAGA CHECK. F PINCHEIRA]
 
 
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
@@ -672,6 +672,7 @@ Ahora cerraremos la ventana del navegador para volver al menu principal de Cypre
 
 Y veremos el siguiente error:
 
+(AUDIT: ESTA FOTO NO ES CORRECTA. DEBERÍA SALIR ERROR QUE NO ENCUERNTRA EL FIXTURE PRODUCTS.JSON 👇🏻 F. PINCHEIRA)
 ![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-20.png)
 
 ### ¿Qué son los Fixtures ?
@@ -873,7 +874,7 @@ npm install axios
 Si quieres conocer más sobre su documentación te recomendamos mirar [este enlace](https://github.com/axios/axios#axios-api).
 
 
-Ahora iremos al archivo `src/store` y reemplazaremos su contenido por lo siguiente:
+Ahora iremos al archivo `src/store/index.js` y reemplazaremos su contenido por lo siguiente:
 
 ```javascript
 import Vue from 'vue'
@@ -912,7 +913,7 @@ export default new Vuex.Store({
 
 Con esto dejaremos lista una acción de `Vuex` que nos permitirá desde nuestro componente ejecutar la acción `getProducts` que agregará al estado de la aplicación los productos desde un servidor externo. El servidor deberá responder los productos basados en el contrato que consume nuestro componente `Products`.
 
-Ahora iremos al archivo `src/views/Login.vue` y editaremos la sección `<script>` de la siguiente manera:
+Ahora iremos al archivo `src/views/Products.vue` y editaremos la sección `<script>` de la siguiente manera:
 
 ```html
 <script>
