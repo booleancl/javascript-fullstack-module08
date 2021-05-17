@@ -304,6 +304,9 @@ Cuando indique que el proyecto ha sido creado damos click en `continuar`. Poster
 
 Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y luego aparecerá lo siguiente:
 
+[AGREGAR FOTO DEL REGISTRO DE APP INDICANDO QUE NO SE HAGA CHECK . F PINCHEIRA]
+
+
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
 
 Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que crearemos en el directorio `src`.
@@ -328,12 +331,12 @@ el contenido de ambos archivos será el siguiente:
 Los datos de este archivo los copiaremos de lo indicado en la imagen anterior.
 ```javascript
 export default {
-  apiKey: ''
-  authDomain: ''
-  projectId: ''
-  storageBucket: ''
-  messagingSenderId: ''
-  appId: '',
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: ''
 }
 
 ```
