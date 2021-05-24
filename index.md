@@ -5,7 +5,7 @@ nav_order: 0
 ---
 # Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
 
-Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para programadores](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital aplicando los conocimientos del curso más la metodología de desarrollo ágil utilizando Javascript en todo el stack. Usaremos técnicas de refactorización que permiten solucionar bugs y refactorizar el proyecto de forma sostenible para entregar valor en iteraciones cortas. 
+Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para programadores](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso más técnicas de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible, escalable.
 
 **Con esta guía el estudiante podrá:**
 
@@ -15,6 +15,23 @@ Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para program
   
 
 En concreto vamos a construir la base de una aplicación escalable y flexible utilizando Javascript, siguiendo la metodología **BDD** para implementar 2 **Historias de usuario**. 
+
+El resultado final será similar a las siguientes imágenes:
+
+<figure>
+  <img src="docs/images/00-demoScreen-1.png" alt="Lo que haremos 1">
+  <figcaption style="text-align:right">Vista login de la aplicación</figcaption>
+</figure>
+
+<hr>
+
+<figure>
+  <img src="docs/images/00-demoScreen-2.png" alt="Lo que haremos 2">
+  <figcaption style="text-align:right">Vista página de productos</figcaption>
+</figure>
+
+
+Nuestro proyecto estará compuesto por una parte Frontend, que tendrá la interfaz de usuario, un Backend (de momento) con servicios de negocio utilizando las bondades del interprete V8 en el servidor. También nuestro proyecto contempla salir a producción en forma frecuente, por lo que configuraremos un proceso de despliegue o deployment. Queremos además que nuestro proyecto sea flexible y escalable se agregan herramientas para mantener la calidad y flexibilidad.
 
 ## Frontend
 
@@ -39,18 +56,5 @@ Utilizaremos **Cypress** para las pruebas de extremo a extremo (e2e) integrando 
 </blockquote>
 <hr/>
 
-El resultado final será similar a las siguientes imágenes:
-
-<figure>
-  <img src="docs/images/00-demoScreen-1.png" alt="Lo que haremos 1">
-  <figcaption style="text-align:right">Vista login de la aplicación</figcaption>
-</figure>
-
-<hr>
-
-<figure>
-  <img src="docs/images/00-demoScreen-2.png" alt="Lo que haremos 2">
-  <figcaption style="text-align:right">Vista página de productos</figcaption>
-</figure>
 
 Manos a la obra!
