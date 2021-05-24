@@ -5,7 +5,7 @@ nav_order: 0
 ---
 # Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
 
-Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para programadores](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible, escalable.
+Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para programadores](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible y escalable.
 
 **Con esta guía el estudiante podrá:**
 
