@@ -1,11 +1,12 @@
- ---
+---
 layout: default
 title: "Inicio"
 nav_order: 0
 ---
 
+
 <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://youtu.be/CuT4bgTvtfY" allowfullscreen></iframe>
+  <iframe class="embed-responsive-item" src="https://youtu.com/embed/CuT4bgTvtfY" allowfullscreen></iframe>
 </div>
 
 # Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
