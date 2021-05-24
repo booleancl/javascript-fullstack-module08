@@ -1,22 +1,29 @@
----
+ ---
 layout: default
 title: "Inicio"
 nav_order: 0
 ---
+
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="https://youtu.be/CuT4bgTvtfY" allowfullscreen></iframe>
+</div>
+
 # Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
 
-Hola! Bienvenidos al proyecto final del curso [Fullstack Javascript para programadores](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible y escalable.
+Hola! Bienvenidos al proyecto Aplicación Web del curso [Fullstack Javascript ](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible y escalable.
 
 **Con esta guía el estudiante podrá:**
 
   1. Poner en producción el resultado de una iteración que será la base para su futura personalización y proyecto final del curso. 
-  2. Practicar técnicas para trabajar con aplicaciones *legacy* mediante pruebas. 
+  2. Practicar técnicas que nos permitirán trabajar con aplicaciones *legacy* mediante pruebas. 
    
   
 
 En concreto vamos a construir la base de una aplicación escalable y flexible utilizando Javascript y siguiendo la metodología **BDD** para implementar 2 **Historias de usuario**. 
 
-El resultado final será similar a las siguientes imágenes:
+La primera relacionada a un sistema de autenticación y la segunda con una vista index de algún recurso particular.       
+
+El resultado final será similar a lo que vemos a continuación:
 
 <figure>
   <img src="docs/images/00-demoScreen-1.png" alt="Lo que haremos 1">
@@ -31,21 +38,23 @@ El resultado final será similar a las siguientes imágenes:
 </figure>
 
 
-Nuestro proyecto estará compuesto por una parte Frontend, que tendrá la interfaz de usuario, un Backend (de momento) con servicios de negocio utilizando las bondades del interprete V8 en el servidor. También nuestro proyecto contempla salir a producción en forma frecuente, por lo que configuraremos un proceso de despliegue o deployment. Además queremos que nuestro proyecto sea flexible y escalable por lo que agregaros herramientas que nos ayudarán a mantene y mejorar la calidad y flexibilidad del proyecto en su conjunto. 
+Nuestro proyecto fullstack estará compuesto por diferentes frameworks y herramientas: 
 
-En detalle nuestro proyecto usará:
+ ## Frontend
 
-## Frontend
+Usaremos **VueJS** para gestionar la sincronización y reactividad de la interfáz. Este framework implementa el patron *M-V-VM*, para y gestionar eficientemente nuestras vistas gracias a su motor de renderización y manejo interno de un *Virtual DOM*. Mejoraremos la productividad con **VueCLI** y así no tener que configurar manualmente **Webpack**, **Babel**, **Webpack Dev Server** y los loaders para trabajar con **SFC**. Seguiremos las directrices de Material Design a través de **Vuetify**, una de las tantas librerías de componentes UI para VueJS. Trabajaremos con **Vuex** para manejo de estado y **Vue-Router** para construir una Single Page Application (SPA) con *rutas* y *chunks*.
 
-Usaremos la dupla **VueJS**/**Vuetify** más los *plugins* **Vue-Router** y **Vuex** para construir una Single Page Application (SPA). 
+Además, integraremos nuestro Frontend con los servicios web de **Firebase**. Específicamente usaremos el servicio de autenticación.
 
 ## Backend
 
-Construiremos un servidor **NodeJS** con la librería **Express**. La autenticación en todo el stack será implementada usando el servicio de **Firebase**. 
+Construiremos un servidor **NodeJS** con la librería **Express**. Aquí expondremos servicios de negocio a través de Endpoints y Middlewares. Estos servicios conectarán con un servidor de bases de datos **Postres** que modificaremos mediante **Seeds** y **Migraciones**. Mapearemos los registros de la Base de Datos en objetos utilizando el **ORM** **Sequelize**. Al igual que en el frontend, conectaremos nuestro Backend con los servicios web de    **Firebase**. 
 
 ## Deployment
 
-La aplicación será publicada en la plataforma **Heroku** con un proceso de despliegue en **Github actions**. Con esta arquitectura las **soluciones** podrán consumir a futuro servicios de **Firebase** y/o **Heroku**.
+La aplicación será desplegada utilizando **Github actions** y publicada en la plataforma **Heroku**. En ambas etapas tendremos que trabajar con procesos de construcción (builds) e inyección segura de variables de entorno y otras credenciales para la aplicación.
+
+Con esta arquitectura los proyectos podrán consumir a futuro servicios tanto de **Firebase** como de **Heroku**.
 
 ## Calidad y mantenimiento
 
@@ -54,9 +63,11 @@ Utilizaremos **Cypress** para las pruebas de extremo a extremo (e2e) integrando 
 <hr/>
 <blockquote style="background-color:PaleGoldenRod;padding:20px">
   <h3>Advertencia</h3>
-  <p>La elección de los frameworks y plataformas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo Ágil. En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Koa, etc).</p>
+  <p>La elección de los frameworks y plataformas se hizo considerando alta productividad con baja curva de aprendizaje para enfocarnos en el uso del lenguaje Javascript en un proceso de desarrollo iterativo. En Boolean creemos que la metodología de desarrollo es tanto o más importante que las tecnologías o frameworks. En otras palabras, la metodología usada en esta guía aplica a cualquier combinación de frameworks o librerías Javascript (React, Angular, Oak , Deno, etc).</p>
 </blockquote>
 <hr/>
 
+
+Tenemos bastante por cubrir, pero lo haremos paso a paso a lo largo de 9 capítulos. Esta guía debería poder ser implementada en entre tres a cinco horas de trabajo.
 
 Manos a la obra!
