@@ -8,7 +8,7 @@ nav_order: 2
 
 Vamos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
 
-Nuestra primera historia de usuario es la siguiente:
+Nuestra primera Historia de Usuario es la siguiente:
 
 ```ruby
 Funcionalidad: Login de la aplicación
@@ -22,9 +22,9 @@ Y el campo password con 'visitor'
 Entonces debería permanecer en la misma página
 ```
 
-Como detallamos en el curso, estas historias de usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. Nosotros omitiremos este paso para enfocarnos en el desarrollo javascript y escribiremos directamente la historia de usuario utilizando la API de Cypress.
+  > Escribiremos esta Historia de Usuario utilizando directamente la API de Cypress, pero como detallamos en el curso, las Historias de Usuario se pueden transformar directamente en pruebas de aceptación utilizando conjuntamente la herramientas Cucumber y Cypress. 
 
-Para esto vamos a modificar la prueba e2e por defecto generada durante el proceso de creación. El archivo a modificar se llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
+Para implementar esta história de usuario vamos a modificar la prueba e2e que creó VueCLI. El archivo se llama `test.js`. Te puedes guiar por el siguiente esquema del proyecto:  
 
 ```
 <tu-proyecto>
@@ -41,7 +41,8 @@ Para esto vamos a modificar la prueba e2e por defecto generada durante el proces
 ...
 ```
 Renombramos el archivo test.js indicado en la figura anterior y lo llamaremos simplemente `login.js`.
-Luego cambiaremos su contenido a lo indicado en el siguiente código:
+
+Borramos su contenido y lo reemplazamos por la Historia de Usuario expresada en comandos de Cypress.
 
 ```javascript
 
@@ -53,7 +54,7 @@ describe('login test suite', () => {
     cy.get('[data-cy=password]').type('visitor')
     cy.get('[data-cy=login-btn]').click()
 
-    cy.location('pathname').should('equal', '/')
+    cy.location('pathname').should('equal', '/') 
   })
 })
 
@@ -61,9 +62,9 @@ describe('login test suite', () => {
 
 ### ¿Que significa este código?
 
-Te preguntarás por qué utilizamos los atributos del tipo `data-cy=*` como selectores HTML en nuestra prueba. La respuesta está en el siguiente [artículo](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements) del Blog oficial de Cypress. En resumen se hace para que las pruebas e2e no estén acopladas al diseño y sean afectadas por cambios que podrían sufrir las tradicionales clases o ids.
+¿Por qué utilizamos como selectores los atributos del tipo `data-cy=*`?. La respuesta está en un [artículo](https://docs.cypress.io/guides/references/best-practices#Selecting-Elements) del Blog oficial de Cypress. En resumen se hace para que las pruebas no estén acopladas a cambios que podría tener el diseño y afectar las pruebas si usamos los clásicos selectores por clases o id. 
 
-Por supuesto que como aún no hemos escrito código, esta prueba de software fallará y será nuestro deber escribir el **mínimo código** necesario para hacerla pasar. Una vez que la prueba de software pase, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como `Red - Green - Refactor`.
+Como no hemos escrito código, esta prueba de software fallará y será nuestro deber escribir el **mínimo código** necesario para hacerla pasar. Una vez que la prueba de software pase, debemos refactorizar el código (si aplica) y mantener la prueba pasando. A este ciclo se le conoce como  `Red - Green - Refactor`.
 
 Para ver nuestra prueba fallando ejecutaremos el siguiente comando:
 
@@ -71,7 +72,7 @@ Para ver nuestra prueba fallando ejecutaremos el siguiente comando:
 npm run test:e2e
 ```
 
-Veremos aparecer el *runner* de Cypress en la siguiente ventana:
+Veremos el *runner* de Cypress en la siguiente ventana:
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-01.png)
 
@@ -106,7 +107,7 @@ Vemos que el comando `cy.get` es usado para encontrar elementos HTML para luego 
 
 Recordemos que la metodología propone que debemos pasar la prueba de software escribiendo el **menor código** posible. En este caso basta con agregar un input HTML que tenga el atributo `[data-cy=username]`. 
 
-Para esto vamos al archivo `src/App.vue` y agregaremos lo siguiente en la sección HTML (`<template>`), donde esta definido el elemento `<v-main>`
+Para esto vamos al archivo `src/App.vue` y agregaremos el input especificado en la sección `<template>`, donde esta definido el elemento `<v-main>`
 
 ```html
 
@@ -123,9 +124,9 @@ Una vez agregado esto, guardamos el archivo y veremos que la terminal dirá `COM
 
 ![Imagen que muestra el menú principal de cypress](images/02-bdd-with-cypress-03.png)
 
-Veremos como al lado derecho aparece el input que agregamos y con valor `info`. Esto es por el comando `.type` que ejecutamos sobre el elemento seleccionado.
+Veremos como al lado derecho se refleja el input que agregamos y con valor ingresado por Cypress. Esto es por el comando `.type` que ejecutamos sobre el elemento seleccionado.
 
-Ahora veremos un mensaje de error diferente:
+Y ahora veremos un mensaje de error diferente:
 
 ```
 CypressError: Timed out retrying: Expected to find element: '[data-cy=password]', but never found it.
@@ -155,7 +156,7 @@ A continuación, al recargar las pruebas veremos que ahora está de color verde,
 
 ### Refactorización
 
-Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación. Modificaremos todo el código de esta vista para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras refactorizamos, para que al terminar refresquemos las pruebas y nos aseguremos que sigan pasando.
+Si bien la prueba está pasando, vemos que la interfaz de usuario no cumple el objetivo. Los elementos están definidos sin estilo y aún tenemos todo el código que agregó Vuetify en su instalación. Modificaremos  esta vista para que ahora sea un de Login utilizando Vuetify. Mantendremos corriendo Cypress mientras refactorizamos, para que al terminar refresquemos las pruebas y nos aseguremos que sigan pasando.
 
 Lo primero será simplificar el archivo `src/App.vue`. Reemplazaremos todo su contenido por lo siguiente:
 
@@ -176,8 +177,7 @@ Lo primero será simplificar el archivo `src/App.vue`. Reemplazaremos todo su co
   </v-app>
 </template>
 
-<script>
-
+<script> 
 export default {
   name: 'App'
 }
@@ -249,8 +249,7 @@ export default {
 </script>
 
 ```
-
-El paso siguiente es actualizar  el *router* presente en el archivo `src/router/index.js` con lo siguiente:
+Ahora sí actualizamos  el *router* con los componentes que tenemos:
 
 ```javascript
 import Vue from 'vue'
@@ -276,21 +275,21 @@ export default router
 
 ```
 
-Ahora recargamos las pruebas y deberíamos ver nuestras pruebas pasando, esta vez con la interfaz más acorde al objetivo de negocio que estamos desarrollando mediante pruebas. El resultado sería similar a la siguiente imagen:
+Ahora recargamos las pruebas y siguen pasando, esta vez con la interfaz más acorde al objetivo de negocio que estamos desarrollando. El resultado será similar a la siguiente imagen:
 
 ![Imagen que muestra el navegador que corre cypress con las pruebas pasando](images/02-bdd-with-cypress-05.png)
 
 
 ## Integrando el servicio de autenticación de Firebase
 
-Dado el contexto de nuestra aplicación, es decir, un desarrollo ágil con recursos limitados, muy similar a lo que ocurre en emprendimientos tecnológicos o proyectos internos de empresas, enviaremos invitaciones directamente a quienes publicarán productos desde la interfaz de Firebase. Esto ahorra trabajo y libera tiempo probar ideas rápido y barato. 
+Dado el contexto de nuestra aplicación, es decir, un desarrollo ágil con recursos muy limitados, cosa que ocurre muy frecuente,simplificaremos lo más posible el desarrollo de funcionalidades, por lo que por ahora, no desarrollaremos un sistema de registro, solo uno de autenticación. Esto ahorra trabajo y libera tiempo probar ideas de forma rápida y a bajo costo. Por lo que enviaremos invitaciones a los usuarios que publicarán productos directamente desde la interfaz de Firebase.  
 
->**Tip** Por ahí dicen [Sencillez: el arte de maximizar la cantidad del trabajo no hecho - es esencial.](https://agilemanifesto.org/principles.html)
+>**Tip.** Por ahí dicen: "[Sencillez: el arte de maximizar la cantidad del trabajo no hecho - es esencial.](https://agilemanifesto.org/principles.html)"
 
 Si ya tienes cuenta de Google, puedes iniciar sesión y dirigirte a [https://console.firebase.google.com/](https://console.firebase.google.com/), donde veremos un interfaz que es básicamente un CRUD de proyectos.
 
 
-> **Tip!** Los proyectos permiten agrupar aplicaciones (web, IOs y Android) que pueden compartir recursos o servicios (algunos de pago a precios muy competitivos) como *Analytics*, *Firestore* (base de dato en tiempo real), *Cloud Functions* y *Cloud Messaging*. Con esto podríamos tener aplicaciones sincronizadas en distintas plataformas en tiempo real!!  
+> **Tip!** Los proyectos permiten agrupar aplicaciones (web, IOs y Android) que pueden compartir recursos o servicios (algunos de pago a precios muy competitivos) como *Analytics*, *Firestore* (base de dato en tiempo real), *Cloud Functions* y *Cloud Messaging*. Con esto podríamos tener aplicaciones sincronizadas en distintas plataformas en tiempo real!!   
 
 ![Imagen que muestra la interfaz de firebase para crear un proyecto](images/02-bdd-with-cypress-06.png)
 
@@ -298,19 +297,21 @@ Una vez dentro del admin de Firebase hacemos click en crear un proyecto. Agregam
 
 ![Deshabilitar Analytics](images/02-bdd-with-cypress-06-b.png). 
 
-Cuando indique que el proyecto ha sido creado damos click en `continuar`. Posteriormente presionamos el botón indicado en la imagen para registrar nuestra aplicación de tipo Web:
+Cuando indique que el proyecto ha sido creado damos click en `continuar`. Posteriormente presionamos el botón  registrar nuestra aplicación de tipo Web:
 
 ![Imagen que muestra la interfaz de firebase para registrar una aplicación](images/02-bdd-with-cypress-07.png)
 
-Cuando lo presionemos nos dirá que le demos un nombre a nuestra aplicación y luego aparecerá lo siguiente:
+Cuando lo presionemos nos solicitará otro nombre, esta vez para la aplicación web de nuestro proyecto (No selecciones la opción de Firebase Hosting) 
 
-[AUDIT: AGREGAR FOTO DEL REGISTRO DE APP INDICANDO QUE NO SE HAGA CHECK. F PINCHEIRA]
+![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-07-b.png)
 
+luego aparecerá lo siguiente:
 
 ![Imagen que muestra la interfaz de firebase para obtener los datos de acceso](images/02-bdd-with-cypress-08.png)
 
-Seleccionaremos lo que está remarcado en la imagen y lo llevaremos a un nuevo archivo que crearemos en el directorio `src`.
-Primero vamos a crear el directorio en `src/firebase` y al interior de ese directorio crearemos 2 archivos llamados `config.js` e `index.js`.
+Seleccionaremos el objeto de configuración y lo dejamos a mano.
+
+A continuación crearemos el directorio `src/firebase` y al interior creamos 2 archivos; uno llamado `config.js` y otro `index.js`.
 
 ```
 <tu-proyecto>
@@ -398,17 +399,16 @@ Contraseña: booleanacademia
 Si quieres puede elegir otro correo electrónico y contraseña y reemplazarlo donde corresponda.
 Indicamos que este usuario, a pesar de estár en entorno productivo, será solamente para realizar pruebas. 
 
-### Un nuevo escenario en la historia de usuario para realizar una autenticación exitosa
+### Nuevo escenario en la funcionalidad
 
-Ahora trabajaremos el caso (escenario en historias de usuario) exitóso
-de la autenticación. La historia sería como sigue:
+Con el sistema de autenticación integrado podemos trabajar el siguiente escenario de la Historia de Usuario:
 
 ```ruby
 Funcionalidad: login de la aplicación
 ...
 Escenario: login con credenciales válidas
 
-Como un usuario no registrado
+Como un usuario registrado
 Cuando ingreso a la aplicación 
 Y completo el campo username con 'test-e2e@boolean.cl'
 Y el campo password con 'booleanacademia' 
@@ -416,7 +416,7 @@ Entonces debería ver la página de productos
 
 ```
 
-Escribiremos una nueva prueba de software basada en la historia de usuario que consistirá en autenticarse en Firebase con los datos de prueba y validar que la aplicación nos lleve a la página `/productos`.
+Escribiremos una nueva prueba de software basada en la Historia de Usuario que consistirá en autenticarse en Firebase con los datos de prueba y validar que la aplicación nos lleve a la página `/productos`
 
 Vamos a editar el archivo `tests/e2e/specs/login.js` y reemplazar su contenido por lo siguiente:
 
@@ -448,7 +448,7 @@ Ahora recargamos Cypress y veremos el siguiente error:
 
 ![Imagen que muestra el error de Cypress cuando agregamos una nueva prueba](images/02-bdd-with-cypress-15.png)
 
-Ahora vamos a escribir el código más simple que sea capaz de dejar pasando esta prueba. Vamos al archivo `src/views/Login.vue` y agregamos el siguiente contenido al metodo `login()`
+Ahora vamos a escribir el código más simple que sea capaz de dejar pasando esta prueba. Vamos al archivo `src/views/Login.vue` y agregamos el siguiente contenido al método `login()`
 
 ```javascript
   ...
@@ -515,7 +515,8 @@ Al recargar vemos que la nueva prueba si está pasando pero estos cambios provoc
 
 Excelente! esto es lo que debería pasar en un flujo de trabajo guiado por pruebas de software: Los cambios ejecutados en el código eventualmente podrían afectar a otras pruebas por lo que es nuestro deber que el mínimo código que agregamos para pasar una prueba sea capaz de mantener todas las otras pruebas pasando y no sólo la que acabamos de escribir.
 
-Para solucionar esto usaremos la `refs` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `refs` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate)
+Para solucionar esto usaremos el atributo  `refs` que hemos asociado al elemento `v-form` para crear una función que valide si el formulario está correcto. A través de la `refs` obtendremos la instancia del elemento `v-form` y podremos utilizar su API para usar el método `validate`. Si quieres ver más detalle sobre la API de este elemento puedes visitar el [siguiente enlance](https://vuetifyjs.com/en/api/v-form/#functions-validate).
+
 Iremos a modificar el archivo `src/views/Login.vue` y agregamos lo siguiente en la sección `methods`
 
 ```javascript
@@ -533,9 +534,9 @@ Iremos a modificar el archivo `src/views/Login.vue` y agregamos lo siguiente en 
   ...
 ```
 
-y al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
+Al recargar las pruebas podemos ver como ambas están pasando. Excelente trabajo!
 
-Tip: Revisa la consola por errores de identación que puedan entorpecer la "compilación"
+> **Tip**: Revisa la consola por errores de identación que puedan entorpecer la "compilación"
 
 Ahora debemos hacer una refactorización para lograr una conexión real con el servicio de Firebase. Lo que haremos será modificar la sección `<script>` del archivo `src/views/Login.vue` por lo siguiente:
 
@@ -578,7 +579,7 @@ Podemos notar como es que importamos el código de firebase que agregamos al com
 
 ### Página de productos
 
-Continuamos con con la siguiente historia de usuario. Esta vez con la vista de los productos.
+Continuamos con con la siguiente Historia de Usuario. Esta vez con la vista de los productos.
 
 ```ruby
 Funcionalidad: página de productos
@@ -611,7 +612,7 @@ describe('products test suite', () => {
 })
 
 ```
-Si ejecutamos esta prueba veremos que falla por los fixtures, pero nos encargaremos de eso más adelante. 
+Si ejecutamos esta prueba veremos que falla por los *fixtures*, pero nos encargaremos de eso más adelante. 
 
 En esta prueba vemos que es la tercera vez que escribimos las instrucciones para realizar una autenticación. Por suerte Cypress permite agrupar comandos comunes en funciones que podemos centralizar y reutilizar.
 Para lograr esto iremos al archivo `tests/e2e/support/commands.js` y descomentaremos la linea indicada en la siguiente imagen:
@@ -666,18 +667,20 @@ describe('products test suite', () => {
 
 ```
 
-Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos incluido el nuevo archivo. Ahora presionamos el botón que dice `Run all specs` que debería lucir como la siguiente imagen:
+Ahora cerraremos la ventana del navegador para volver al menu principal de Cypress en el cuál veremos incluido el nuevo archivo.
+
+Ahora presionamos el botón que dice `Run all specs` que debería lucir como la siguiente imagen:
 
 ![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-19.png)
 
 Y veremos el siguiente error:
 
-(AUDIT: ESTA FOTO NO ES CORRECTA. DEBERÍA SALIR ERROR QUE NO ENCUERNTRA EL FIXTURE PRODUCTS.JSON 👇🏻 F. PINCHEIRA)
-![Imagen que muestra el menu principal de Cypress](images/02-bdd-with-cypress-20.png)
+![Imagen que muestra el error de los fixtures](images/02-bdd-with-cypress-20.png)
+
 
 ### ¿Qué son los Fixtures ?
 
-El error de la anterior prueba es porque aún no creamos el archivo `products.json`. Al revisar más en detalle podemos revisar que el siguiente código es el que causa el problema
+El error de la anterior prueba es porque aún no creamos el archivo `products.json`. Al revisar más en detalle notaremos que el método `fixture` es el que esta usando este archivo.
 
 ```javascript
 cy.fixture('products.json')
@@ -689,14 +692,14 @@ cy.fixture('products.json')
 
 ¿Para que agregamos este código?
 
-Un `Fixture` es información estática que permite que las pruebas de software sean repetibles en el tiempo. En otras palabras es un estado fijo que se le carga a las pruebas a través de los fixtures. En nuestro caso asumiremos la existencia de un archivo `products.json` que contendrá esta información. Este simple archivo estático cobra relevancia por que sirve de punto de encuentro entre las personas de negocio y los desarrolladores Backend y Frontend. 
+Un `Fixture` es información estática que permite que las pruebas de software sean repetibles y verificables en el tiempo. En otras palabras es un estado fijo de la aplicación, que se carga a las pruebas. Son como la escenografía  para nuestros escenarios. En nuestro caso asumiremos la existencia de un archivo `products.json` que contendrá esta información. Este simple archivo estático cobra relevancia por que sirve de punto de encuentro entre las personas de negocio y los desarrolladores Backend y Frontend. 
 
-Si vamos al archivo `tests/e2e/plugins/index.js` veremos entre otras configuraciones una en particular que dice lo siguiente:
+Para saber dónde agregar *fixtures* a Cypres debemos verlo en el archivo `tests/e2e/plugins/index.js` y veremos entre otras configuraciones una relacionada a lo que buscamos:
 
 ```javascript
   fixturesFolder: 'tests/e2e/fixtures',
 ```
-En esta linea de código se define desde donde Cypress va a leer los archivos Fixture. Lo haremos será crear una carpeta llamada `fixtures ` en `tests/e2e` tal como lo indica la línea de código que estamos analizando. dentro de esta nueva carpeta agregaremos un archivo llamado `products.json` con el siguiente contenido:
+Esta línea de configuración define desde donde Cypress va a leer los archivos Fixture. Crearemos una carpeta llamada `fixtures ` en `tests/e2e` tal como lo indica el archivo de *plugins*. Dentro de esta nueva carpeta agregaremos un archivo llamado `products.json` con el siguiente contenido:
 
 **products.json**
 
@@ -745,7 +748,7 @@ Ahora deberíamos obtener un nuevo error en Cypress, ya que la prueba esperaba e
 
 ![Imagen que muestra error de cypress](images/02-bdd-with-cypress-20.png)
 
-Al igual que las veces anteriores escribiremos el código lo más simple posible para pasar esta prueba.
+Al igual que las veces anteriores escribiremos el código más simple posible para pasar esta prueba.
 
 Modificamos el archivo `src/views/Products.vue` y agregaremos lo siguiente en la sección `<template>`:
 
@@ -765,7 +768,7 @@ Modificamos el archivo `src/views/Products.vue` y agregaremos lo siguiente en la
 </template>
 ```
 
-Guardamos, recargamos las pruebas en Cypress y vemos que todas la prueba está pasando:
+Guardamos, recargamos las pruebas en Cypress y veremos todas las pruebas en verde indicando que pasamos sin errores los casos:
 
 ![Imagen que muestra error de cypress](images/02-bdd-with-cypress-22.png)
 
@@ -854,16 +857,16 @@ export default {
 </script>
 
 ```
-Notarás que hicimos una copia del contenido del archivo `products.json` que agregamos como fixture anteriormente. Esto será de utilidad ya que ahora nuestra aplicación implementa "el contrato" JSON del archivo y esta mostrando los atributos en función de esta lista.
+Notarás que hicimos una copia del contenido del archivo `products.json` que agregamos como fixture anteriormente. Esto será de utilidad ya que ahora nuestra aplicación implementa este acuerdo o pseudo-contrato con el *Negocio* y con el *Backend* y nuestra aplicación esta mostrando los atributos en función de esta lista.
 
 Al recargar Cypress veremos que luego de hacer los cambios en el código nuestra prueba sigue pasando:
 
 ![Imagen que muestra cypress con las pruebas pasando](images/02-bdd-with-cypress-23.png)
 
 
-### Agregando Axios y haciendo una petición al Servidor
+### Solicitudes al servidor: agregando Axios
 
-Ya hemos modelado y escrito las pruebas necesarias para que nuestra aplicación cuente con la funcionalidad básica que permita mostrar una lista de productos luego de una autenticación. Pero la última funcionalidad que escribimos muestra una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON que modelamos utilizando Fixtures.
+Ya hemos escrito y pasado las pruebas necesarias para que nuestra aplicación permita mostrar una lista de productos luego de una autenticación. Pero la última prueba que escribimos la pasamos entregando una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON se nos entregó y alimentamos al sistema Fixtures.
 
 Sin dejar de correr Cypress, abriremos una nueva terminal en el proyecto e instalaremos la librerías `Axios` utilizando el siguiente comando:
 
@@ -945,9 +948,9 @@ Al recargar Cypress vamos a notar que las pruebas vuelven a fallar.
 
 Esto quiere decir que nuestro componente está tomando el valor por defecto desde el `store` y eso hace fallar las pruebas.
 
-Si quieres entender mejor los métodos como `created` que se ejecuta cuando el componente se inicializa en Vue puedes revisar el [siguiente enlace](https://v3.vuejs.org/api/options-lifecycle-hooks.html#created)
+Si quieres entender mejor los `Lifecycle Hooks` como `created`,  que se ejecuta después que el componente ha sido creado, revisa el [siguiente enlace](https://v3.vuejs.org/api/options-lifecycle-hooks.html#created)
 
-Y si quieres conocer como el store de Vuex nos permite agregar acciones al componente para ejecutarlas cuando sea necesario puedes ver [este enlace](https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components)
+Y si quieres saber más de cómo el store de Vuex nos permite agregar acciones a los  componentes para ejecutarlas cuando sea necesario puedes ver [este enlace](https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components)
 
 Además en la imagen anterior vemos resaltado la petición al servidor que se hizo y que Cypress nos informa que ha recibido como respuesta un error de tipo `404`
 
