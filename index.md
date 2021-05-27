@@ -5,8 +5,14 @@ nav_order: 0
 ---
 
 
-<div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://youtube.com/embed/CuT4bgTvtfY" allowfullscreen></iframe>
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/7weXdpkEc68"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
 </div>
 
 # Proyecto de desarrollo ágil: Aplicación Fullstack Javascript 
