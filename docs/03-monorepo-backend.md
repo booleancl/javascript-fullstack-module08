@@ -6,6 +6,17 @@ nav_order: 3
 
 # Reorganización del proyecto como un repositorio monolítico y agregar Backend
 
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/cPfpGxH9vtI"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
+</div>
+
+
 En función de la metodología que estamos utilizando (el mínimo código posible) lo que haremos será centralizar en este mismo repositorio todo lo necesario para que las pruebas pasen sin problema. En este caso las pruebas end-to-end requieren que desde el Frontend se realice una petición (request) hacia un backend que aún no existe. Este backend debe ser capaz de responder a una petición GET en la URL `/api/products`.
 
 Dado este panorama, lo que haremos será reorganizar el repositorio siguiendo algunos lineamientos:
