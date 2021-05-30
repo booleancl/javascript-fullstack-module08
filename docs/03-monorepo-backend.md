@@ -4,7 +4,7 @@ title: "Fullstack Javascript"
 nav_order: 3
 ---
 
-# Reorganización del proyecto como un repositorio monolítico y agregar Backend
+# Reorganización del proyecto en monorepo con Backend
 
 <div class="embed-responsive">
   <iframe
@@ -17,13 +17,13 @@ nav_order: 3
 </div>
 
 
-En función de la metodología que estamos utilizando (el mínimo código posible) lo que haremos será centralizar en este mismo repositorio todo lo necesario para que las pruebas pasen sin problema. En este caso las pruebas end-to-end requieren que desde el Frontend se realice una petición (request) hacia un backend que aún no existe. Este backend debe ser capaz de responder a una petición GET en la URL `/api/products`.
+En función de la metodología que estamos siguiendo, es decir, pasar las pruebas con el código más simple posible, centralizaremos en este mismo repositorio todo lo necesario para que las pruebas pasen. En nuestra última prueba e2e el Frontend realiza una solicitud (*request*) hacia un Backend que aún no existe. Este Backend deberá tener una ruta (*endpoint*) para la solicitud en la URL `/api/products` con el método GET.
 
-Dado este panorama, lo que haremos será reorganizar el repositorio siguiendo algunos lineamientos:
+Dado este panorama, reorganizaremos el repositorio siguiendo algunos lineamientos:
 
-  - Dividiremos el repositorio en 2 dominios: Frontend y Backend. Cada dominio resolverá una parte del problema. En este caso el Frontend será la aplicación Web que interactúa con el usuario y el Backend entrega la información gestionando una Base de datos.
-  - Crearemos un directorio en la raíz para centralizar todos los Fixtures que le serán útiles tanto al dominio de Backend como Frontend.
-  - Cuando ambos dominios de negocio estén listos para salir a producción configuraremos procedimientos automáticos de calidad que validen la sintáxis  en todo el monorepo y que ejecuten las antes de que se suban cambios al repositorio remoto.
+  - Dividiremos el repositorio en 2: Frontend y Backend. Cada uno resolverá una parte del problema. El Frontend será l interfáz con la que interactuará el usuario, mientras que el Backend gestionará los *recursos* apoyado por una Base de datos.
+  - Crearemos un directorio en la raíz para centralizar todos los Fixtures que le serán de utilidad al Backend y al Frontend.
+  - Cuando ambos estén listos para salir a producción configuraremos procedimientos automáticos de calidad que validen la sintáxis en todo el monorepo y ejecuten las pruebas antes de subir los cambios al repositorio remoto.
 
 Cancelamos la ejecución de Cypress (cmd+C o ctrl+C) y movemos todos los archivos y carpetas hacia `/frontend`, excepto el archivo .gitignore que permanece en la raíz, dejando el repositorio como indica el siguiente esquema: 
 
@@ -75,9 +75,9 @@ Ahora tomaremos la carpeta fixtures que se encuentra en `frontend/tests/e2e` y l
       vue.config.js
 .gitignore
 ```
-La implementación de las validaciones automatizadas de linter y pruebas las dejaremos para más adelante, cuando ya tengamos listos los proyectos de Frontend y Backend.
+La implementación de las validaciones automatizadas de linter y pruebas las dejaremos para más adelante, cuando ya tengamos listos el de Frontend y Backend.
 
-Continuamos con el Backend. Lo primero que haremos será entrar al directorio `backend` desde la terminal y ejecutaremos lo siguiente:
+Continuamos con el Backend. Lo primero que haremos será entrar al directorio `backend` desde la terminal y agregaremos *express* y *nodemon* con los siguientes comandos:
 
 ```bash
 npm init -f
@@ -184,6 +184,7 @@ module.exports = (on, config) => {
 Debido a que hicimos una modificación en una configuración de arranque de `Cypress`, debemos reiniciar su ejecución.
 
 Una vez que este corriendo `Cypress` veremos que aún persiste un error y seguimos viendo un `GET 404 /api/products`.
+
 En la siguiente imagen se muestra como tenemos 2 terminales corriendo. En la de Frontend (de Cypress) identificamos la llamada que está dando `error 404`:
 
 ![Imagen de la salida de Cypress en la terminal](images/03-monorepo-backend-03.png)
@@ -206,7 +207,9 @@ module.exports = {
   }
 }
 ```
-Esto permitirá que, mientras desarrollamos, las llamadas XHR al servidor sean redireccionadas hacia `localhost:3000`. Esto tiene sentido solo en el ambiente local de desarrollo ya que en producción las llamadas desde el Frontend hacia el Backend serán bajo el mismo dominio y puerto.
+Esto permitirá que, mientras desarrollamos, las llamadas XHR al servidor sean redireccionadas hacia `localhost:3000`. 
+
+Esto tiene sentido solo en el ambiente local de desarrollo ya que en producción las llamadas desde el Frontend hacia el Backend serán bajo el mismo dominio y puerto.
 
 Ahora volvemos a correr el comando `npm run test:e2e` dentro de la carpeta `frontend`. Veremos como siguen fallando pero la respuesta de la llamada al servidor ahora dice `GET 200 /api/products` como se muestra en la siguiente imagen:
 
@@ -281,7 +284,7 @@ app.listen(port, () => {
 
 ```
 
-Como verás, al que en el cápitulo anterior en el Frontend, hemos copiado la lista del archivo `fixtures/products.json` para responder esa lista de productos.
+Como verás, al igual que en el cápitulo anterior en el Frontend, hemos copiado la lista del archivo `fixtures/products.json` para responder esa lista de productos.
 Una vez guardemos el archivo `backend/src/server.js` veremos que la terminal donde está corriendo el servidor dice 
 
 ```bash
@@ -297,7 +300,7 @@ Con esto ya tenemos nuestra plataforma funcionando. Pero aun nos quedan algunas 
 
 ![Endpoint responde en el navegador sin autenticación](images/03-monorepo-backend-07.png)
 
-En el siguiente capítulo solucionaremos esto permitiendo que la autenticación a Firebase nos entregue un Token de autorización que validaremos en el Backend y así darle seguridad a nuestro servidor.
+En el siguiente capítulo solucionaremos esto gracias a que la autenticación a Firebase nos entrega un Token de autorización que validaremos en el Backend y así exponer nuestros recursos solo a usuarios debidamente autenticados.
 
 Antes de ir al siguiente capítulo vamos a detener el código del servidor y de Cypress.
 En cualquier de las ventanas de la terminal nos saldremos del directorio y vamos a la raíz del proyecto (importante para que git agregue todo incluyendo frontend, backend, fixtures, etc) y ejecutamos lo siguiente:
