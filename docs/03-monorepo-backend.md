@@ -6,6 +6,17 @@ nav_order: 3
 
 # Reorganización del proyecto en monorepo con Backend
 
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/cPfpGxH9vtI"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
+</div>
+
+
 En función de la metodología que estamos siguiendo, es decir, pasar las pruebas con el código más simple posible, centralizaremos en este mismo repositorio todo lo necesario para que las pruebas pasen. En nuestra última prueba e2e el Frontend realiza una solicitud (*request*) hacia un Backend que aún no existe. Este Backend deberá tener una ruta (*endpoint*) para la solicitud en la URL `/api/products` con el método GET.
 
 Dado este panorama, reorganizaremos el repositorio siguiendo algunos lineamientos:
