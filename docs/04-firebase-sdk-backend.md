@@ -168,7 +168,7 @@ Con esto en su lugar, recargamos Cypress y la terminal de Express indicará el s
 
 Esto sucede cuando el SDK de firebase-admin no logra acceder la variable de entorno `GOOGLE_APPLICATION_CREDENTIALS`. Para entender más en detalle el porque de esto puedes revisar la siguiente sección de la documentación de Firebase en [este enlace](https://firebase.google.com/docs/admin/setup?hl=es-419#initialize-sdk).
 
-Para configurar esta variable será descargar el archivo de **cuenta de servicio** de Firebase entrando a la siguiente url:
+Para configurar esta variable tenemos que descargar el archivo de **cuenta de servicio** de Firebase entrando a la siguiente url:
 
 
 ```
