@@ -117,7 +117,7 @@ app.listen(port, () => {
 
 Si quieres conocer el detalle de cómo integrar firebase al servidor, revisa la siguiente [documentación](https://firebase.google.com/docs/admin/setup#add-sdk)
 
-Con esto, al recargar las pruebas veremos que el error pasó de 500 a 401, es decir, el servidor está revisando que las solicitudes tengan la cabecera de autorización y cómo no hemos configurado eso en el Frontend la aplicación entrega el mensaje y códigos especificados en la primera sentencia `if` configurada en el Middleware configurado para todas las peticiones hacia los endpoint encabezados por la ruta `/api`. 
+Con esto, al recargar las pruebas veremos que el error cambió de 500 a 401, es decir, el servidor ahora está revisando que las solicitudes tengan la cabecera de autorización y cómo no hemos configurado eso en el Frontend la aplicación entrega el mensaje y códigos especificados en la primera sentencia `if` configurada en el Middleware para todas las peticiones hacia las ruts encabezados por el segmento `/api`. 
 
 Para revisar en Cypress como salieron las peticiones al servidor puedes acceder a las herramientas para desarrolladores al igual que en cualquier navegador moderno. Haciendo esto nuestras pruebas se ven como en la siguiente imagen:
 
@@ -168,7 +168,7 @@ Con esto en su lugar, recargamos Cypress y la terminal de Express indicará el s
 
 Esto sucede cuando el SDK de firebase-admin no logra acceder la variable de entorno `GOOGLE_APPLICATION_CREDENTIALS`. Para entender más en detalle el porque de esto puedes revisar la siguiente sección de la documentación de Firebase en [este enlace](https://firebase.google.com/docs/admin/setup?hl=es-419#initialize-sdk).
 
-Para configurar esta variable será descargar el archivo de **cuenta de servicio** de Firebase entrando a la siguiente url:
+Para configurar esta variable tenemos que descargar el archivo de **cuenta de servicio** de Firebase entrando a la siguiente url:
 
 
 ```
