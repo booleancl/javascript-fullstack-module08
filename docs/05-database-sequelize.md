@@ -21,7 +21,7 @@ Para no tener que instalar el CLI de Sequelize en forma global, podemos exponer 
 ```javascript
  ...
   "scripts": {
-    "start": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "sequelize": "sequelize", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
