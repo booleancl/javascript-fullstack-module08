@@ -181,7 +181,7 @@ app.use('/api', async (request, response, next) => {
     // Caso 3 éxito: La solicitud fue validada exitosamente
     // y la solicitud ingresa al servidor ejecutando la función "next"
   } catch (error) {
-    // Caso 4 error: La librería "firebase-admin" no valida el token enviado
+    // Caso 4 error: La biblioteca "firebase-admin" no valida el token enviado
   }
 })
 ```
@@ -228,7 +228,7 @@ describe('Auth middleware',() => {
   })
 })
 ```
-Podemos notar como a partir de la librería `Supertest` podemos simular una solicitud al servidor sin necesidad de crear una real pasándole el módulo de express que en nuestro caso se exporta a través del valor `app`. Esto permite a `Supertest` conocer la configuración de las rutas que hemos definido para nuestros endpoints y hacer la simulación. 
+Podemos notar como a partir de la biblioteca `Supertest` podemos simular una solicitud al servidor sin necesidad de crear una real pasándole el módulo de express que en nuestro caso se exporta a través del valor `app`. Esto permite a `Supertest` conocer la configuración de las rutas que hemos definido para nuestros endpoints y hacer la simulación. 
 
 En adelante vamos a complementar este archivo agregando los bloques `it` dentro del bloque `describe` en el mismo orden que hicimos nuestro análisis
 
@@ -259,14 +259,14 @@ Al validar el token deja pasar la petición ejecutando la función "next"
 
 Este caso no lo implementaremos acá ya que cuando hagamos las pruebas del endpoint `GET /api/products` estaremos pasando por este middleware y será implícito que la prueba pasa por la función `next`
 
-##### Caso 4 error: La librería "firebase-admin" no valida el token enviado
+##### Caso 4 error: La biblioteca "firebase-admin" no valida el token enviado
 
 Resultado esperado
 ```
 Retorna 403 y un mensaje "Could not authorize" cuando el token es de tipo Bearer, pero no es válido
 ```
 
-En este caso debemos crear un mock de la librería `firebase-admin` para simular que el llamado al método `verifyIdToken` tome el comportamiento que necesitemos para la prueba. 
+En este caso debemos crear un mock de la biblioteca `firebase-admin` para simular que el llamado al método `verifyIdToken` tome el comportamiento que necesitemos para la prueba. 
 Primero modificaremos las funciones que utilizamos de `firebase-admin` para que la prueba se ejecute sin errores:
 
 ```javascript

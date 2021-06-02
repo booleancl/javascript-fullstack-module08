@@ -80,7 +80,7 @@ Esto creará una carpeta con la estructura inicial y todo lo necesario para cons
    +  Activar *Hot Module Replacement* en [webpack-dev-server](https://github.com/webpack/webpack-dev-server) para que al guardar los cambios se reflejen inmediatamente en el navegador
 
 
-Una vez terminada la instalación ingresamos al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/), una de las tantas librerías de componentes UI de alta productividad para Vue (existen otras como Buefy, Element, Bootstrap Vue y otras), utilizando el siguiente comando:
+Una vez terminada la instalación ingresamos al repositorio recién creado y agregaremos [Vuetify](https://vuetifyjs.com/), una de las tantas bibliotecas de componentes UI de alta productividad para Vue (existen otras como Buefy, Element, Bootstrap Vue y otras), utilizando el siguiente comando:
 
 ```bash
 vue add vuetify

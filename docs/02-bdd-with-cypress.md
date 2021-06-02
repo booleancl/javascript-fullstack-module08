@@ -878,7 +878,7 @@ Al recargar Cypress veremos que luego de hacer los cambios en el código nuestra
 
 Ya hemos escrito y pasado las pruebas necesarias para que nuestra aplicación permita mostrar una lista de productos luego de una autenticación. Pero la última prueba que escribimos la pasamos entregando una lista estática de productos. Ha llegado el momento de realizar una consulta a un servidor que nos entregue la información de los productos acorde al contrato JSON se nos entregó y alimentamos al sistema Fixtures.
 
-Sin dejar de correr Cypress, abriremos una nueva terminal en el proyecto e instalaremos la librerías `Axios` utilizando el siguiente comando:
+Sin dejar de correr Cypress, abriremos una nueva terminal en el proyecto e instalaremos la bibliotecas `Axios` utilizando el siguiente comando:
 
 ```bash
 npm install axios

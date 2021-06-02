@@ -8,9 +8,9 @@ nav_order: 7
 Continuamos caracterizando la aplicación para refactorizar y dejar la aplicación más flexible y mantenible. 
 
 A diferencia de las pruebas que escribimos para el Backend, nuestra parte Frontend utiliza el framework VueJS y algunos plugins como Vuex y Vuetify. Esto agrega más de dificultad al momento de escribir las pruebas dado que debemos simular en cada una de ellas como si una aplicación Vue real estuviera funcionando incluyendo todas las cosas que configuramos.
-Para facilitar las cosas Vue ya trae integrada una librería llamada `@vue/test-utils` que nos permitirá hacer algunas cosas necesarias para ejecutar las pruebas. Si quieres aprender mucho más en profundidad como funciona y que cosas se pueden hacer puedes revisar [este enlace](https://github.com/vuejs/vue-test-utils/)
+Para facilitar las cosas Vue ya trae integrada una biblioteca llamada `@vue/test-utils` que nos permitirá hacer algunas cosas necesarias para ejecutar las pruebas. Si quieres aprender mucho más en profundidad como funciona y que cosas se pueden hacer puedes revisar [este enlace](https://github.com/vuejs/vue-test-utils/)
 
-Vuetify al ser una de las librerías que más usamos debido a que está incluida en todas las vistas de nuestra aplicación, necesita de una configuración especial para funcionar. El detalle y varios ejemplos de como hacer esto lo puedes revisar en la [sección dedicada a pruebas de software de la documentación de Vuetify](https://vuetifyjs.com/en/getting-started/unit-testing/)
+Vuetify al ser una de las bibliotecas que más usamos debido a que está incluida en todas las vistas de nuestra aplicación, necesita de una configuración especial para funcionar. El detalle y varios ejemplos de como hacer esto lo puedes revisar en la [sección dedicada a pruebas de software de la documentación de Vuetify](https://vuetifyjs.com/en/getting-started/unit-testing/)
 
 En resumen debemos configurar las pruebas para que se incluya globalmente en cada prueba. 
 Tenemos que hacer dos pasos para esto. El primero es modificar el archivo `frontend/jest.config.js` para que quede así:
@@ -168,10 +168,10 @@ Elimina el `example.spec.js` que se creo junto con la aplicación. No lo usaremo
 Vemos que incluimos un bloque `beforeEach` que nos permitirá hacer algunas acciones comunes relativas a las pruebas que escribiremos como por ejemplo dobles de prueba para la autenticación y su correspondiente `mockReset` para así asegurarnos de cumplir el [principio FIRST](http://agileinaflash.blogspot.com/2009/02/first.html) manteniendo a cada una de las pruebas "aisladas" entre si.
 Aprovechando que nuestras vistas están integradas con el enrutador de la aplicación, realizamos una navegación hacia la ruta `/` para asegurarnos que cuando la aplicación sea montada para las pruebas, se utilice la vista correcta.
 
-Ahora al mirar la prueba vemos como podemos configurar que la promesa asociada que retorna el método `Auth.signInWithEmailAndPassword` se resuelva con ayuda de jest en la función `mockResolvedValue`, al ser llamada en el contexto de la aplicación Vue esta no se resolverá automáticamente. Para poder lograr esto utilizaremos la librería `flush-promises`.
+Ahora al mirar la prueba vemos como podemos configurar que la promesa asociada que retorna el método `Auth.signInWithEmailAndPassword` se resuelva con ayuda de jest en la función `mockResolvedValue`, al ser llamada en el contexto de la aplicación Vue esta no se resolverá automáticamente. Para poder lograr esto utilizaremos la biblioteca `flush-promises`.
 Podemos ver una explicación desde la propia documentación de Vue relacionada a esto en [este enlace](https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue)
 
-Vamos a instalar esta librería ejecutando lo siguiente en nuestra terminal preocupándonos de navagar hasta el directorio `frontend` en nuestro proyecto:
+Vamos a instalar esta biblioteca ejecutando lo siguiente en nuestra terminal preocupándonos de navagar hasta el directorio `frontend` en nuestro proyecto:
 
 ```bash
 npm install --save-dev flush-promises

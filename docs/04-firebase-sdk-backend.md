@@ -16,11 +16,11 @@ nav_order: 4
   ></iframe>
 </div>
 
-Firebase hace muy simple la comprobación de tokens de autorización en el Backend. En resumen, debemos enviar una cabecera específica desde el Frontend y con la librería de Firebase integrada a nuestro backend podremos validar que las solicitudes sean de un usuario autenticado.
+Firebase hace muy simple la comprobación de tokens de autorización en el Backend. En resumen, debemos enviar una cabecera específica desde el Frontend y con la biblioteca de Firebase integrada a nuestro backend podremos validar que las solicitudes sean de un usuario autenticado.
  
 Esto llevará consigo una seríe de consideraciones relacionadas al manejo de variables de entorno.
 
-El primer paso de esta etapa es la instalación de la librería `firebase-admin` en nuestro backend. Como ejercicio de estudio, es bueno tener corriendo las pruebas de front y relacionar los distintos códigos de error con el estado del servidor siguiente.
+El primer paso de esta etapa es la instalación de la biblioteca `firebase-admin` en nuestro backend. Como ejercicio de estudio, es bueno tener corriendo las pruebas de front y relacionar los distintos códigos de error con el estado del servidor siguiente.
 
 Ejecutamos las pruebas e2e sin encender el servidor y veremos que la solicitud GET a `/api/products` retorna error 500.
 
