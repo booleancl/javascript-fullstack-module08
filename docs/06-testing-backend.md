@@ -14,14 +14,14 @@ Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hem
 Utilizaremos tres herramientas populares de Javascript para escribir y ejecutar pruebas: `jest`, `jest-cli` y `supertest`. Primero navegamos a la carpeta `/backend` y luego ejecutamos el siguiente comando: 
 
 ```bash
-npm i --save-dev jest jest-cli supertest 
+npm i jest jest-cli supertest --save-dev
 ```
 Al igual que como lo hicimos con Sequelize-cli, vamos a exponer el comando de Jest para no tener que instalarlo globalmente. Eso es en el archivo `backend/package.json`. También vamos a cambiar el comando de test que viene por defecto. El archivo quedaría de la siguiente forma:
 
 ```javascript
  ...
   "scripts": {
-    "start": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "jest --runInBand --coverage",
     "jest": "jest",
     "sequelize": "sequelize"
@@ -30,6 +30,7 @@ Al igual que como lo hicimos con Sequelize-cli, vamos a exponer el comando de Je
 ```
 Jest tiene la opción --init para configurar el entorno de pruebas. El comando a ejecutar es el siguiente:
  `npm run jest -- --init`
+
 Esto nos hará una pequeña serie de preguntas que debemos responder con lo siguiente:
 
 ![jest --init](images/06-testing-frontend-backend-01.png)
@@ -48,7 +49,7 @@ en la sección "test".
 ```
 Durante la ejecución de las pruebas se creará una nueva bases de datos que no necesitamos incluir en el repositorio, por lo que agregaremos el nombre  de la base de datos de prueba `test.database.sqlite3` al `.gitignore`.
 
-Para probar el backend vamos a crear la carpeta `/tests` dentro del directorio `backend` y crearemos una prueba simple para revisar que esté todo bien configurado. A este archivo lo llamaremos `auth.test.js` ya que es la primera funcionalidad de describimos de nuestro servidor. Su contenido es el siguiente:
+Para probar el backend vamos a crear la carpeta `/tests` dentro del directorio `backend` y crearemos una prueba simple para revisar que esté todo bien configurado. A este archivo lo llamaremos `auth.test.js` ya que es la funcionalidad de describimos de nuestro Backend. Su contenido es el siguiente:
 
 ```javascript
 const server = require('../src/server')
@@ -61,7 +62,7 @@ describe('Auth middleware',() => {
 
 ```
 
-Esto lo ejecutamos con el comando que configuramos `npm test`. La salida en la terminal de esta ejecución es la siguiente:
+Esto lo ejecutamos con el comando que configuramos: `npm test`. La salida en la terminal de esta ejecución es la siguiente:
 
 ![error-async](images/06-testing-frontend-backend-02.png)
 
@@ -79,8 +80,7 @@ app.listen(port, () => {
 })
 
 ```
-El resto del contenido lo agregaremos aun archivo llamado `app.js` también en la raíz de Backend con lo siguiente:
-
+El resto del contenido lo agregaremos a un archivo llamado `app.js` también en la raíz de Backend con lo siguiente:
 
 ```javascript
 const express = require('express')
@@ -160,7 +160,7 @@ Con estos ajustes la salida de las pruebas queda como indica la siguiente imagen
 
 ![jest simple test passing](images/06-testing-frontend-backend-03.png)
 
-### Casos de la funcionalidad para definir pruebas
+### Escenarios de la funcionalidad para definir pruebas
 
 En este momento el servidor tiene las siguientes características:
 

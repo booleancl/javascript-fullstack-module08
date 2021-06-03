@@ -5,7 +5,7 @@ nav_order: 5
 ---
 # Agregando base de datos en desarrollo
 
-En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos, epecíficamente las relacionales, que vienen en un montón de dialectos diferentes (Postgres, MySQL, MariaDB o Microsoft SQL Server), pero para no decidir ahora cual usar, emplearemos una biblioteca con un nivel de abstracción superior que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la biblioteca más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación, es decir, el código, con el modelo de datos, nuestras tablas. También nos ayudará con las clasicas operaciones CRUD y las asociaciones.
+En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos, epecíficamente las relacionales, que vienen en un montón de dialectos diferentes (Postgres, MySQL, MariaDB o Microsoft SQL Server). Para no decidir ahora cual usar, emplearemos una biblioteca con un nivel de abstracción superior que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la biblioteca más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación, es decir, el código, con el modelo de datos, nuestras tablas. También nos ayudará con las clásicas operaciones CRUD y las asociaciones.
 
 Para usar Sequelize nos aseguramos de navegar en la carpeta `backend` y ejecuraremos los siguientes comandos:
 
@@ -64,7 +64,7 @@ package-lock.json
 package.json
 ```
 
-Continuaremos el desarrollo estableciendo la implementación SQL en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más liviana para este entorno. Para esto modificamos el archivo `backend/src/config/config.json`
+Continuaremos estableciendo la implementación SQL en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más liviana para este entorno. Para esto modificamos el archivo `backend/src/config/config.json`
 
 ```javascript
 "development": {
@@ -173,7 +173,7 @@ pnpm-debug.log*
 
 Con todo esto ya tenemos nuestro ambiente de Base de datos montado en el ambiente de desarrollo. Solo falta incorporar que la respuesta del servidor entregue los datos desde la BDD 
 
-### Agregar modelos de base de datos como respuesta a la llamada al Servidor
+## Agregar modelos de base de datos como respuesta a la llamada al Servidor
 
  Volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
   - Primero para el Backend ejecutamos `npm run dev`
