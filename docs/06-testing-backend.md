@@ -160,7 +160,7 @@ Con estos ajustes la salida de las pruebas queda como indica la siguiente imagen
 
 ![jest simple test passing](images/06-testing-frontend-backend-03.png)
 
-### Escenarios de la funcionalidad para definir pruebas
+## Escenarios de la funcionalidad para definir pruebas
 
 En este momento el servidor tiene las siguientes características:
 
@@ -202,11 +202,11 @@ Estas son las funcionalidades que debemos mantener y que deben resistir el proce
 
 Es una buena práctica primero previsualizar los casos a los cuales vamos a escribir las pruebas así tenemos claro que código está involucrado en cada uno de los casos y será más fácil escribir la implementación de la prueba.
 
-### Implementación de pruebas sobre el Middleware de validación de solicitudes autorizadas
+## Pruebas al Middleware de validación de solicitudes autorizadas
 
 Vamos a escribir las pruebas que definimos para los casos que describimos anteriormente.
 
-##### Caso 1 error: no se envía la cabecera "Authorization"
+### Caso 1 error: no se envía la cabecera "Authorization"
 
 Resultado esperado
 ```
@@ -232,7 +232,7 @@ Podemos notar como a partir de la biblioteca `Supertest` podemos simular una sol
 
 En adelante vamos a complementar este archivo agregando los bloques `it` dentro del bloque `describe` en el mismo orden que hicimos nuestro análisis
 
-##### Caso 2 error: se envía una cabecera "Authorization" que no es del tipo "Bearer"
+### Caso 2 error: se envía una cabecera "Authorization" que no es del tipo "Bearer"
 Resultado esperado
 ```
 Retorna 401 y un mensaje "Invalid token" cuando el token no es de tipo Bearer
@@ -250,7 +250,7 @@ it('returns 401 when the token is not a bearer token', async ()=>{
 })
 ```
 
-##### Caso 3 éxito: La solicitud fue validada exitosamente y la solicitud ingresa al servidor ejecutando la función "next"
+### Caso 3 éxito: La solicitud fue validada exitosamente y la solicitud ingresa al servidor ejecutando la función "next"
 
 Resultado esperado
 ```
@@ -259,7 +259,7 @@ Al validar el token deja pasar la petición ejecutando la función "next"
 
 Este caso no lo implementaremos acá ya que cuando hagamos las pruebas del endpoint `GET /api/products` estaremos pasando por este middleware y será implícito que la prueba pasa por la función `next`
 
-##### Caso 4 error: La biblioteca "firebase-admin" no valida el token enviado
+### Caso 4 error: La biblioteca "firebase-admin" no valida el token enviado
 
 Resultado esperado
 ```
@@ -363,11 +363,11 @@ Podemos ver claramente como es que el informe de cobertura nos muestra que aún 
 
 Seguimos adelante con las pruebas cuando la solicitud pasa el middleware de autorización y solicita el listado de productos.
 
-### Implementación de pruebas para endpoints de productos
+## Implementación de pruebas para endpoints de productos
 
 Vamos a escribir las pruebas del endpoint `GET /api/products`:
 
-##### Caso 1 éxito: Se consulta la base de datos exitosamente 
+### Caso 1 éxito: Se consulta la base de datos exitosamente 
 
 Resultado esperado
 ```
@@ -421,7 +421,7 @@ describe('/api/products', () =>{
 
 ```
 
-##### Caso 2 error: Ocurre un error al consultar la base de datos
+### Caso 2 error: Ocurre un error al consultar la base de datos
 
 Resultado esperado
 ```
