@@ -4,10 +4,11 @@ title: "Refactorización utilizando pruebas de software en Backend"
 nav_order: 6
 ---
 
-# Refactorización utilizando pruebas de software en Backend
-En este punto la funcionalidad ya está completa, pero la organización del código se puede mejorar para aumentar su flexibilidad a los cambios que inevitablemente llegarán.
+# Refactorización utilizando pruebas de software en el Backend
 
-Para esto necesitamos una forma de asegurar que no romperemos nada de lo que hemos logrado. La funcionalidad se debe mantener, pero la calidad del código debe aumentar. Para esto agregaremos pruebas de software para el código tanto en el Backend como en el Frontend.
+En este punto la funcionalidad ya está completa, pero la organización del código puede mejorar para aumentar su flexibilidad a los cambios que inevitablemente llegarán.
+
+Necesitamos una forma de asegurar que no romperemos nada de lo que hemos logrado. La funcionalidad se debe mantener, pero la calidad del código debe aumentar. Para esto caracterizaremos el software con pruebas antes de refactorizar.
 
 ## Pruebas de software en Backend
 
@@ -28,7 +29,8 @@ Al igual que como lo hicimos con Sequelize-cli, vamos a exponer el comando de Je
   },
 ...
 ```
-Jest tiene la opción --init para configurar el entorno de pruebas. El comando a ejecutar es el siguiente:
+Configuraremos Jest usando el CLI con la opción `--init` con el siguiente comando.
+
  `npm run jest -- --init`
 
 Esto nos hará una pequeña serie de preguntas que debemos responder con lo siguiente:
@@ -66,7 +68,7 @@ Esto lo ejecutamos con el comando que configuramos: `npm test`. La salida en la 
 
 ![error-async](images/06-testing-frontend-backend-02.png)
 
-Tenemos resultados confusos, ya que en concreto la prueba si pasa, pero vemos una indicación en rojo de que estamos ejecutando `console.log`. En este caso es Express en la llamada `app.listen` que hace correr un proceso en forma indefinida y jest queda ejecutándose. Entonces debemos separar lo que vamos a probar (la lógica) de lo que ejecuta el servidor (`listen`).
+Tenemos resultados confusos, ya que en concreto la prueba si pasa, pero vemos una indicación en rojo de que estamos ejecutando `console.log` después de que se ejecutaron las pruebas. Esto es provocado por la instancia de Express en la llamada al método`.listen` que hace correr un proceso de forma indefinida y Jest queda ejecutándose también de forma indefinida. Entonces debemos separar lo que vamos a probar (la lógica) de lo que ejecuta el servidor (`listen`).
 
 Logramos esto separando el archivo `server.js` para que quede de la siguiente forma: 
 
@@ -156,7 +158,7 @@ describe('Auth middleware',() => {
 })
 
 ```
-Con estos ajustes la salida de las pruebas queda como indica la siguiente imagen:
+Con estos ajustes ya queda bien configurado nuestro entorno para pruebas
 
 ![jest simple test passing](images/06-testing-frontend-backend-03.png)
 
@@ -228,7 +230,7 @@ describe('Auth middleware',() => {
   })
 })
 ```
-Podemos notar como a partir de la biblioteca `Supertest` podemos simular una solicitud al servidor sin necesidad de crear una real pasándole el módulo de express que en nuestro caso se exporta a través del valor `app`. Esto permite a `Supertest` conocer la configuración de las rutas que hemos definido para nuestros endpoints y hacer la simulación. 
+Podemos notar como a partir de la biblioteca `Supertest` podemos simular una solicitud al servidor pasándole el módulo de Express a través del módulo `app`. Esto permite a `Supertest` conocer la configuración de las rutas que hemos definido para nuestros endpoints y hacer la simulación. 
 
 En adelante vamos a complementar este archivo agregando los bloques `it` dentro del bloque `describe` en el mismo orden que hicimos nuestro análisis
 
@@ -267,7 +269,8 @@ Retorna 403 y un mensaje "Could not authorize" cuando el token es de tipo Bearer
 ```
 
 En este caso debemos crear un mock de la biblioteca `firebase-admin` para simular que el llamado al método `verifyIdToken` tome el comportamiento que necesitemos para la prueba. 
-Primero modificaremos las funciones que utilizamos de `firebase-admin` para que la prueba se ejecute sin errores:
+
+Configuraremos el mock de `firebase-admin`.
 
 ```javascript
 const supertest = require('supertest')
@@ -299,7 +302,7 @@ it('returns 403 when an invalid token is passed',async () => {
 })
 
 ```
-Ejecutamos y vemos que en la ultima prueba jest incluso nos muestra el `console.error` que se debe ejecutar en el código de la aplicación cuando llega un token inválido. Lo puedes ver en el siguiente screenshot:
+Ejecutamos y vemos que en la ultima prueba jest incluso nos muestra el `console.error` situado en el código de nuestra aplicación cuando llega un token inválido. Lo puedes ver en el siguiente screenshot:
 
 ![jest auth test](images/06-testing-frontend-backend-04.png)
 
@@ -357,7 +360,7 @@ Luego si hacemos click en `src` y luego en `app.js` veremos lo que muestra la si
 
 ![Imagen que muestra reporte de cobertura en el navegador](images/06-testing-frontend-backend-06.png)
 
-Podemos ver claramente como es que el informe de cobertura nos muestra que aún no hemos escrito pruebas que ejecuten los códigos remarcados en la imagen.
+Podemos ver claramente que el reporte de cobertura nos muestra qué líneas no están siendo ejecutadas por las pruebas
 
 ⚠️ Ahora vamos a agregar al archivo `.gitignore` el directorio `coverage` porque es importante que este informe sea regenerado por cada ejecución de las pruebas pero no lo necesitamos como parte del repositorio.
 
@@ -444,11 +447,11 @@ it('returns 500 when the database throws error', async () => {
   })
 ```
 
-al correr el comando `npm test` deberíamos ver todas las pruebas pasando como muestra la siguiente imagen:
+Al correr el comando `npm test` deberíamos ver todas las pruebas pasando como muestra la siguiente imagen:
 
 ![Imagen que muestra todas las pruebas de Backend pasando](images/06-testing-frontend-backend-07.png)
 
-Podemos validar que ahora estamos cubriendo toda la funcionalidad construida hasta el momento con nuestras pruebas revisando tal como lo hicimos anteriormente en el archivo en el directorio `coverage`.
+Podemos validar que ahora estamos cubriendo toda la funcionalidad construida hasta el momento con nuestras pruebas revisando tal como lo hicimos anteriormente en el informe de  `coverage`.
 
 ![Imagen que muestra la cobertura de las pruebas en el archivo app.js](images/06-testing-frontend-backend-08.png)
 

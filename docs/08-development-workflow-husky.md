@@ -6,12 +6,15 @@ nav_order: 8
 
 # Flujo de desarrollo del proyecto
 
-En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.
+En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma, pero no configuramos herramientas para el manejo global del proyecto.
 
-Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas.
-En esta oportunidad vamos a configurar un script `pre-commit` y de `pre-push` que nos ayuden a mantener prácticas estandarizadas y nos ayuden con la calidad de la plataforma en su totalidad de forma asegurarnos que cada vez que se quiera agregar código al repositorio central, este mantenga su calidad.
+Implementaremos una forma de revisión estática ó -*linting*- del proyecto global. Esta revisión estática del código ayuda a no introducir patrones problemáticos o que incumple ciertas reglas definidas. En otras palabras ayudan a "estandarizar" el código de la aplicación al seguir guías de estilo y reglas.
 
-Nuestro proyecto en la raíz debería verse como en el siguiente esquema:
+>Como aprendimos en el curso, Javascript al ser un lenguaje dinámico e interpretado, solamente *hoistea* el código antes de su ejecución, perdiendo esta ventaja que tienen los lenguajes compilados y tipados, como Java o la familia de lenguajes C (C#, C++), entre muchos otros, que hacen esta revisión estática del código durante la compilación.
+
+En esta oportunidad vamos a configurar un script `pre-commit` que nos ayude a seguir prácticas recomendadas a través del análisis estático de la plataforma en su totalidad y otro de `pre-push` para asegurarnos que cada vez que se agrega código al repositorio central este siga guías de estilo, evite patrones problemáticos y no rompa ninguna de nuestras pruebas unitarias.
+
+Iniciaremos este capítulo creando en la raíz del proyecto vamos un archivo package.json que nos permitirá gestionar dependencias globales de nuestra aplicación. Estas serán de utilidad para frontend y backend u algún otro componente que venga después:
 
 ```bash
 .
@@ -22,11 +25,12 @@ Nuestro proyecto en la raíz debería verse como en el siguiente esquema:
 
 ```
 
-En la raíz del proyecto vamos a ejecutar el siguiente comando:
+Podemos generar una plantilla ejecutando:
+
 ```bash
 npm init -f
-```
-Esto nos creará un archivo como el que se muestra a continuación. 
+``` 
+Esto creará un archivo como el que se muestra a continuación. 
 
 ```javascript
 {
@@ -49,9 +53,9 @@ Instalaremos los paquetes necesarios con el siguiente comando:
 npm install husky npm-run-all
 ```
 
-Ya tenemos los paquetes necesarios para poder correr scripts asociados a las acciones de git, en este caso `Husky` que es la herramienta que nos ayudará a hacer esto y `npm-run-all` que ejecutará las tareas para el `frontend` y `backend` en simultáneo.
+Con esto ahora tenemos `Husky` para correr scripts asociados a git y `npm-run-all` que ejecutará las tareas para el `frontend` y `backend` en simultáneo.
 
-Como necesitamos estandarizar las tareas de calidad de código, nos está faltando algo: Necesitamos configurar el linter en Backend con el mismo estándar configurado por Vue para el Frontend.
+Necesitamos homologar las tareas de calidad de código, para eso nos está faltando algo: Necesitamos configurar el linter en Backend con el mismo "estándar" configurado por Vue-CLI para el Frontend.
 
 ### Configurar linter en el backend
 
@@ -248,7 +252,7 @@ git commit -m "chore(dev-scripts): se agregaron scripts de pre-commit y pre-push
 Veremos como al hacer esto se corre el script `pre-commit`. Si todo salió bien el commit debería hacerse sin problemas.
 
 
-- CONFIGURAR TU REMOTO
+Ahora crea un repositorio remoto en Github, agregalo al proyecto y envía el primer push para ver que ahora también se ejecutan las pruebas.
 
 al final
 ```bash
