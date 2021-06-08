@@ -16,6 +16,7 @@ nav_order: 5
 </div>
 
 En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos relacionales, las que vienen en un montón de dialectos diferentes (psql, mysql, sqlite, oracle, etc), pero para no tener que decidir ahora cual usar, vamos a emplear una librería que nos entregará una capa de abstracción superior y que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la librería más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación con el modelo de datos.
+En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos, epecíficamente las relacionales, que vienen en un montón de dialectos diferentes (Postgres, MySQL, MariaDB o Microsoft SQL Server). Para no decidir ahora cual usar, emplearemos una biblioteca con un nivel de abstracción superior que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la biblioteca más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación, es decir, el código, con el modelo de datos, nuestras tablas. También nos ayudará con las clásicas operaciones CRUD y las asociaciones.
 
 Para usar Sequelize nos aseguramos de navegar en la carpeta `backend` y ejecuraremos los siguientes comandos:
 
@@ -24,20 +25,20 @@ npm i sequelize
 npm i sequelize-cli sqlite3 --save-dev
 ```
 
-Con estos comandos hemos agregado `Sequelize` como dependencia general y `Sequelize-cli` y `Sqlite3` como dependencias de desarrollo. Estás últimas nos permitirán modelar de forma más ágil y ligera nuestras bases de datos de desarrollo. Más adelante, cuando estemos próximos al despliegue a producción seleccionaremos y configuraremos la base de datos para el ambiente productivo.
+Con estos comandos hemos agregado `Sequelize` como dependencia general y `Sequelize-cli` y `Sqlite3` como dependencias de desarrollo. Estás últimas nos permitirán modelar de forma ágil y ligera nuestra base de datos en el entorno de desarrollo. Más adelante, cuando estemos próximos al despliegue, es decir, el paso a producción, seleccionaremos y configuraremos la base de datos para el ambiente productivo.
 
 Para no tener que instalar el CLI de Sequelize en forma global, podemos exponer el comando desde el mismo directorio node_modules del proyecto y así usarlo de forma local. Para eso hay que modificar el archivo `backend/package.json` de la siguiente forma:
 
 ```javascript
  ...
   "scripts": {
-    "start": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "sequelize": "sequelize", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
 ...
 ```
-Sequelize-cli por defecto creará los modelos y las migraciones en la carpeta raíz, pero para definir que estos archivos se creen dentro del directorio `backend/src` (debido a la estructura de directorio que estamos utilizando) debemos configurarlo mediante un archivo denominado `.sequelizerc` en la carpeta `backend` con el siguiente contenido:
+Sequelize-cli por defecto creará los modelos y las migraciones en la carpeta raíz, pero para definir que estos archivos se creen dentro del directorio `backend/src` (debido al monorepo que estamos construyendo) debemos configurarlo mediante un archivo denominado `.sequelizerc` en la carpeta `backend` con el siguiente contenido:
 
 ```javascript
 const path = require('path')
@@ -50,7 +51,7 @@ module.exports = {
 }
 
 ```
-Ahora podemos ejecutar en la terminal de Backend el siguiente  comando:
+Ahora podemos ejecutar en la terminal de Backend el siguiente comando:
 
 ```bash
 npm run sequelize init
@@ -74,7 +75,7 @@ package-lock.json
 package.json
 ```
 
-Ahora continuaremos el desarrollo modificando el dialecto en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más simple de mantener. Para esto modificamos el archivo `backend/src/config/config.json`
+Continuaremos estableciendo la implementación SQL en el entorno de desarrollo. Por defecto es `mysql` pero usaremos `sqlite` debido a que es más liviana para este entorno. Para esto modificamos el archivo `backend/src/config/config.json`
 
 ```javascript
 "development": {
@@ -91,8 +92,7 @@ npm run sequelize model:generate -- --name Product --attributes name:string,desc
 ```
 
 Como profundizamos en el curso, la estructura de la base de datos debe ser modificada utilizando scripts de migración.
-El comando anterior creó un script que agrega una tabla con el nombre del modelo más los atributos como columnas. Sequelize agrega por defecto el atributo id de típo numérico autoincremental y considera el caso de los atributos `created_at` y `updated_at`. El valor por defecto de estos dos atributos debemos establecerlo nosotros. 
-Modificaremos el archivo de migración en `backend/src/migrations/[timestamp-generado-por-sequelize]-create-product.js` reemplazando el valor de ambos campos con lo que sigue:
+El comando anterior creó un script que agrega una tabla con el nombre del modelo más los atributos como columnas. Sequelize agrega por defecto el atributo id de típo numérico autoincremental y considera el caso de los atributos `created_at` y `updated_at`. El valor por defecto de estos dos atributos debemos establecerlos nosotros. Modificaremos el archivo de migración en `backend/src/migrations/[timestamp-generado-por-sequelize]-create-product.js` reemplazando el valor de ambos campos con lo que sigue:
 
 ```javascript
     createdAt: {
@@ -106,7 +106,8 @@ Modificaremos el archivo de migración en `backend/src/migrations/[timestamp-gen
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     }
 ```
- Para que esta migración modifique la estructura, debemos ejecutar el archivo de migración con el siguiente comando:
+
+Para que esta migración modifique la estructura, debemos ejecutar el archivo de migración con el siguiente comando:
 
 `npm run sequelize db:migrate`
 
@@ -114,7 +115,7 @@ Para cargar los datos iniciales en el ambiente de desarrollo creamos un archivo 
 
 `npm run sequelize seed:generate -- --name load-products`
 
-Esto tan solo crea un archivo dentro de la carpeta `/seeders` que con simple javascript permite ingresar datos a nuestras tablas. Reemplazaremos todo el contenido del archivo creado. El nombre del archivo es:  `backend/src/seeders/[timestamp-generado-por-sequelize]-load-products.js`
+Esto tan solo crea el archivo `backend/src/seeders/[timestamp-generado-por-sequelize]-load-products.js` dentro de la carpeta `/seeders` que con simple javascript permite ingresar datos a nuestras tablas. Reemplazaremos todo el contenido del archivo creado con lo siguiente:  
 
 ```javascript
 const path = require('path')
@@ -139,7 +140,7 @@ Al ejecutar el siguiente comando estamos copiando los datos definidos en los fix
 
 `npm run sequelize db:seed:all`
 
-Es importante notar, que a pesar de que es posible ingresar datos a la base de muchas formas, es mejor seguir esta, ya que los fixtures representan una parte importante del modelo de datos y representan el acuerdo común entre Backend, Frontend y el Dominio de Negocio de nuestra aplicación.
+> *Tip*: Aún cuando es posible ingresar datos a la base de muchas formas, es aconsejable seguir esta, ya que los fixtures representan una parte importante del modelo de datos y representan el acuerdo común entre Backend, Frontend y el Dominio de Negocio de nuestra aplicación.
 
 Podemos notar que en la raíz del directorio `backend` se creó un archivo llamado `local.database.sqlite3`. Si contamos con un visor de bases de datos sqlite, podemos cargar este archivo y ver gráficamente el resultado como en la siguiente imágen:
 
@@ -183,7 +184,7 @@ pnpm-debug.log*
 
 Con todo esto ya tenemos nuestro ambiente de Base de datos montado en el ambiente de desarrollo. Solo falta incorporar que la respuesta del servidor entregue los datos desde la BDD 
 
-### Agregar modelos de base de datos como respuesta a la llamada al Servidor
+## Agregar modelos de base de datos como respuesta a la llamada al Servidor
 
  Volveremos a dividir nuestro entorno de trabajo en 2 ventanas (o pestañas) de la terminal. Una para el Frontend y otra para el Backend como lo hemos venido haciendo hasta el momento.
   - Primero para el Backend ejecutamos `npm run dev`
