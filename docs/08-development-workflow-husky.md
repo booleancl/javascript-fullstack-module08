@@ -6,6 +6,16 @@ nav_order: 8
 
 # Flujo de desarrollo del proyecto
 
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/anAfAPvz7xc"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
+</div>
+
 En el capítulo 3 creamos el monorepo con las partes Frontend y Backend que van a conformar nuestra plataforma pero no configuramos herramientas para el manejo global del proyecto.
 
 Implementaremos una forma de revisión de la plataforma para que podamos estandarizar tareas.

@@ -5,6 +5,17 @@ nav_order: 7
 ---
 
 # Refactorización utilizando pruebas de software en Frontend
+
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/ty_k6TtXwH"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
+</div>
+
 Continuamos caracterizando la aplicación para refactorizar y dejar la aplicación más flexible y mantenible. 
 
 A diferencia de las pruebas que escribimos para el Backend, nuestra parte Frontend utiliza el framework VueJS y algunos plugins como Vuex y Vuetify. Esto agrega más de dificultad al momento de escribir las pruebas dado que debemos simular en cada una de ellas como si una aplicación Vue real estuviera funcionando incluyendo todas las cosas que configuramos.
