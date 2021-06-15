@@ -5,38 +5,14 @@ nav_order: 9
 ---
 # Salida a producción utilizando Github Actions y Heroku
 
-Ha sido un largo camino en el cuál hemos construido nuestra plataforma, integrado prácticas comunes de la comunidad Javascript, prácticas relacionadas a la agilidad de Software y varias técnicas de Ingeniería para mejorar nuestro código como el uso de tecnologías en las partes Frontend y Backend. Todo esto fue con el objetivo de poder poner a disposición de los usuarios nuestra plataforma de trueques. Pero hay una pregunta que quien haya seguido estos capítulos puede estar haciéndose:
+En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente es lo que mantendrá a nuestros activos digitales entregando valor. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
 
-> ¿Es acaso un buen momento para salir a producción y disponibilizar la plataforma a los usuarios?
-
-- La respuesta es sí.
-
-- Pero si solamente tenemos un método de Autenticación y una página de lista de productos.
-
-- OK. podemos salir a producción pero no mostrarle aún a los usuarios está página.
-
-- Pero es necesario estandarizar desde una etapa temprana el procedimiento de subida a producción.
-
-Para ello hay una serie de preguntas técnicas que debemos plantearnos.
-Veremos si nuestra plataforma cumple al menos con los requerimiento básicos para esta etapa:
-
-- ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
-
-- ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
-
-- ¿Qué tipo base de datos y servicio en la nube para almacenar datos utilizaremos?
-
-- ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
-
-Iremos respondiendo a cada una de estas pregunta e implementaremos lo necesario para lograr solucionar lo necesario para salir a producción sin problemas.
-
-
-### ¿Cúal será el método por el cuál disponibilizaremos el Frontend para los usuarios de la plataforma?
+## Arquitectura y Deploy
 
 En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes, íconos, etc que queramos incluir.
 De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio.
 
-La siguiente imagen muestra un diagrama que intenta explicar esta estrategia:
+La siguiente imagen muestra un diagrama que intenta explicar el proceso de despliegue y sus componentes.
 
 ![Imagen que muestra la estrategia de puesta en producción con NodeJS](images/09-deployment-postgres-01.png)
 
@@ -45,7 +21,7 @@ Para logra esto haremos 2 pasos:
 1. Generar un proyecto Frontend listo para poner en producción
 2. Agregar una carpeta pública en el proyecto Backend y el código necesario para exponerla a través de Express.
 
-##### Generar un proyecto Frontend listo para poner en producción
+## Generar un proyecto Frontend listo para poner en producción
 
 Para lograr esto ingresaremos a la carpeta `frontend` a través de la terminal y correremos el siguiente comando:
 
@@ -80,7 +56,8 @@ module.exports = app
 
 ```
 
-- copiar todo el contenido de dist a public
+- copiar todo el contenido de dist a `backend/src/public`
+
 - correr `npm run dev` en backend
 
 - Agregar al gitignore
@@ -95,7 +72,9 @@ backend/src/public
 ### ¿Qué método de puesta en producción en servidores en la nube utilizaremos?
 
 - heroku crear cuenta
-- heroku crear app intefaz
+
+- heroku crear app interfáz
+
 - agregar tarea `start` y sección `engines`
 
 **backend/package.json**
@@ -142,9 +121,9 @@ nos basta la tarea `start` para que heroku reconozca que este será el comando d
 
 Es también importante configurar la sección `engines` para confifgurar bajo que versión de NodeJS correrá nuestra aplicación. Más detalles en el siguiente [enlace](https://devcenter.heroku.com/articles/nodejs-support#specifying-a-node-js-version)
 
-### ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
+## ¿Que requisitos debe cumplir el código fuente para salir a producción desde este punto en adelante?
 
-- github actions y variable de ambiente para deployment y seguridad en settings/secrets
+- Github actions y variables de ambiente para deployment y seguridad en settings/secrets
 
   HEROKU_APP_NAME
   HEROKU_OWNER_EMAIL
@@ -184,12 +163,10 @@ jobs:
         - name: Build Deploy Artifact
           run: |
             STATIC_FOLDER=backend/src/public
-
             cd ./frontend
             npm install
             npm run build
             cd ..
-
             mkdir -p $STATIC_FOLDER
             cp -R ./frontend/dist/. $STATIC_FOLDER
             ls -R -lha $STATIC_FOLDER
