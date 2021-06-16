@@ -46,7 +46,7 @@ El resultado final será similar a lo que vemos a continuación:
 
 Nuestro proyecto fullstack estará compuesto por diferentes frameworks y herramientas: 
 
- ## Frontend
+## Frontend
 
 Usaremos **VueJS** para gestionar la sincronización y reactividad de la interfáz. Este framework implementa el patron *M-V-VM*, para y gestionar eficientemente nuestras vistas gracias a su motor de renderización y manejo interno de un *Virtual DOM*. Mejoraremos la productividad con **VueCLI** y así no tener que configurar manualmente **Webpack**, **Babel**, **Webpack Dev Server** y los loaders para trabajar con **SFC**. Seguiremos las directrices de Material Design a través de **Vuetify**, una de las tantas librerías de componentes UI para VueJS. Trabajaremos con **Vuex** para manejo de estado y **Vue-Router** para construir una Single Page Application (SPA) con *rutas* y *chunks*.
 
@@ -54,7 +54,7 @@ Además, integraremos nuestro Frontend con los servicios web de **Firebase**. Es
 
 ## Backend
 
-Construiremos un servidor **NodeJS** con la librería **Express**. Aquí expondremos servicios de negocio a través de Endpoints y Middlewares. Estos servicios conectarán con un servidor de bases de datos **Postres** que modificaremos mediante **Seeds** y **Migraciones**. Mapearemos los registros de la Base de Datos en objetos utilizando el **ORM** **Sequelize**. Al igual que en el frontend, conectaremos nuestro Backend con los servicios web de    **Firebase**. 
+Construiremos un servidor **NodeJS** con la librería **Express**. Aquí expondremos servicios de negocio a través de Endpoints y Middlewares. Estos servicios conectarán con un servidor de bases de datos **PostgreSQL** que modificaremos mediante **Seeds** y **Migraciones**. Mapearemos los registros de la Base de Datos en objetos utilizando el **ORM** **Sequelize**. Al igual que en el frontend, conectaremos nuestro Backend con los servicios web de **Firebase**. 
 
 ## Deployment
 

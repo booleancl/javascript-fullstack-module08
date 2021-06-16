@@ -5,7 +5,21 @@ nav_order: 9
 ---
 # Salida a producción utilizando Github Actions y Heroku
 
+<<<<<<< HEAD
 En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que, en la medida que avanzamos, debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente. Esto es lo que mantendrá a nuestros activos digitales entregando valor permanentemente. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
+=======
+<div class="embed-responsive">
+  <iframe
+    class="embed-responsive__item"
+    src="https://www.youtube.com/embed/r2SFEk8ee38"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+  ></iframe>
+</div>
+
+En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente es lo que mantendrá a nuestros activos digitales entregando valor. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
+>>>>>>> e976788de5028c8cdcc3e12ea5c416115543ae16
 
 ## Arquitectura y Deploy
 
