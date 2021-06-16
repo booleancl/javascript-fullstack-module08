@@ -17,7 +17,6 @@ nav_order: 9
 </div>
 
 En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente es lo que mantendrá a nuestros activos digitales entregando valor. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
->>>>>>> e976788de5028c8cdcc3e12ea5c416115543ae16
 
 ## Arquitectura y Deploy
 
