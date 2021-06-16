@@ -9,7 +9,7 @@ nav_order: 8
 <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
-    src="https://www.youtube.com/embed/anAfAPvz7xc"
+    src="https://www.youtube.com/embed/qCGqUXMqbnc"
     title="YouTube video player"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
