@@ -16,7 +16,7 @@ nav_order: 0
   ></iframe>
 </div>
 
-Hola! Bienvenidos al proyecto Aplicación Web del curso [Fullstack Javascript ](https://boolean.cl/courses/javascript-full-stack-basic). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible y escalable.
+Hola! Bienvenidos al proyecto Aplicación Web del curso [Fullstack Javascript ](https://boolean.cl/cursos/javascript-fullstack). Crearemos un producto digital utilizando Javascript en todo el stack. Lo haremos aplicando los conocimientos del curso junto con la metodología de [Desarrollo Ágil](https://docs.microsoft.com/en-us/devops/plan/what-is-agile-development). Haremos énfasís en técnicas de testeo y refactorización para mantener el proyecto flexible y escalable.
 
 **Con esta guía el estudiante podrá:**
 

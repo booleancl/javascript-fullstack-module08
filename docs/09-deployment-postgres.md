@@ -5,12 +5,11 @@ nav_order: 9
 ---
 # Salida a producción utilizando Github Actions y Heroku
 
-En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente es lo que mantendrá a nuestros activos digitales entregando valor. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
+En estos capítulos hemos intentado plasmar que el desarrollo ágil de aplicaciones es un *proceso* iterativo, de mucha comunicación, trabajo en equipo y siempre preparados para el cambio. Es por esto que, en la medida que avanzamos, debemos incorporar principios de diseño y técnicas de refactorización para adaptar la aplicación a los diferentes escenarios. Pero salir a producción es la razón de nuestro trabajo. Salir a producción con nuevas funcionalidades en forma frecuente. Esto es lo que mantendrá a nuestros activos digitales entregando valor permanentemente. Desde el principio debemos velar por tener siempre un proceso de salida a producción lo más límpio y flexible al igual que el código.
 
 ## Arquitectura y Deploy
 
-En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes, íconos, etc que queramos incluir.
-De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio.
+En esta oportunidad utilizaremos el enfoque de WEB SERVER + API en el mismo servidor NodeJS. Esto quiere decir que debemos incluir una carpeta en el servidor que contendrá en resultado del proyecto Frontend, esto es, un archivo index.html con los archivos Javascript y CSS, así como los recursos como imágenes e íconos. De esta forma las peticiones hechas por la parte Frontend hacia el Backend utilizarán el mismo dominio y no tendremos que configurar CORS en nuestro servidor.
 
 La siguiente imagen muestra un diagrama que intenta explicar el proceso de despliegue y sus componentes.
 
