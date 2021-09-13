@@ -288,14 +288,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = firebaseApp.auth().currentUser
-  const authRequired = to.matched.some(route => route.meta.login)
+  firebaseApp.auth().onAuthStateChanged(user => {
+    const authRequired = to.matched.some(route => route.meta.login)
 
-  if (!user && authRequired) {
-    next('/login')
-  } else {
-    next()
-  }
+    if (!user && authRequired) {
+      next('/login')
+    } else {
+      next()
+    }
+  })
 })
 
 export default router
