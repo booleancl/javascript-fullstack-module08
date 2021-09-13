@@ -129,7 +129,7 @@ Lo mínimo para volver a pasar las pruebas sería agregar la cabecera correspond
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
 Vue.use(Vuex)
 
@@ -148,7 +148,7 @@ export default new Vuex.Store({
       const productsURL = '/api/products'
 
       try {
-        const token = await Auth.currentUser?.getIdToken(true)
+        const token = await firebaseApp.auth().currentUser?.getIdToken(true)
         const response = await axios.get(productsURL, { headers: { Authorization: `Bearer ${token}` } })
         commit('SET_PRODUCTS', response.data)
       } catch (error) {
@@ -262,7 +262,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Products from '../views/Products.vue'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
 Vue.use(VueRouter)
 
@@ -288,11 +288,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = Auth.currentUser
+  const user = firebaseApp.auth().currentUser
   const authRequired = to.matched.some(route => route.meta.login)
 
   if (!user && authRequired) {
-    next('/')
+    next('/login')
   } else {
     next()
   }
