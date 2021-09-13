@@ -361,9 +361,7 @@ import config from './config'
 
 const firebaseApp = firebase.initializeApp(config)
 
-const Auth = firebaseApp.auth()
-
-export { Auth }
+export { firebaseApp }
 
 ```
 
@@ -552,7 +550,7 @@ Ahora debemos hacer una refactorización para lograr una conexión real con el s
 
 ```javascript
 <script>
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
 export default {
   data () {
@@ -573,7 +571,7 @@ export default {
     },
     async login () {
       if (this.validate()) {
-        await Auth.signInWithEmailAndPassword(this.email, this.password)
+        await firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
         this.$router.push({ name: 'Products' })
       }
     }

@@ -67,7 +67,7 @@ En estos momentos el Frontend cuenta con las siguientes características
 - Tiene una vista `Login` con un formulario con Vuetify que llama a la función `login`, la que a su vez ejecuta el método  de autenticación de Firebase. En caso de ser exitoso, se redirige a la página de productos.
 
 El resúmen de ese código lo vemos en la siguiente imagen.
-**f rontend/views/Login.vue**
+**frontend/views/Login.vue**
 
 ```javascript
 ...
@@ -75,7 +75,7 @@ El resúmen de ese código lo vemos en la siguiente imagen.
 async login () {
   if (this.validate()) {
     // Caso 1: Formulario válido y autenticación exitosa, entonces ir a la página de productos
-    await Auth.signInWithEmailAndPassword(this.email, this.password)
+    await firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
     this.$router.push({ name: 'Products' })
   }
   // Caso 2: Para un formulario inválido NO llamamos al método de autenticación
@@ -125,7 +125,7 @@ Vamos a escribir las pruebas para los casos que describimos anteriormente.
 Resultado esperado
 
 ```
-Al resolverse la promesa del método Auth.signInWithEmailAndPassword llama al método $router.push 
+Al resolverse la promesa del método firebaseApp.auth().signInWithEmailAndPassword llama al método $router.push 
 ```
 
 La implementación de estas pruebas las escribiremos en un nuevo archivo llamado `Login.spec.js` en la carpeta `frontend/tests/unit` con el siguiente contenido:
@@ -141,11 +141,14 @@ import flushPromises from 'flush-promises'
 import App from '@/App.vue'
 import store from '@/store'
 import router from '@/router'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
-jest.mock('@/firebase',()=> ({
-  Auth: {
-    signInWithEmailAndPassword: jest.fn()
+jest.mock('@/firebase', () => ({
+  firebaseApp: {
+    signInWithEmailAndPassword: jest.fn(),
+    auth: jest.fn().mockReturnValue({
+      signInWithEmailAndPassword: jest.fn()
+    })
   }
 }))
 
@@ -156,12 +159,12 @@ describe('Login.vue', () => {
     localVue = createLocalVue()
     vuetify = new Vuetify()
 
-    Auth.signInWithEmailAndPassword.mockReset()
+    firebaseApp.auth().signInWithEmailAndPassword.mockReset()
     router.push('/')
   })
 
   it('Successful login ruby to products page', async () => {
-    Auth.signInWithEmailAndPassword.mockResolvedValue()
+    firebaseApp.auth().signInWithEmailAndPassword.mockResolvedValue()
     const wrapper = mount(App,{
       localVue,
       vuetify,
@@ -186,7 +189,7 @@ Aprovechando que nuestras vistas están integradas con el enrutador de la aplica
 
 Elimina el `example.spec.js` que se creo junto con la aplicación. No lo usaremos.
 
-Al analizar la prueba vemos como podemos manipular la promesa que retorna el método `Auth.signInWithEmailAndPassword` y que resuelva con ayuda de Jest en la función `mockResolvedValue`. Como esta promesa se resuelve en el contexto de la aplicación Vue (de forma asíncrona) esta no se resolverá instantáneamente. Para l ograr que resuelva durante la ejecución de la prueba utilizaremos la biblioteca `flush-promises`. Podemos ver una explicación desde la propia documentación de Vue relacionada a esto en [este enlace](https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue)
+Al analizar la prueba vemos como podemos manipular la promesa que retorna el método `firebaseApp.auth().signInWithEmailAndPassword` y que resuelva con ayuda de Jest en la función `mockResolvedValue`. Como esta promesa se resuelve en el contexto de la aplicación Vue (de forma asíncrona) esta no se resolverá instantáneamente. Para l ograr que resuelva durante la ejecución de la prueba utilizaremos la biblioteca `flush-promises`. Podemos ver una explicación desde la propia documentación de Vue relacionada a esto en [este enlace](https://vue-test-utils.vuejs.org/guides/testing-async-components.html#asynchronous-behavior-outside-of-vue)
 
 
 Vamos a instalar esta biblioteca ejecutando lo siguiente en nuestra terminal preocupándonos de navagar hasta el directorio `frontend` en nuestro proyecto:
@@ -212,13 +215,13 @@ En adelante vamos a complementar este archivo agregando los bloques `it` dentro 
 
 Resultado esperado
 ```
-NO se llama al Auth.signInWithEmailAndPassword
+NO se llama al firebaseApp.auth().signInWithEmailAndPassword
 ```
 
 la implementación de la prueba sería la siguiente:
 
 ```javascript
-it('Does not call Auth.signInWithEmailAndPassword if form is not valid', async () => {
+it('Does not call firebaseApp.auth().signInWithEmailAndPassword if form is not valid', async () => {
   const wrapper = mount(App, {
     vuetify: new Vuetify(),
     store,
@@ -226,7 +229,7 @@ it('Does not call Auth.signInWithEmailAndPassword if form is not valid', async (
   })
   wrapper.find('[data-cy=login-btn]').trigger('click')
   
-  expect(Auth.signInWithEmailAndPassword).not.toHaveBeenCalled()
+  expect(firebaseApp.auth().signInWithEmailAndPassword).not.toHaveBeenCalled()
 })
 ```
 Ahora al volver a ejecutar las pruebas vemos como ya hemos abarcado el 100% de los casos para esta vista en la siguiente imagen:
@@ -247,11 +250,14 @@ import flushPromises from 'flush-promises'
 import App from '@/App.vue'
 import store from '@/store'
 import router from '@/router'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
-jest.mock('@/firebase',()=> ({
-  Auth: {
-    signInWithEmailAndPassword: jest.fn()
+jest.mock('@/firebase', () => ({
+  firebaseApp: {
+    signInWithEmailAndPassword: jest.fn(),
+    auth: jest.fn().mockReturnValue({
+      signInWithEmailAndPassword: jest.fn()
+    })
   }
 }))
 
@@ -264,11 +270,11 @@ describe('Login.vue', () => {
     vuetify = new Vuetify()
 
     router.push('/')
-    Auth.signInWithEmailAndPassword.mockReset()
+    firebaseApp.auth().signInWithEmailAndPassword.mockReset()
   })
 
   it('Successful login redirects to products page', async () => {
-    Auth.signInWithEmailAndPassword.mockResolvedValue()
+    firebaseApp.auth().signInWithEmailAndPassword.mockResolvedValue()
     const wrapper = mount(App,{
       localVue,
       vuetify: new Vuetify(),
@@ -285,7 +291,7 @@ describe('Login.vue', () => {
     expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ name: 'Products' })
   })
 
-  it('Does not call Auth.signInWithEmailAndPassword if form is not valid', async () => {
+  it('Does not call firebaseApp.auth().signInWithEmailAndPassword if form is not valid', async () => {
     const wrapper = mount(App, {
       vuetify: new Vuetify(),
       store,
@@ -293,7 +299,7 @@ describe('Login.vue', () => {
     })
     wrapper.find('[data-cy=login-btn]').trigger('click')
     
-    expect(Auth.signInWithEmailAndPassword).not.toHaveBeenCalled()
+    expect(firebaseApp.auth().signInWithEmailAndPassword).not.toHaveBeenCalled()
   })
 })
 
@@ -421,14 +427,14 @@ Con esto ya tenemos una capa de cobertura o caracterización que nos permite ref
 **frontend/src/services/product.service.js**
 ```javascript
 import axios from 'axios'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
 const productsURL = 'api/products'
 
 export default {
   async getProducts() {
     try {
-      const token = await Auth.currentUser?.getIdToken(true)
+      const token = await firebaseApp.auth().currentUser?.getIdToken(true)
       const headers = {
         Authorization: `Bearer ${token}`
       }
@@ -529,7 +535,7 @@ it('Shows the global alert when authentication fails ', async () => {
     router
   })
   const errorMessage = 'Invalid user'
-  Auth.signInWithEmailAndPassword.mockRejectedValue(new Error(errorMessage))
+  firebaseApp.auth().signInWithEmailAndPassword.mockRejectedValue(new Error(errorMessage))
   wrapper.find('[data-cy=username]').setValue('sebastian@boolean.cl')
   wrapper.find('[data-cy=password]').setValue('academiaboolean')
   
@@ -550,14 +556,14 @@ Al guardar las pruebas veremos un error como muestra la siguiente imagen:
 
 ![Imagen que muestra error en la terminal](images/07-testing-frontend-09.png)
 
-Esto ocurre porque en la vista Login no capturamos las excepciones cuando ocurre un error en la función `Auth.signInWithEmailAndPassword`. Vamos a modificar esta vista en el archivo `frontend/src/views/Login.vue` reemplazando la función `login` por lo siguiente:
+Esto ocurre porque en la vista Login no capturamos las excepciones cuando ocurre un error en la función `firebaseApp.auth().signInWithEmailAndPassword`. Vamos a modificar esta vista en el archivo `frontend/src/views/Login.vue` reemplazando la función `login` por lo siguiente:
 
 
 ```javascript
 async login () {
   if (this.validate()) {
     try {
-      await Auth.signInWithEmailAndPassword(this.email, this.password)
+      await firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
       this.$router.push({ name: 'Products' })
     } catch (error) {
 
@@ -621,7 +627,7 @@ Primero vamos a reemplazar completamente la sección `script` para que quede de 
 ```html
 <script>
 import { mapActions } from 'vuex'
-import { Auth } from '@/firebase'
+import { firebaseApp } from '@/firebase'
 
 export default {
   data () {
@@ -644,7 +650,7 @@ export default {
     async login () {
       if (this.validate()) {
         try {
-          await Auth.signInWithEmailAndPassword(this.email, this.password)
+          await firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
           this.$router.push({ name: 'Products' })
         } catch (error) {
           this.setAlert({ message: 'Error al hacer autenticación', type: 'error' })

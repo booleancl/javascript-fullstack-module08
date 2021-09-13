@@ -20,7 +20,7 @@ Hola! Bienvenidos al proyecto Aplicación Web del curso [Fullstack Javascript ](
 
 **Con esta guía el estudiante podrá:**
 
-  1. Poner en producción el resultado de una iteración que será la base para su futura personalización y proyecto final del curso. 
+  1. Poner en producción el resultado de una iteración que será la base para su futura personalización y proyecto final del curso.
   2. Practicar técnicas que nos permitirán trabajar con aplicaciones *legacy* mediante pruebas. 
    
   
