@@ -614,7 +614,7 @@ describe('products test suite', () => {
 
     cy.fixture('products.json')
       .then((products)=>{
-        cy.get('[data-cy="products"]').should('have.length', products.length)
+        cy.get('[data-cy="product-item"]').should('have.length', products.length)
       });
   })
 })
