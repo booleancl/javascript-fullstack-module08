@@ -721,7 +721,7 @@ Una buena oportunidad de separación de responsabilidades sería extraer la aler
     border="left"
     @input="closeAlert"
   >
-  {{ message }}
+    { { message } }
   </v-alert>
 </template>
 

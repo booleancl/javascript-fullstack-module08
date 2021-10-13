@@ -183,7 +183,7 @@ En este momento el servidor tiene las siguientes características:
 
 EL resumen el archivo server tiene los siguientes bloques de código para cada uno de los casos.
 
-**backend/src/server.js**
+**backend/src/app.js**
 ```javascript
 app.use('/api', async (request, response, next) => {
   if (!headerToken) {
@@ -203,7 +203,7 @@ app.use('/api', async (request, response, next) => {
 
 - Las solicitudes ya autenticadas que consultan `/api/products` pueden tener 2 casos posibles al hacer consultas a la base de datos.
 
-**backend/src/server.js**
+**backend/src/app.js**
 ```javascript
 app.use('/api/products', async (request, response) => {
   try {
@@ -447,7 +447,7 @@ Retorna 500 y un mensaje con el error de la base de datos
 Para hacer que la base de datos falle, lo que haremos será destruir la table `Products` a través de Sequelize utilizando el método `drop`.
 Agregaremos el siguiente bloque `it` bajo del que ya escribimos en el archivo `backend/tests/products.test.js`
 
-**backend/tests/auth.test.js**
+**backend/tests/products.test.js**
 ```javascript
 it('returns 500 when the database throws error', async () => {
     await Models.Product.drop()
@@ -605,6 +605,8 @@ Volvemos a correr el comando `npm test`  y veremos que el informe de cobertura n
 ![Imagen que muestra la cobertura de las pruebas en la terminal](images/06-testing-frontend-backend-09.png)
 
 De esta manera logramos hacer una refactorización para ordenar y preparar al código del servidor para ser más escalable para los futuros incrementos del código.
+
+Antes de continuar confirmaremos de no subir los archivos dentro de la carpeta coverage a nuestro repositorio. Para aquello, navegaremos hasta la raiz del proyecto y en `.gitignore` escribiremos coverage para no subir el directorio con los archivos genereados en el proceso de test. 
 
 Momento de un nuevo commit. Escribimos lo siguiente en la terminal:
 
