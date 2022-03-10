@@ -5,7 +5,7 @@ nav_order: 5
 ---
 # Agregando base de datos en desarrollo
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/tVGlGTqQRBg"
@@ -13,7 +13,7 @@ nav_order: 5
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos relacionales, las que vienen en un montón de dialectos diferentes (psql, mysql, sqlite, oracle, etc), pero para no tener que decidir ahora cual usar, vamos a emplear una librería que nos entregará una capa de abstracción superior y que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la librería más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación con el modelo de datos.
 En esta sección configuraremos una opción muy común para persistir los datos que gestionará la aplicación. Nos referimos a las bases de datos, epecíficamente las relacionales, que vienen en un montón de dialectos diferentes (Postgres, MySQL, MariaDB o Microsoft SQL Server). Para no decidir ahora cual usar, emplearemos una biblioteca con un nivel de abstracción superior que podemos configurar según las necesidades de cada entorno (desarrollo, producción, staging, etc). En el caso de Nodejs la biblioteca más popular es `Sequelize`. Además de ser un traductor para los diferentes motores específicos de bases de datos, Sequelize es un ORM que entrega muchas facilidades para mantener sincronizada nuestra aplicación, es decir, el código, con el modelo de datos, nuestras tablas. También nos ayudará con las clásicas operaciones CRUD y las asociaciones.

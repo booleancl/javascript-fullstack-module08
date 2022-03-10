@@ -6,7 +6,7 @@ nav_order: 7
 
 # Refactorización utilizando pruebas de software en Frontend
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/ty_k6TtXwH"
@@ -14,7 +14,7 @@ nav_order: 7
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 Continuamos caracterizando la aplicación para refactorizar y dejar la aplicación más flexible y mantenible. 
 # Refactorización utilizando pruebas de software en el Frontend

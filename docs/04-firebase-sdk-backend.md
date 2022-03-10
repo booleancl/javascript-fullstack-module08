@@ -6,7 +6,7 @@ nav_order: 4
 
 # Validar autenticación en el Backend
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/TOPXHhmyARg"
@@ -14,7 +14,7 @@ nav_order: 4
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 Firebase hace muy simple la comprobación de tokens de autorización en el Backend. En resumen, debemos enviar una cabecera específica desde el Frontend y con la biblioteca de Firebase integrada a nuestro backend podremos validar que las solicitudes sean de un usuario autenticado.
  

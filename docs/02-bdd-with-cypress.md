@@ -6,7 +6,7 @@ nav_order: 2
 
 # Historias de usuario con BDD
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/mRQrUuaRtdg"
@@ -14,7 +14,7 @@ nav_order: 2
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 Vamos a desarrollar siguiendo la metodología Behaviour Driven Design (abreviada como BDD). Si quieres conocer más en detalle acerca de ella te recomendamos ver [este video](https://www.youtube.com/watch?v=_bGtaCvaHLE&t=2959s). En resúmen se trata de una metodología para que personas no técnicas describan lo que esperan del software utilizando historias de usuario, las cuales describen las interacciones que hace un cierto tipo de usuario y el resultado esperado.
 

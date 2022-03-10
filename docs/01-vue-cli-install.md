@@ -6,7 +6,7 @@ nav_order: 1
 
 # Creando un proyecto usando CLI y framework UI
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/opMGpx98r7c"
@@ -14,7 +14,7 @@ nav_order: 1
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 Comenzaremos creando un proyecto a través de la línea de comandos de Vue. Si no la tienes puedes instalarla con el siguiente comando.
 

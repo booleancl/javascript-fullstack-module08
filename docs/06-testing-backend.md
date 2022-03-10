@@ -6,7 +6,7 @@ nav_order: 6
 
 # Refactorización utilizando pruebas de software en Backend
 
-<div class="embed-responsive">
+<!-- <div class="embed-responsive">
   <iframe
     class="embed-responsive__item"
     src="https://www.youtube.com/embed/W5cerUpAbIY"
@@ -14,7 +14,7 @@ nav_order: 6
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
   ></iframe>
-</div>
+</div> -->
 
 En este punto la funcionalidad ya está completa, pero la organización del código se puede mejorar para aumentar su flexibilidad a los cambios que inevitablemente llegarán.
 # Refactorización utilizando pruebas de software en el Backend
